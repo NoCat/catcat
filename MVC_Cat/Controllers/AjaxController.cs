@@ -340,7 +340,7 @@ namespace MVC_Cat.Controllers
                             var user = CheckLogin();
                             var imageId = Tools.GetInt32FromRequest(Request.Form["id"]);
                             var image = new MPImage(imageId);
-                            if (user.ID != image.ID)
+                            if (user.ID != image.UserID)
                                 throw new MiaopassException("无操作权限");
 
                             image.Delete();

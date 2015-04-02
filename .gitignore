@@ -1,1 +1,3 @@
-
+mvc_cat/obj/*
+mvc_cat/web.config
+mvc_cat/bin/*
