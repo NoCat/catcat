@@ -342,7 +342,6 @@ namespace MVC_Cat.Controllers
                             var image = new MPImage(imageId);
                             if (user.ID != image.UserID)
                                 throw new MiaopassException("无操作权限");
-
                             image.Delete();
                         }
                         break;
