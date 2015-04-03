@@ -1,4 +1,6 @@
 mvc_cat/obj/*
 mvc_cat/web.config
 mvc_cat/bin/*
+mvc_cat/mp_done/*
+mvc_cat/mp_temp/*
 *.suo

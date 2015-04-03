@@ -39,7 +39,7 @@ MPTemplate.Widget.Image = function (data, options)
         strVar += "            <div class=\"line\"><a href=\"{0}\">{1}<\/a><\/div>".Format("/package/" + data.package.id, data.package.title);
         strVar += "        <\/div>";
     }
-    else if (options == this.Options.ShowSource)
+    else if (options == MPTemplate.Widget.Image.Options.ShowSource)
     {
         strVar += "<a class=\"source\" href=\"/from/{0}\">{0}<\/a>".Format(data.host);
     }

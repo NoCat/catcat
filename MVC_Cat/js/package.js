@@ -1,9 +1,4 @@
-﻿/// <reference path="Widget/Image.js" />
-/// <reference path="Widget/package.js" />
-/// <reference path="main.js" />
-/// <reference path="Widget/Image.js" />
-/// <reference path="Widget/package.js" />
-/// <reference path="Widget/package-info.js" />
+﻿/// <reference path="include.js" />
 
 $(function () {
     var frame = MPWidget.Frame.New();
@@ -18,7 +13,7 @@ $(function () {
             break;
 
         default:
-            waterfallPush(packageInfo, MPWidget.Image, MPWidget.Image.Options.ShowSource, "id");
+            waterfallPush(packageInfo, MPWidget.Image, MPTemplate.Widget.Image.Options.ShowSource, "id");
             break;
     }
     packageInfo.waterfall.Resize();
