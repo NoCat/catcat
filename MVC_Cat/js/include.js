@@ -24,6 +24,10 @@
 /// <reference path="Dialog/SignUpSuccessDialog.js" />
 /// <reference path="Dialog/TitleDialog.js" />
 /// <reference path="Dialog/UploadDialog.js" />
+
+/// <reference path="Object/image.js" />
+/// <reference path="Object/package.js" />
+/// <reference path="Object/user.js" />
 //组件实现
 /// <reference path="Widget/image-view.js" />
 /// <reference path="Widget/Image.js" />
