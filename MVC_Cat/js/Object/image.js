@@ -67,13 +67,13 @@ MPObject.Image.Resava = function (imageID, imageHash, description, source) {
     }
 }
 
-MPObject.Image.Edit = function (imageID, imageHash, description, source) {
+MPObject.Image.Edit = function (imageID, imageHash, description, source,callback) {
     if (MPData.user.id == 0) {
         MPLoginDialog.New();
         return;
     }
     var url = imageHost + "/" + imageHash + "_fw236";
-    var dialog = MPCreateImageDialog.New(url, "转存", description, true, source);
+    var dialog = MPCreateImageDialog.New(url, "编辑图片", description, true, source);
     dialog.onOK = function () {
         $.post(host + "/ajax/resave", { image_id: imageID, package_id: dialog.packageId, description: dialog.description, source: dialog.source }, function (data) {
             if (data.code == 0) {
@@ -90,11 +90,11 @@ MPObject.Image.Edit = function (imageID, imageHash, description, source) {
     }
 
     dialog.onDelete = function () {
-        MPObject.Image.Delete(imageID);
+        MPObject.Image.Delete(imageID,callback);
     }
 }
 
-MPObject.Image.Delete = function (imageID) {
+MPObject.Image.Delete = function (imageID, callback) {
     if (MPData.user.id == 0) {
         MPLoginDialog.New();
         return;
@@ -102,7 +102,9 @@ MPObject.Image.Delete = function (imageID) {
     //成功之后的处理考虑一下
     $.post(host + "/ajax/delete-image", { id: imageID }, function (data) {
         if (data.code == 0) {
-            MPMessageBox.New(MPMessageBox.Icons.OK, "图片删除成功");
+            if (callback) {
+                callback();
+            }
         }
         else {
             MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
