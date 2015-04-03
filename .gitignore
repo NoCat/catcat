@@ -3,4 +3,5 @@ mvc_cat/web.config
 mvc_cat/bin/*
 mvc_cat/mp_done/*
 mvc_cat/mp_temp/*
+mvc_cat/properties/*
 *.suo
