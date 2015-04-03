@@ -74,12 +74,12 @@ MPWidget.ImageView.Bind = function () {
 
     function delete_click() {
         var id = $(this).attr("data-id");
-        $.post(host + "/ajax/delete-iamge", { image_id: id }, function (data) {
+        $.post(host + "/ajax/delete-image", { id: id }, function (data) {
             if (data.code == 0) {
                 var box = MPMessageBox.New(MPMessageBox.Icons.OK, "删除图片成功");
                 box.onClose = function () {
                     $(".widget-window").remove();
-                    location.href(location.href);//刷新本页面
+                    location.reload();//刷新本页面
                 }
             }
         }, "json");

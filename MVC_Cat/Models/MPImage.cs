@@ -71,6 +71,11 @@ public class MPImage
             db.ExecuteNonQuery("update image set via=0 where via=?",ID);
             db.EndTransaction();
         }
+        var res = DB.SExecuteScalar("select id from image where fileid=?", FileID);
+        if(res==null)
+        {
+            new MPFile(FileID).Delete();
+        }
     }
 
     public void Edit(int packageid,string description,string url)

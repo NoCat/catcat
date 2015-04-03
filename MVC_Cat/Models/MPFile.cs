@@ -128,4 +128,15 @@ public class MPFile
             throw new MiaopassFileCreateFailedException();
         }
     }
+
+    public  void Delete()
+    {
+        DB.SExecuteNonQuery("delete from file where id=?", ID);
+        OssFile.Delete(MD5);
+        OssFile.Delete(MD5 + "_fw236");
+        OssFile.Delete(MD5 + "_sq236");
+        OssFile.Delete(MD5 + "_sq75");
+        OssFile.Delete(MD5 + "_fw658");
+        OssFile.Delete(MD5 + "_fw78");
+    }
 }
