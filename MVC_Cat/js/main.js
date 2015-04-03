@@ -41,6 +41,7 @@ MPData = {};
 MPTemplate = {};
 MPWidget = {};
 MPFormat = {};
+MPObject = {};
 
 
 var MPWaterFall = {
