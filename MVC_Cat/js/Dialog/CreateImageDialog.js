@@ -73,6 +73,7 @@ MPCreateImageDialog =//创建图片
             var select = dialog.Content.find(".selections");//图包列表
             var filterate = dialog.Content.find(".filtrate");//筛选栏输入后显示的内容
             var filterSearch = dialog.Content.find(".filter input");//筛选栏
+            var source = dialog.Content.find(".source");//来源处
             dialog.onOK = null;
             dialog.onDelete = null;
             dialog.description = "";
@@ -171,6 +172,9 @@ MPCreateImageDialog =//创建图片
             dialog.ButtonOK.click(function () {
                 dialog.description = description.val();
                 dialog.packageId = bCurrent.attr("data-package-id");
+                if (isEdit==true) {
+                    dialog.source = source.val();
+                }
                 if (dialog.packageId == "" || dialog.packageId == undefined) {
                     MPMessageBox.New(MPMessageBox.Icons.Warn, "请选择一个图包,如果没有图包请新建一个图包!");
                     return;
@@ -189,6 +193,9 @@ MPCreateImageDialog =//创建图片
 
             dialog.Content.find(".delete").click(function ()
             {
+                if (dialog.onDelete!=null) {
+                    dialog.onDelete();
+                }
                 //获取对话框的信息,包括图包id,描述,图片来源,这个功能可以写成一个函数
                 //然后就是触发onDelete
             })

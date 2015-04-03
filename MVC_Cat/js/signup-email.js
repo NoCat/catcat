@@ -1,6 +1,5 @@
-﻿/// <reference path="Dialog/TitleDialog.js" />
-/// <reference path="main.js" />
-/// <reference path="Dialog/MessageBox.js" />
+﻿/// <reference path="include.js" />
+
 
 $(function ()
 {
@@ -39,6 +38,7 @@ $(function ()
                 var dialog = MPMessageBox.New(MPMessageBox.Icons.OK, "注册成功,点击确认后返回主页");
                 dialog.onOK = function ()
                 {
+                    $.cookie("login", data.cookie, { expires: 30 });
                     location.href = host;
                 };
             }
