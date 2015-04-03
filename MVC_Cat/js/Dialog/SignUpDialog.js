@@ -19,7 +19,7 @@ MPSignUpDialog.New = function ()
             }
             else
             {
-                MPMessageBox.New(MPMessageBox.Icons.Warn, "注册邮件发送失败,请重试");
+                MPMessageBox.New(MPMessageBox.Icons.Warn, data.msg);
             }
 
         }, "json");
