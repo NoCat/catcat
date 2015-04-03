@@ -12,7 +12,7 @@ MPTemplate.Widget.ImageView = function (data,options)
     strVar += "                <div class=\"delete btn\" data-id=\"{0}\" data-hash=\"{1}\">删除<\/div>".Format(data.id, data.file.hash);
     strVar += "            <\/div>";
     strVar += "            <div class=\"image\">";
-    strVar += "                <img src=\"{0}\" />".Format(imageHost + "/" + data.file.hash + "_fw658");
+    strVar += "                <img src=\"{0}\" alt=\"{1}\" />".Format(imageHost + "/" + data.file.hash + "_fw658",data.description.substring(0,20).replace('"',''));
     strVar += "            <\/div>";
     strVar += "            <div class=\"tool-bar-bottom\">";
     strVar += "                <div class=\"clear\"><\/div>";
@@ -77,4 +77,6 @@ MPTemplate.Widget.ImageView = function (data,options)
     strVar += "    <\/div>";
     strVar += "    <div class=\"bottom\"><\/div>";
     strVar += "<\/div>";
+
+    return strVar;
 }
