@@ -1,19 +1,21 @@
-﻿/// <reference path="Dialog.js" />
+﻿/// <reference path="../include.js" />
+
 MPResetPasswordDialog = {
-    New: function ()
-    {
-        var dialog = MPDialog.New('<div class="login_frame"><div class="dialog_close"></div><div>请输入注册邮箱 <input type="text" class="SignUpEmail"></div><div class="dialog_ok">发送邮件</div></div>');
-        var inputemail = dialog.Content.find(".SignUpEmail");
-        dialog.ButtonOK.click(function ()
-        {
-            if (MPCheckEmail(inputemail.val()) == false)
+    New: function () {
+        var dialog = MPDialog.New('<div class="dialog-mask"><div class="dialog-box"><div class="dialog-title"><span class="text">找回密码</span><div class="dialog-close"></div></div><div class="dialog-content"><div class="reset-password-dialog"><span>注册邮箱:</span> <input type="text" placeholder="请输入注册邮箱"></div></div><div class="dialog-btns"><div class="ok">确认</div></div></div></div>');
+        var inputemail = dialog.Content.find(".reset-password-dialog input");
+        dialog.ButtonOK.click(function () {
+            if (!MPCheckEmail(inputemail.val())) {
                 return;
-            $.post(host + "/ajax/reset-password", { email: MPHtmlEncode(inputemail.val()) }, function (data)
-            {
-                if (data.code == 0)
-                {
+            }
+
+            $.post(host + "/ajax/reset-password", { email: MPHtmlEncode(inputemail.val()) }, function (data) {
+                if (data.code == 0) {
                     dialog.Close();
-                    MPMessageBox.New("warn", "重置密码邮件已发送到您的邮箱,请注意查收");
+                    MPMessageBox.New(MPMessageBox.Icons.OK, "重置密码邮件已发送到您的邮箱,请注意查收");
+                }
+                else {
+                    MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
                 }
             }, "json")
         })

@@ -45,8 +45,7 @@ MPObject.Image.fw236 = function (image) {
 }
 
 MPObject.Image.Resava = function (imageID, imageHash, description, source) {
-    if (MPData.user.id == 0) {
-        MPLoginDialog.New();
+    if (!MPCheckLogin()) {
         return;
     }
     var url = imageHost + "/" + imageHash + "_fw236";
@@ -67,13 +66,12 @@ MPObject.Image.Resava = function (imageID, imageHash, description, source) {
     }
 }
 
-MPObject.Image.Edit = function (imageID, imageHash, description, source) {
-    if (MPData.user.id == 0) {
-        MPLoginDialog.New();
+MPObject.Image.Edit = function (imageID, imageHash, description, source,callback) {
+    if (!MPCheckLogin()) {
         return;
     }
     var url = imageHost + "/" + imageHash + "_fw236";
-    var dialog = MPCreateImageDialog.New(url, "转存", description, true, source);
+    var dialog = MPCreateImageDialog.New(url, "编辑图片", description, true, source);
     dialog.onOK = function () {
         $.post(host + "/ajax/resave", { image_id: imageID, package_id: dialog.packageId, description: dialog.description, source: dialog.source }, function (data) {
             if (data.code == 0) {
@@ -90,19 +88,20 @@ MPObject.Image.Edit = function (imageID, imageHash, description, source) {
     }
 
     dialog.onDelete = function () {
-        MPObject.Image.Delete(imageID);
+        MPObject.Image.Delete(imageID,callback);
     }
 }
 
-MPObject.Image.Delete = function (imageID) {
-    if (MPData.user.id == 0) {
-        MPLoginDialog.New();
+MPObject.Image.Delete = function (imageID, callback) {
+    if (!MPCheckLogin()) {
         return;
     }
     //成功之后的处理考虑一下
     $.post(host + "/ajax/delete-image", { id: imageID }, function (data) {
         if (data.code == 0) {
-            MPMessageBox.New(MPMessageBox.Icons.OK, "图片删除成功");
+            if (callback) {
+                callback();
+            }
         }
         else {
             MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
@@ -111,8 +110,7 @@ MPObject.Image.Delete = function (imageID) {
 }
 
 MPObject.Image.Praise = function (imageID, callback) {
-    if (MPData.user.id == 0) {
-        MPLoginDialog.New();
+    if (!MPCheckLogin()) {
         return;
     }
     $.post(host + "/ajax/praise-image", { image_id: imageID }, function (data) {
@@ -123,8 +121,7 @@ MPObject.Image.Praise = function (imageID, callback) {
 }
 
 MPObject.Image.UnPraise = function (imageID, callback) {
-    if (MPData.user.id == 0) {
-        MPLoginDialog.New();
+    if (!MPCheckLogin()) {
         return;
     }
     $.post(host + "/ajax/unpraise-image", { image_id: imageID }, function (data) {

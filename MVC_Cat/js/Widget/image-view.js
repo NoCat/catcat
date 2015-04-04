@@ -52,37 +52,20 @@ MPWidget.ImageView.Bind = function () {
         var t = $(this);
         var id = t.attr("data-id");
         var hash = t.attr("data-hash");
-        //获取要转存图片的描述内容用作初始描述
-        var description = t.attr("data-description");
-        var dialog = MPCreateImageDialog.New(imageHost + "/" + hash + "_fw236", "转存", description);
-        dialog.onOK = function () {
-            $.post(host + "/ajax/resave", { image_id: id, package_id: dialog.packageId, description: MPHtmlEncode(dialog.description) }, function (data) {
-                if (data.code == 0) {
-                    var box = MPMessageBox.New("ok", "转存成功");
-                    box.onOK = function () {
-                        dialog.Close();
-                    }
-                }
-            }, "json");
-        };
+       //待处理
+        MPObject.Image.Resava(id, hash);
     }
 
     function edit_click() {
-        var id = $(this).attr("data-id");
-        location.href = "/image/" + id + "/edit";
+        var t=$(this);
+        var id = t.attr("data-id");
+        var hash = t.attr("data-hash");
+        MPObject.Image.Edit(id, hash);
     }
 
     function delete_click() {
         var id = $(this).attr("data-id");
-        $.post(host + "/ajax/delete-image", { id: id }, function (data) {
-            if (data.code == 0) {
-                var box = MPMessageBox.New(MPMessageBox.Icons.OK, "删除图片成功");
-                box.onClose = function () {
-                    $(".widget-window").remove();
-                    location.reload();//刷新本页面
-                }
-            }
-        }, "json");
+        MPObject.Image.Delete(id);
     }
 
     function submit_click() {
