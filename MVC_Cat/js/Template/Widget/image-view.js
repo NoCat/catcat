@@ -7,9 +7,12 @@ MPTemplate.Widget.ImageView = function (data,options)
     strVar += "    <div class=\"main\">";
     strVar += "        <div class=\"image-piece piece\">";
     strVar += "            <div class=\"tool-bar\">";
-    strVar += "                <div class=\"resave btn\" data-id=\"{0}\" data-hash=\"{1}\">转存<\/div>".Format(data.id, data.file.hash);
-    strVar += "                <div class=\"edit btn\" data-id=\"{0}\" data-hash=\"{1}\">编辑<\/div>".Format(data.id, data.file.hash);
-    strVar += "                <div class=\"delete btn\" data-id=\"{0}\" data-hash=\"{1}\">删除<\/div>".Format(data.id, data.file.hash);
+    strVar += "                <div class=\"resave btn\" data-id=\"{0}\" data-hash=\"{1}\" data-descripition=\"{2}\">转存<\/div>".Format(data.id, data.file.hash, data.description);
+    if (MPData.user.id == data.user.id)
+    {
+        strVar += "                <div class=\"edit btn\" data-id=\"{0}\" data-hash=\"{1}\" data-descripition=\"{2}\" data-source=\"{3}\" data-packageid=\"{4}\">编辑<\/div>".Format(data.id, data.file.hash, data.description, data.source, data.package.id);
+        strVar += "                <div class=\"delete btn\" data-id=\"{0}\" data-hash=\"{1}\">删除<\/div>".Format(data.id, data.file.hash);
+    }
     strVar += "            <\/div>";
     strVar += "            <div class=\"image\">";
     strVar += "                <img src=\"{0}\" alt=\"{1}\" />".Format(imageHost + "/" + data.file.hash + "_fw658",data.description.substring(0,20).replace('"',''));
@@ -64,8 +67,8 @@ MPTemplate.Widget.ImageView = function (data,options)
     strVar += "        <div class=\"package-piece piece\">";
     strVar += "            <div class=\"info\">";
     strVar += "                <img class=\"avt\" src=\"{0}\" />".Format(fuser.Avt());
-    strVar += "                <a class=\"title\" href=\"{1}\">{0}<\/a>".Format(data.package.title, "/package/" + data.package.id);
     strVar += "                <a class=\"username\" href=\"{1}\">{0}<\/a>".Format(fuser.Name(), "/user/" + fuser.ID());
+    strVar += "                <a class=\"title\" href=\"{1}\">{0}<\/a>".Format(data.package.title, "/package/" + data.package.id);
     strVar += "            <\/div>";
     strVar += "            <div class=\"images\">";
     strVar += "                <div class=\"image-waterfall\">";
