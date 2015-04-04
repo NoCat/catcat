@@ -107,13 +107,17 @@ namespace MVC_Cat.Controllers
                     #region create-package 创建新图包
                     case "create-package":
                         {
+                            string packageTitle = Tools.GetStringFromRequest(Request.Form["title"]);
+                            packageTitle = packageTitle.Trim();
+                            if(packageTitle=="")
+                            {
+                                throw new MiaopassException("图包标题不能为空");
+                            }
                             var user = Session["user"] as MPUser;
                             if (user == null)
                             {
                                 throw new MiaopassNotLoginException();
                             }
-
-                            string packageTitle = Server.HtmlDecode(Tools.GetStringFromRequest(Request.Form["title"]));
 
                             okMsg.packageid = MPPackage.Create(user.ID, packageTitle);
                         }
