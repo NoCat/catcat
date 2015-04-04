@@ -212,6 +212,7 @@
     <Content Include="js\Render\Render.Head.js" />
     <Content Include="js\Render\Render.js" />
     <Content Include="js\Render\RenderElement.js" />
+    <Content Include="js\ResetPassword.js" />
     <Content Include="js\search.js" />
     <Content Include="js\signup-email.js" />
     <Content Include="js\Template\Page\search.js" />
