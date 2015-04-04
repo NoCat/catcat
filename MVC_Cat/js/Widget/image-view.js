@@ -142,7 +142,7 @@ MPWidget.ImageView.Bind = function () {
 
     function delete_click() {
         var id = $(this).attr("data-id");
-        MPObject.Image.Delete(id, callback);
+        MPObject.Image.Delete(id);
     }
 
     function submit_click() {

@@ -45,8 +45,7 @@ MPObject.Image.fw236 = function (image) {
 }
 
 MPObject.Image.Resava = function (imageID, imageHash, description, source) {
-    if (MPData.user.id == 0) {
-        MPLoginDialog.New();
+    if (!MPCheckLogin()) {
         return;
     }
     var url = imageHost + "/" + imageHash + "_fw236";
@@ -68,8 +67,7 @@ MPObject.Image.Resava = function (imageID, imageHash, description, source) {
 }
 
 MPObject.Image.Edit = function (imageID, imageHash, description, source,callback) {
-    if (MPData.user.id == 0) {
-        MPLoginDialog.New();
+    if (!MPCheckLogin()) {
         return;
     }
     var url = imageHost + "/" + imageHash + "_fw236";
@@ -95,8 +93,7 @@ MPObject.Image.Edit = function (imageID, imageHash, description, source,callback
 }
 
 MPObject.Image.Delete = function (imageID, callback) {
-    if (MPData.user.id == 0) {
-        MPLoginDialog.New();
+    if (!MPCheckLogin()) {
         return;
     }
     //成功之后的处理考虑一下
@@ -113,8 +110,7 @@ MPObject.Image.Delete = function (imageID, callback) {
 }
 
 MPObject.Image.Praise = function (imageID, callback) {
-    if (MPData.user.id == 0) {
-        MPLoginDialog.New();
+    if (!MPCheckLogin()) {
         return;
     }
     $.post(host + "/ajax/praise-image", { image_id: imageID }, function (data) {
@@ -125,8 +121,7 @@ MPObject.Image.Praise = function (imageID, callback) {
 }
 
 MPObject.Image.UnPraise = function (imageID, callback) {
-    if (MPData.user.id == 0) {
-        MPLoginDialog.New();
+    if (!MPCheckLogin()) {
         return;
     }
     $.post(host + "/ajax/unpraise-image", { image_id: imageID }, function (data) {

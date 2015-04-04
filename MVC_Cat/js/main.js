@@ -355,6 +355,19 @@ var MPWaterFall = {
     }
 }
 
+//检查登录
+function MPCheckLogin() {
+    if (MPData.user.id == 0)
+    {
+        MPLoginDialog.New();
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+
 //窗口居中
 function MPCenter(content, parent)
 {
@@ -369,12 +382,12 @@ function MPCheckEmail(e)
 {
     if (e == "")
     {
-        MPMessageBox.New("alert", "提示", "邮箱不能为空!");
+        MPMessageBox.New(MPMessageBox.Icons.Warn, "邮箱不能为空!");
         return false;
     }
     if (!e.match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/))
     {
-        MPMessageBox.New("alert", "提示", "邮箱格式不正确,请重新输入!");
+        MPMessageBox.New(MPMessageBox.Icons.Warn, "邮箱格式不正确,请重新输入!");
         return false;
     }
     return true;
