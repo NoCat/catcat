@@ -45,3 +45,4 @@
 /// <reference path="Template/Widget/frame.js" />
 /// <reference path="Template/Widget/package.js" />
 /// <reference path="Template/Widget/image-view.js" />
+/// <reference path="Template/Widget/link.js" />
