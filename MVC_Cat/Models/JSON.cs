@@ -194,7 +194,7 @@ namespace JSON
         {
             id = image.ID;
             source = image.Url;
-            host = image.Url == "" ? "" : new Uri(image.Url).Host;
+            host = image.Host;
             package = new JSON.Package(new MPPackage(image.PackageID));
             file = new JSON.File(new MPFile(image.FileID));
             user = new JSON.User(new MPUser(image.UserID));

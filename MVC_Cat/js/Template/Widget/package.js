@@ -39,7 +39,7 @@ MPTemplate.Widget.Package=function(data,options)
     strVar += "    <div class=\"actions\">";
     if (data.user.id == MPData.user.id)
     {
-        strVar += "<div class=\"btn2 edit\" data-id=\"{0}\"><\/div>".Format(fuser.ID());
+        strVar += "<div class=\"btn2 edit\" data-id=\"{0}\"><\/div>".Format(data.id);
     }
     else
     {
@@ -52,21 +52,21 @@ MPTemplate.Widget.Package=function(data,options)
                 strVar += "        <a class=\"username\" href=\"{0}\" >{1}<\/a>".Format(fuser.Home(), fuser.Name);
                 if (data.user.followed === true)
                 {
-                    strVar += "        <div class=\"btn unfollow\" data-id=\"{0}\"><\/div>".Format(fuser.ID());
+                    strVar += "        <div class=\"btn unfollow\" data-id=\"{0}\"><\/div>".Format(data.id);
                 }
                 else
                 {
-                    strVar += "        <div class=\"btn follow\" data-id=\"{0}\"><\/div>".Format(fuser.ID());
+                    strVar += "        <div class=\"btn follow\" data-id=\"{0}\"><\/div>".Format(data.id);
                 }
                 break;
             case MPTemplate.Widget.Package.Options.BigButton:
                 if (data.user.followed == true)
                 {
-                    strVar += "        <div class=\"btn2 unfollow\" data-id=\"{0}\"><\/div>".Format(fuser.ID());
+                    strVar += "        <div class=\"btn2 unfollow\" data-id=\"{0}\"><\/div>".Format(data.id);
                 }
                 else
                 {
-                    strVar += "        <div class=\"btn2 follow\" data-id=\"{0}\"><\/div>".Format(fuser.ID());
+                    strVar += "        <div class=\"btn2 follow\" data-id=\"{0}\"><\/div>".Format(data.id);
                 }
                 break;
         }

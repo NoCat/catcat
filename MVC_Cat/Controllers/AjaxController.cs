@@ -109,7 +109,7 @@ namespace MVC_Cat.Controllers
                         {
                             string packageTitle = Tools.GetStringFromRequest(Request.Form["title"]);
                             packageTitle = packageTitle.Trim();
-                            if(packageTitle=="")
+                            if (packageTitle == "")
                             {
                                 throw new MiaopassException("图包标题不能为空");
                             }
@@ -148,10 +148,10 @@ namespace MVC_Cat.Controllers
 
                             //try
                             //{
-                                using (FileStream fs = System.IO.File.Create(Server.MapPath("~/MP_Temp/" + tempFileName + "_" + chunk)))
-                                {
-                                    fs.Write(Request.InputStream);
-                                }
+                            using (FileStream fs = System.IO.File.Create(Server.MapPath("~/MP_Temp/" + tempFileName + "_" + chunk)))
+                            {
+                                fs.Write(Request.InputStream);
+                            }
                             //}
                             //catch
                             //{
@@ -162,22 +162,22 @@ namespace MVC_Cat.Controllers
                             {
                                 //try
                                 //{
-                                    string mergerName = Server.MapPath("~/MP_Done/" + tempFileName);
-                                    using (var merger = System.IO.File.Create(mergerName))
+                                string mergerName = Server.MapPath("~/MP_Done/" + tempFileName);
+                                using (var merger = System.IO.File.Create(mergerName))
+                                {
+                                    for (int i = 0; i < chunks; i++)
                                     {
-                                        for (int i = 0; i < chunks; i++)
+                                        string fragmentName = Server.MapPath("~/MP_Temp/" + tempFileName + "_" + i);
+                                        using (var fragment = System.IO.File.OpenRead(fragmentName))
                                         {
-                                            string fragmentName = Server.MapPath("~/MP_Temp/" + tempFileName + "_" + i);
-                                            using (var fragment = System.IO.File.OpenRead(fragmentName))
-                                            {
-                                                merger.Write(fragment);
-                                            }
-                                            System.IO.File.Delete(fragmentName);
+                                            merger.Write(fragment);
                                         }
-                                        MPFile.Create(merger);
-                                        okMsg.hash = Tools.FileMd5(merger);
+                                        System.IO.File.Delete(fragmentName);
                                     }
-                                    System.IO.File.Delete(mergerName);
+                                    MPFile.Create(merger);
+                                    okMsg.hash = Tools.FileMd5(merger);
+                                }
+                                System.IO.File.Delete(mergerName);
                                 //}
                                 //catch
                                 //{
@@ -254,6 +254,8 @@ namespace MVC_Cat.Controllers
                                 token = Tools.BytesToString(Guid.NewGuid().ToByteArray());
                                 DB.SExecuteNonQuery("insert into reset_password (email,expire,token) values (?,?,?)", email, DateTime.Now.AddDays(1), token);
                             }
+
+                            Mail.SendResetPasswordEmail(email, token);
                         }
                         break;
                     #endregion
@@ -285,7 +287,7 @@ namespace MVC_Cat.Controllers
                             var package = new MPPackage(Tools.GetInt32FromRequest(Request.Form["package_id"]));
                             var description = Tools.GetStringFromRequest(Request.Form["description"]);
 
-                            MPImage.Create(package.ID, image.FileID, user.ID, image.ID,image.Url, description);
+                            MPImage.Create(package.ID, image.FileID, user.ID, image.ID, image.Url, description);
                         }
                         break;
                     #endregion
@@ -382,13 +384,23 @@ namespace MVC_Cat.Controllers
                         }
                         break;
                     #endregion
+                    #region follow-package 关注图包
+                    case "follow-package":
+                        {
+                            int packageId = Tools.GetInt32FromRequest(Request.Form["package_id"]);
+                            var user = CheckLogin();
+                            var package = new MPPackage(packageId);
+                            DB.SExecuteNonQuery("insert into following (userid,type,info) values (?,?,?)", user.ID, MPFollowingTypes.Package, packageId);
+                        }
+                        break;
+                    #endregion
                 }
             }
             catch (MiaopassException exception)
             {
                 return Content(Tools.JSONStringify(new { code = exception.Code, msg = exception.Message }));
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 return Content(Tools.JSONStringify(new { code = 500, msg = exception.Message }));
             }
