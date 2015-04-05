@@ -219,6 +219,7 @@
     <Content Include="js\signup-email.js" />
     <Content Include="js\Template\Page\search.js" />
     <Content Include="js\Template\template.js" />
+    <Content Include="js\Template\Widget\comment.js" />
     <Content Include="js\Template\Widget\frame.js" />
     <Content Include="js\Template\Widget\image-view.js" />
     <Content Include="js\Template\Widget\link.js" />
