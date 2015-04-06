@@ -28,14 +28,13 @@ MPWidget.Package.Bind = function () {
         MPObject.Package.Follow(id, function () {
             t.removeClass("follow");
             t.addClass("unfollow");
-            t.text("已关注");
             MPMessageBox.New(MPMessageBox.Icons.OK, "关注成功!");
         })
     }//关注操作
 
-    function unfollow_hover() {
-        $(this).text("取消关注");
-    }//鼠标指到"已关注"按钮上,文本变成"取消关注"
+    //function unfollow_hover() {
+    //    $(this).text("取消关注");
+    //}//鼠标指到"已关注"按钮上,文本变成"取消关注"
 
     function unfollow_click() {
         var t = $(this);
@@ -45,7 +44,6 @@ MPWidget.Package.Bind = function () {
             MPObject.Package.UnFollow(id, function () {
                 t.removeClass("unfollow");
                 t.addClass("follow");
-                t.text("关注");
             })
         }
     }//取消关注

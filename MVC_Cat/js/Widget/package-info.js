@@ -35,14 +35,13 @@ MPWidget.PackageInfo.New=function(packageDetail)
 
     var content = $(strVar);
     content.waterfall = MPWaterFall.New($(window), content.find(".waterfall"), 4, 236, 6, 6, 6, 6);
-
     return content;
 }
 
 MPWidget.PackageInfo.Bind = function () {
     $(document).on("click", ".widget-packageinfo .edit", edit_click)
 
-    .on("click", ".widget-packageinfo .follow", follow_click)
+    //.on("click", ".widget-packageinfo .follow", follow_click)
 
     .on("click", ".widget-packageinfo .unfollow", unfollow_click);
 
@@ -59,14 +58,13 @@ MPWidget.PackageInfo.Bind = function () {
         MPObject.Package.Follow(id, function () {
             t.removeClass("follow");
             t.addClass("unfollow");
-            t.text("已关注");
             MPMessageBox.New(MPMessageBox.Icons.OK, "关注成功!");
         })
     }//关注操作
 
-    function unfollow_hover() {
-        $(this).text("取消关注");
-    }//鼠标指到"已关注"按钮上,文本变成"取消关注"
+    //function unfollow_hover() {
+    //    $(this).text("取消关注");
+    //}//鼠标指到"已关注"按钮上,文本变成"取消关注"
 
     function unfollow_click() {
         var t = $(this);
@@ -76,7 +74,6 @@ MPWidget.PackageInfo.Bind = function () {
             MPObject.Package.UnFollow(id, function () {
                 t.removeClass("unfollow");
                 t.addClass("follow");
-                t.text("关注");
             })
         }
     }//取消关注

@@ -8,6 +8,7 @@ $(function ()
     MPWidget.User.Bind();
     MPWidget.ImageView.Bind();
     MPWidget.PackageInfo.Bind();
+    MPWidget.UserInfo.Bind();
 
     MPPage = {};
     MPPage.ad = $("#tanxssp_con_mm_26054915_7856098_30982792");
