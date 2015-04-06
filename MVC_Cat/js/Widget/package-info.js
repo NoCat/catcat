@@ -41,8 +41,6 @@ MPWidget.PackageInfo.New=function(packageDetail)
 MPWidget.PackageInfo.Bind = function () {
     $(document).on("click", ".widget-packageinfo .edit", edit_click)
 
-    //.on("click", ".widget-packageinfo .follow", follow_click)
-
     .on("click", ".widget-packageinfo .unfollow", unfollow_click);
 
     function edit_click() {
@@ -61,10 +59,6 @@ MPWidget.PackageInfo.Bind = function () {
             MPMessageBox.New(MPMessageBox.Icons.OK, "关注成功!");
         })
     }//关注操作
-
-    //function unfollow_hover() {
-    //    $(this).text("取消关注");
-    //}//鼠标指到"已关注"按钮上,文本变成"取消关注"
 
     function unfollow_click() {
         var t = $(this);
