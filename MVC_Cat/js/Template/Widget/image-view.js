@@ -41,14 +41,7 @@ MPTemplate.Widget.ImageView = function (data,options)
     var n = data.comments.length;
     for (var i = 0; i < n; i++)
     {
-        var fuser1 = MPFormat.User.New(data.comments[i].user);
-        strVar += "                    <div class=\"comment\">";
-        strVar += "                        <a class=\"avt\" href=\"{0}\">".Format(fuser1.Home());
-        strVar += "                            <img src=\"{0}\" />".Format(fuser1.Avt());
-        strVar += "                        <\/a>";
-        strVar += "                        <a class=\"name\">{0}<\/a>".Format(fuser1.Name());
-        strVar += "                        <div class=\"text\">{0}<\/div>".FormatNoEncode(mentionConvert(data.comments[i].text, data.comments[i].mentions))
-        strVar += "                    <\/div>";
+        strVar += MPTemplate.Widget.Comment(data.comments[i]);
     }
     strVar += "                <div class=\"add-comment\">";
     strVar += "                    <a class=\"avt\" href=\"{0}\">".Format(fuser.Home());
