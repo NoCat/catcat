@@ -218,10 +218,12 @@
     <Content Include="js\search.js" />
     <Content Include="js\signup-email.js" />
     <Content Include="js\Template\Page\search.js" />
+    <Content Include="js\Template\Page\user.js" />
     <Content Include="js\Template\template.js" />
     <Content Include="js\Template\Widget\frame.js" />
     <Content Include="js\Template\Widget\image-view.js" />
     <Content Include="js\Template\Widget\link.js" />
+    <Content Include="js\Template\Widget\user.js" />
     <Content Include="js\user.js" />
     <Content Include="js\Widget\Frame.js" />
     <Content Include="js\Widget\image-view.js" />

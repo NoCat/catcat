@@ -861,10 +861,10 @@ table {
                         background-image: linear-gradient(darken(@baseWhite,4%),darken(@baseWhite,7%));
                     }
 
-                    .name{
+                    .name {
                         .mp_textNoWrap;
-                        line-height:@packageListHeight;
-                        padding-right:10px;
+                        line-height: @packageListHeight;
+                        padding-right: 10px;
                     }
 
                     .arrow {
@@ -895,16 +895,16 @@ table {
                     .filtrate {
                         display: none;
 
-                        .create{
+                        .create {
                             .mp_textNoWrap;
-                            line-height:30px;
-                            background-color:@baseBlue;
-                            color:@baseWhite;
-                            padding:0 10px;
-                            cursor:pointer;
+                            line-height: 30px;
+                            background-color: @baseBlue;
+                            color: @baseWhite;
+                            padding: 0 10px;
+                            cursor: pointer;
 
-                            &:hover{
-                                background-color:lighten(@baseBlue,5%);
+                            &:hover {
+                                background-color: lighten(@baseBlue,5%);
                             }
                         }
                     }
@@ -1207,6 +1207,7 @@ table {
 
     .info {
         padding: 20px;
+        position: relative;
 
         .avt {
             width: 150px;
@@ -1260,6 +1261,30 @@ table {
             &:hover {
                 text-decoration: underline;
             }
+        }
+    }
+
+    .actions {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+
+    .user-follow {
+        display: inline-block;
+        .btnblue(30px);
+
+        &::after {
+            content: "关注";
+        }
+    }
+
+    .user-unfollow {
+        display: inline-block;
+        .btnwhite(30px);
+
+        &::after {
+            content: "已关注";
         }
     }
 

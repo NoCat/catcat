@@ -41,8 +41,10 @@
 //模版
 /// <reference path="Template/template.js" />
 /// <reference path="Template/Page/search.js" />
+/// <reference path="Template/Page/user.js" />
 /// <reference path="Template/Widget/image.js" />
 /// <reference path="Template/Widget/frame.js" />
 /// <reference path="Template/Widget/package.js" />
 /// <reference path="Template/Widget/image-view.js" />
 /// <reference path="Template/Widget/link.js" />
+/// <reference path="Template/Widget/user.js" />

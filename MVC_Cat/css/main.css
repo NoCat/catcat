@@ -1178,6 +1178,7 @@ table {
 }
 .widget-userinfo .info {
   padding: 20px;
+  position: relative;
 }
 .widget-userinfo .info .avt {
   width: 150px;
@@ -1221,6 +1222,49 @@ table {
 }
 .widget-userinfo .tabs .tab:hover {
   text-decoration: underline;
+}
+.widget-userinfo .actions {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+.widget-userinfo .user-follow {
+  display: inline-block;
+  padding: 0 15px;
+  font-size: 15px;
+  line-height: 28px;
+  height: 28px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 3px;
+  color: #ffffff;
+  background-image: linear-gradient(#0099cc, #007aa3);
+  border: 1px solid #007aa3;
+}
+.widget-userinfo .user-follow:hover {
+  background-image: linear-gradient(#00ace6, #008ebd);
+}
+.widget-userinfo .user-follow::after {
+  content: "关注";
+}
+.widget-userinfo .user-unfollow {
+  display: inline-block;
+  padding: 0 15px;
+  font-size: 15px;
+  line-height: 28px;
+  height: 28px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 3px;
+  color: #333333;
+  background-image: linear-gradient(#f7f7f7, #e3e3e3);
+  border: 1px solid #e3e3e3;
+}
+.widget-userinfo .user-unfollow:hover {
+  background-image: linear-gradient(#ffffff, #ebebeb);
+}
+.widget-userinfo .user-unfollow::after {
+  content: "已关注";
 }
 .widget-userinfo .outer {
   margin-top: 15px;

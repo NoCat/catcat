@@ -394,6 +394,36 @@ namespace MVC_Cat.Controllers
                         }
                         break;
                     #endregion
+                    #region unfollow-package 取消关注图包
+                    case "unfollow-package":
+                        {
+                            int packageId = Tools.GetInt32FromRequest(Request.Form["package_id"]);
+                            var user = CheckLogin();
+                            var package = new MPPackage(packageId);
+                            DB.SExecuteNonQuery("delete from following where userid=? and type=? and info=?", user.ID, MPFollowingTypes.Package, packageId);
+                        }
+                        break;
+                    #endregion
+                    #region follow-user 关注用户
+                    case "follow-user":
+                        {
+                            int userId = Tools.GetInt32FromRequest(Request.Form["user_id"]);
+                            var user = CheckLogin();
+                            var followUser = new MPUser(userId);
+                            DB.SExecuteNonQuery("insert into following (userid,type,info) values (?,?,?)", user.ID, MPFollowingTypes.User, userId);
+                        }
+                        break;
+                    #endregion
+                    #region unfollow-user 取消关注用户
+                    case "unfollow-user":
+                        {
+                            int userId = Tools.GetInt32FromRequest(Request.Form["user_id"]);
+                            var user = CheckLogin();
+                            var followUser = new MPUser(userId);
+                            DB.SExecuteNonQuery("delete from following where userid=? and type=? and info=?", user.ID, MPFollowingTypes.User, userId);
+                        }
+                        break;
+                    #endregion
                 }
             }
             catch (MiaopassException exception)
