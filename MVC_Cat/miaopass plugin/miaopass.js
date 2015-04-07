@@ -61,9 +61,8 @@ function button_click() {
 }
 
 function checkLive(node) {
-   
     setTimeout(TimerId = function myfunction() {
-        if (node.offset().left==0) {
+        if (node.is(":hidden")) {
             button.hide();
         }
         else {
