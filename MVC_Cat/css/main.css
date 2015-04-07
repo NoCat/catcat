@@ -1180,6 +1180,11 @@ table {
   padding: 20px;
   position: relative;
 }
+.widget-userinfo .info .actions {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
 .widget-userinfo .info .avt {
   width: 150px;
   height: 150px;
@@ -1222,11 +1227,6 @@ table {
 }
 .widget-userinfo .tabs .tab:hover {
   text-decoration: underline;
-}
-.widget-userinfo .actions {
-  position: absolute;
-  right: 20px;
-  top: 20px;
 }
 .widget-userinfo .user-follow {
   display: inline-block;

@@ -50,7 +50,7 @@ MPTemplate.Widget.Package=function(data,options)
                 strVar += "            <img src=\"{0}\" />".Format(fuser.Avt());
                 strVar += "        <\/a>";
                 strVar += "        <a class=\"username\" href=\"{0}\" >{1}<\/a>".Format(fuser.Home(), fuser.Name);
-                if (data.user.followed === true)
+                if (data.followed === true)
                 {
                     strVar += "        <div class=\"btn unfollow\" data-id=\"{0}\"><\/div>".Format(data.id);
                 }
@@ -60,7 +60,7 @@ MPTemplate.Widget.Package=function(data,options)
                 }
                 break;
             case MPTemplate.Widget.Package.Options.BigButton:
-                if (data.user.followed == true)
+                if (data.followed == true)
                 {
                     strVar += "        <div class=\"btn2 unfollow\" data-id=\"{0}\"><\/div>".Format(data.id);
                 }

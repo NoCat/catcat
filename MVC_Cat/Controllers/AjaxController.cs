@@ -390,7 +390,7 @@ namespace MVC_Cat.Controllers
                             int packageId = Tools.GetInt32FromRequest(Request.Form["package_id"]);
                             var user = CheckLogin();
                             var package = new MPPackage(packageId);
-                            DB.SExecuteNonQuery("insert into following (userid,type,info) values (?,?,?)", user.ID, MPFollowingTypes.Package, packageId);
+                            DB.SExecuteNonQuery("insert ignore into following (userid,type,info) values (?,?,?)", user.ID, MPFollowingTypes.Package, packageId);
                         }
                         break;
                     #endregion
@@ -410,7 +410,7 @@ namespace MVC_Cat.Controllers
                             int userId = Tools.GetInt32FromRequest(Request.Form["user_id"]);
                             var user = CheckLogin();
                             var followUser = new MPUser(userId);
-                            DB.SExecuteNonQuery("insert into following (userid,type,info) values (?,?,?)", user.ID, MPFollowingTypes.User, userId);
+                            DB.SExecuteNonQuery("insert ignore into following (userid,type,info) values (?,?,?)", user.ID, MPFollowingTypes.User, userId);
                         }
                         break;
                     #endregion

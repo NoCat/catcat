@@ -17,7 +17,10 @@ MPTemplate.Page.User = function (data, options)
     strVar += "                <\/div>";
     strVar += "                <div class=\"clear\"><\/div>";
     strVar += "                <div class=\"actions\">";
-    strVar += MPTemplate.Widget.User.Buttons.Follow(data);
+    if (data.id != MPData.user.id)
+    {
+        strVar += MPTemplate.Widget.User.Buttons.Follow(data);
+    }
     strVar += "                </div>";
     strVar += "            <\/div>";
     strVar += "            <div class=\"tabs\">";
