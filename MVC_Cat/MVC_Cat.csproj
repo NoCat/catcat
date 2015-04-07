@@ -168,6 +168,8 @@
     <Content Include="img\close_32_32_hover.png" />
     <Content Include="img\error_24_24.png" />
     <Content Include="img\left_29_50.png" />
+    <Content Include="img\link_16_16.png" />
+    <Content Include="img\Magnet_16_16.png" />
     <Content Include="img\menu_20_20.png" />
     <Content Include="img\menu_20_20_hover.png" />
     <Content Include="img\ok_24_24.png" />
