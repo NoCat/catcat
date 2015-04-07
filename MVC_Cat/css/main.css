@@ -350,9 +350,12 @@ table {
 }
 .image-view .package-piece .info .title,
 .image-view .package-piece .info .username {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   line-height: 20px;
   display: block;
-  padding-left: 48px;
+  padding-left: 8px;
 }
 .image-view .package-piece .info .title {
   color: #0099cc;

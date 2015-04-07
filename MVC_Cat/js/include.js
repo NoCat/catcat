@@ -1,5 +1,4 @@
 ﻿/// <reference path="all.js" />
-/// <reference path="config.js" />
 /// <reference path="frame.js" />
 /// <reference path="image.js" />
 /// <reference path="include.js" />

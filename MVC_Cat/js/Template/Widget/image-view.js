@@ -43,16 +43,19 @@ MPTemplate.Widget.ImageView = function (data,options)
     {
         strVar += MPTemplate.Widget.Comment(data.comments[i]);
     }
-    strVar += "                <div class=\"add-comment\">";
-    strVar += "                    <a class=\"avt\" href=\"{0}\">".Format(fuser.Home());
-    strVar += "                        <img src=\"{0}\" />".Format(fuser.Avt());
-    strVar += "                    <\/a>";
-    strVar += "                    <div class=\"new-comment\">";
-    strVar += "                        <textarea placeholder=\"请在这里输入评论内容\" ><\/textarea>";
-    strVar += "                    <\/div>";
-    strVar += "                    <div class=\"submit\">添加评论<\/div>";
-    strVar += "                <\/div>";
-    strVar += "                <div class=\"clear\"><\/div>";
+    if (MPCheckLogin(false) == true)
+    {
+        strVar += "                <div class=\"add-comment\">";
+        strVar += "                    <a class=\"avt\" href=\"{0}\">".Format(fuser.Home());
+        strVar += "                        <img src=\"{0}\" />".Format(fuser.Avt());
+        strVar += "                    <\/a>";
+        strVar += "                    <div class=\"new-comment\">";
+        strVar += "                        <textarea placeholder=\"请在这里输入评论内容\" ><\/textarea>";
+        strVar += "                    <\/div>";
+        strVar += "                    <div class=\"submit\">添加评论<\/div>";
+        strVar += "                <\/div>";
+        strVar += "                <div class=\"clear\"><\/div>";
+    }
     strVar += "            <\/div>";
     strVar += "        <\/div>";
     strVar += "    <\/div>";

@@ -13,7 +13,7 @@ namespace MVC_Cat
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute("default", "", new { controller = "all", action = "Index" });
+            routes.MapRoute("home", "", new { controller = "all", action = "Index" });
             routes.MapRoute("all", "all/", new { controller = "all", action = "index" });
             routes.MapRoute("ajax", "ajax/{act}", new { controller = "ajax", action = "index" });
             routes.MapRoute("image", "image/{id}", new { controller = "image", action = "index" }, new { id="\\d+"});
@@ -23,6 +23,8 @@ namespace MVC_Cat
             routes.MapRoute("account-signup-email", "account/{action}/{token}", new { controller = "account"});
             routes.MapRoute("search_default", "search/{keyword}", new { controller = "search", action = "index" ,sub1=""});
             routes.MapRoute("search", "search/{sub1}/{keyword}", new { controller = "search", action = "index"});
+
+            routes.MapRoute("default", "{controller}/{action}", new { action = "index" });
         }
     }
 }
