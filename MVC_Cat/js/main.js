@@ -21,7 +21,6 @@ String.prototype.Format = function (arg1, arg2)
 }
 String.prototype.FormatNoEncode = function (arg1, arg2)
 {
-
     var args;
     if (arguments[0] instanceof Array)
         args = arguments[0];
@@ -359,12 +358,15 @@ var MPWaterFall = {
 //检查登录
 function MPCheckLogin(showDialog)
 {
-    showDialog = (showDialog === null ? true : showDialog);
+    showDialog = (showDialog == null ? true : showDialog);
     if (MPData.user.id == 0)
     {
         if (showDialog === true)
         {
-            MPLoginDialog.New();
+            var dialog = MPLoginDialog.New();
+            dialog.onSuccess = function () {
+                location.reload();
+            }
         }
         return false;
     }
