@@ -41,6 +41,10 @@ a:hover {
 img {
   display: block;
 }
+ul,
+li {
+  list-style: none;
+}
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -634,13 +638,13 @@ table {
 }
 .dialog-box .login-dialog input {
   border: 1px solid #bfbfbf;
-  font-size: 14px;
-  line-height: 22px;
-  width: 238px;
   border-radius: 3px;
   color: #4d4d4d;
   background: #f7f7f7;
   padding: 5px 6px;
+  line-height: 22px;
+  height: 22px;
+  width: 238px;
   margin: 4px 0;
 }
 .dialog-box .login-dialog input:focus {
@@ -862,13 +866,13 @@ table {
 }
 .dialog-box .create-image-dialog .right .package-list .drop-list .filter input {
   border: 1px solid #bfbfbf;
-  font-size: 14px;
-  line-height: 18px;
-  width: 278px;
   border-radius: 3px;
   color: #4d4d4d;
   background: #f7f7f7;
   padding: 5px 6px;
+  line-height: 18px;
+  height: 18px;
+  width: 278px;
 }
 .dialog-box .create-image-dialog .right .package-list .drop-list .filter input:focus {
   background: #ffffff;
@@ -905,13 +909,13 @@ table {
 }
 .dialog-box .create-image-dialog .right .source {
   border: 1px solid #bfbfbf;
-  font-size: 14px;
-  line-height: 20px;
-  width: 288px;
   border-radius: 3px;
   color: #4d4d4d;
   background: #f7f7f7;
   padding: 5px 6px;
+  line-height: 20px;
+  height: 20px;
+  width: 288px;
 }
 .dialog-box .create-image-dialog .right .source:focus {
   background: #ffffff;
@@ -923,13 +927,13 @@ table {
 }
 .dialog-box .reset-password-dialog input {
   border: 1px solid #bfbfbf;
-  font-size: 14px;
-  line-height: 20px;
-  width: 188px;
   border-radius: 3px;
   color: #4d4d4d;
   background: #f7f7f7;
   padding: 5px 6px;
+  line-height: 20px;
+  height: 20px;
+  width: 188px;
   margin-left: 10px;
 }
 .dialog-box .reset-password-dialog input:focus {
@@ -961,8 +965,40 @@ table {
 .dialog-box .reset-password-success-dialog .return {
   margin-top: 15px;
 }
-.dialog-box .create-package-dialog {
-  width: 300px;
+.dialog-box .package-dialog {
+  width: 400px;
+}
+.dialog-box .package-dialog .title {
+  margin-top: 15px;
+  font-size: 14px;
+}
+.dialog-box .package-dialog .package-title {
+  border: 1px solid #bfbfbf;
+  border-radius: 3px;
+  color: #4d4d4d;
+  background: #f7f7f7;
+  padding: 5px 6px;
+  line-height: 22px;
+  height: 22px;
+  width: 388px;
+}
+.dialog-box .package-dialog .package-title:focus {
+  background: #ffffff;
+  color: black;
+}
+.dialog-box .package-dialog .package-description {
+  border: 1px solid #bfbfbf;
+  border-radius: 3px;
+  color: #4d4d4d;
+  background: #f7f7f7;
+  padding: 5px 6px;
+  resize: none;
+  height: 70px;
+  width: 388px;
+}
+.dialog-box .package-dialog .package-description:focus {
+  background: #ffffff;
+  color: black;
 }
 #login,
 #signup {
@@ -1606,4 +1642,139 @@ table {
   margin-left: 20px;
   color: #0099cc;
   padding: 0 3px;
+}
+.page-setting .left {
+  width: 200px;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  float: left;
+}
+.page-setting .left a {
+  display: block;
+  font-size: 14px;
+  padding: 12px 15px;
+}
+.page-setting .left li {
+  border-bottom: 1px solid #cccccc;
+}
+.page-setting .left li:last-child {
+  border-bottom: none;
+}
+.page-setting .right {
+  padding-left: 215px;
+}
+.page-setting .right .content {
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  background: #ffffff;
+}
+.page-setting .right .content.avtset .avt {
+  height: 150px;
+  width: 150px;
+  float: left;
+}
+.page-setting .right .content.avtset .upload {
+  padding: 0 15px;
+  font-size: 15px;
+  line-height: 28px;
+  height: 28px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 3px;
+  color: #ffffff;
+  background-image: linear-gradient(#0099cc, #007aa3);
+  border: 1px solid #007aa3;
+  padding-left: 170px;
+  display: inline-block;
+}
+.page-setting .right .content.avtset .upload:hover {
+  background-image: linear-gradient(#00ace6, #008ebd);
+}
+.page-setting .right .content .line {
+  padding: 15px;
+  border-bottom: 1px solid #cccccc;
+}
+.page-setting .right .content .line:last-child {
+  border-bottom: none;
+}
+.page-setting .right .content .line h2 {
+  font-size: 18px;
+  font-weight: normal;
+}
+.page-setting .right .content .line h3 {
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 32px;
+  float: left;
+}
+.page-setting .right .content .line > div {
+  padding-left: 105px;
+}
+.page-setting .right .content .line input {
+  border: 1px solid #bfbfbf;
+  border-radius: 3px;
+  color: #4d4d4d;
+  background: #f7f7f7;
+  padding: 5px 6px;
+  line-height: 22px;
+  height: 22px;
+  width: 288px;
+}
+.page-setting .right .content .line input:focus {
+  background: #ffffff;
+  color: black;
+}
+.page-setting .right .content .line textarea {
+  border: 1px solid #bfbfbf;
+  border-radius: 3px;
+  color: #4d4d4d;
+  background: #f7f7f7;
+  padding: 5px 6px;
+  resize: none;
+  height: 70px;
+  width: 388px;
+}
+.page-setting .right .content .line textarea:focus {
+  background: #ffffff;
+  color: black;
+}
+.page-setting .right .content .actions {
+  float: right;
+  margin: 15px;
+}
+.page-setting .right .content .actions .submit,
+.page-setting .right .content .actions .cancel {
+  display: inline-block;
+  margin-left: 5px;
+}
+.page-setting .right .content .actions .submit {
+  padding: 0 15px;
+  font-size: 15px;
+  line-height: 28px;
+  height: 28px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 3px;
+  color: #ffffff;
+  background-image: linear-gradient(#0099cc, #007aa3);
+  border: 1px solid #007aa3;
+}
+.page-setting .right .content .actions .submit:hover {
+  background-image: linear-gradient(#00ace6, #008ebd);
+}
+.page-setting .right .content .actions .cancel {
+  padding: 0 15px;
+  font-size: 15px;
+  line-height: 28px;
+  height: 28px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 3px;
+  color: #333333;
+  background-image: linear-gradient(#f7f7f7, #e3e3e3);
+  border: 1px solid #e3e3e3;
+}
+.page-setting .right .content .actions .cancel:hover {
+  background-image: linear-gradient(#ffffff, #ebebeb);
 }

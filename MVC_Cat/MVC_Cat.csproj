@@ -153,6 +153,7 @@
     <Content Include="dialogs\link.html" />
     <Content Include="dialogs\reset-password-success.html" />
     <Content Include="dialogs\reset-password.html" />
+    <Content Include="dialogs\setting.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="img\150.jpg" />
