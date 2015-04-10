@@ -2,7 +2,7 @@
 @baseWhite: #ffffff;
 @baseGrey: #666666;
 
-.btn(@backgroundColor,@color,@height) {
+.btn(@backgroundColor,@color,@height,@width:0) {
     @font-size: ceil(@height*0.5);
     padding: 0 @height/2;
     font-size: @font-size;
@@ -14,6 +14,9 @@
     color: @color;
     background-image: linear-gradient(@backgroundColor,darken(@backgroundColor,8%));
     border: 1px solid darken(@backgroundColor,8%);
+    & when (width<>0){
+
+    }
 
     &:hover {
         @hoverColor: lighten(@backgroundColor,5%);
@@ -21,12 +24,12 @@
     }
 }
 
-.btnblue(@height) {
-    .btn(@baseBlue,@baseWhite,@height);
+.btnblue(@height,@width:auto) {
+    .btn(@baseBlue,@baseWhite,@height,@width);
 }
 
-.btnwhite(@height) {
-    .btn(darken( @baseWhite,3%),darken(@baseGrey,20%),@height);
+.btnwhite(@height,@width:auto) {
+    .btn(darken( @baseWhite,3%),darken(@baseGrey,20%),@height,@width);
 }
 
 .mp_input {

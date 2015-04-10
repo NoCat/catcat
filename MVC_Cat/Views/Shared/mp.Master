@@ -12,7 +12,6 @@
     <link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/css/main.css") %>" />
     <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
     <script type="text/javascript" src="<%=ResolveUrl("~/js/jquery.cookie.js")%>"></script>
-    <script src="<%=ResolveClientUrl("~/js/config.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/main.js") %>"></script>
 
     <script src="<%=ResolveClientUrl("~/js/Dialog/Dialog.js") %>"></script>
@@ -60,7 +59,7 @@
     <script src="<%=ResolveClientUrl("~/js/initialize.js") %>"></script>
     <%--<script src="<%=ResolveClientUrl("~/js/miaopass.js") %>"></script>--%>
     <script type="text/javascript">
-        host = "<%=Tools.GetSetting("Host") %>";
+        host =location.protocol+"//"+ location.host;
         imageHost = "<%=Tools.GetSetting("ImageHost")%>";
         MPData=<%=Tools.JSONStringify(ViewBag.MPData)%>;
     </script>

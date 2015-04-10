@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -421,6 +422,67 @@ namespace MVC_Cat.Controllers
                             var user = CheckLogin();
                             var followUser = new MPUser(userId);
                             DB.SExecuteNonQuery("delete from following where userid=? and type=? and info=?", user.ID, MPFollowingTypes.User, userId);
+                        }
+                        break;
+                    #endregion
+                    #region setting-basic 设置基本信息
+                    case "setting-basic":
+                        {
+                            var user = CheckLogin();
+                            var form = Request.Form;
+
+                            if (form["name"] != null)
+                            {
+                                var name = Tools.GetStringFromRequest(form["name"]);
+                                user.Name = name;
+                            }
+
+                            if (form["description"] != null)
+                            {
+                                var description = Tools.GetStringFromRequest(form["description"]);
+                                user.Description = description;
+                            }
+
+                            if (form["avt-hash"] != null)
+                            {
+                                var hash = Tools.GetStringFromRequest(form["avt-hash"]);
+                                var offsetX = Tools.GetInt32FromRequest(form["avt-offset-x"]);
+                                var offsetY = Tools.GetInt32FromRequest(form["avt-offset-y"]);
+                                var size = Tools.GetInt32FromRequest(form["avt-size"]);
+
+                                var file = new MPFile(hash);
+                                using (var s = OssFile.Open(file.MD5))
+                                {
+                                    using (var bmp = Image.FromStream(s))
+                                    {
+                                        using (var bigAvt = bmp.Crop(offsetX, offsetY, size, size, 150, 150))
+                                        {
+                                            OssFile.Create(string.Format("avt/{0}_big", user.ID), bigAvt.SaveAsJpeg());
+                                        }
+                                        using (var avt = bmp.Crop(offsetX, offsetY, size, size, 75, 75))
+                                        {
+                                            OssFile.Create(string.Format("avt/{0}", user.ID), avt.SaveAsJpeg());
+                                        }
+                                    }
+                                }
+                                user.DefaultHead = false;
+                            }
+                        }
+                        break;
+                    #endregion
+                    #region setting-password 设置密码
+                    case "settiong-password":
+                        {
+                            var user = CheckLogin();
+                            var oldPassword = Tools.GetStringFromRequest(Request.Form["old-password"]);
+                            var newPassword = Tools.GetStringFromRequest(Request.Form["new-password"]);
+
+                            if(user.Password!=Tools.SHA256Hash(oldPassword))
+                            {
+                                throw new MiaopassException("旧密码错误");
+                            }
+
+                            user.Password = Tools.SHA256Hash(newPassword);
                         }
                         break;
                     #endregion

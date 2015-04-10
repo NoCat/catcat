@@ -5,8 +5,8 @@ MPTemplate.Page.Setting = function (data, options)
     var strVar = "";
     strVar += "<div class=\"page-setting\">";
     strVar += "    <ul class=\"left\">";
-    strVar += "        <li><a href=\"/\">基本信息<\/a><\/li>";
-    strVar += "        <li><a href=\"/password\">更改密码<\/a><\/li>";
+    strVar += "        <li><a href=\"{0}/setting\">基本信息<\/a><\/li>".Format(host);
+    strVar += "        <li><a href=\"{0}/setting/password\">更改密码<\/a><\/li>".Format(host);
     strVar += "    <\/ul>";
     strVar += "    <div class=\"right\">";
     if (MPData.sub1 == "")
@@ -18,7 +18,7 @@ MPTemplate.Page.Setting = function (data, options)
         strVar += "            <div class=\"line\">";
         strVar += "                <h3>邮箱地址<\/h3>";
         strVar += "                <div>";
-        strVar += "                    <input type=\"text\" readonly=\"readonly\" value=\"{0}\" />".Format(MPData.basic_emial);
+        strVar += "                    <input type=\"text\" readonly=\"readonly\" value=\"{0}\" />".Format(MPData.basic_email);
         strVar += "                <\/div>";
         strVar += "            <\/div>";
         strVar += "            <div class=\"line\">";

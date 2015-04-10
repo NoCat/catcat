@@ -13,7 +13,7 @@ MPTemplate.Widget.User = function (data, options)
     strVar += "        <a class=\"item\" href=\"{1}\">{0}图片<\/a>".Format(data.images_count, MPObject.User.Pages.Image(data));
     strVar += "        <a class=\"item\" href=\"{1}\">{0}图包<\/a>".Format(data.packages_count, MPObject.User.Pages.Package(data));
     strVar += "    <\/div>";
-    strVar += "    <div class=\"actions {0}\" data-id=\"{1}\"><\/div>".Format(data.followed ? "follow" : "unfollow", data.id);
+    strVar += "    <div class=\"actions {0}\" data-id=\"{1}\"><\/div>".Format(data.followed ? "unfollow" : "follow", data.id);
     strVar += "<\/div>";
 
     return strVar;

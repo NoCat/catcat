@@ -23,6 +23,7 @@ namespace MVC_Cat
             routes.MapRoute("account-signup-email", "account/{action}/{token}", new { controller = "account"});
             routes.MapRoute("search_default", "search/{keyword}", new { controller = "search", action = "index" ,sub1=""});
             routes.MapRoute("search", "search/{sub1}/{keyword}", new { controller = "search", action = "index"});
+            routes.MapRoute("setting", "setting/{sub1}", new { controller = "setting", action = "index", sub1 = "" });
 
             routes.MapRoute("default", "{controller}/{action}", new { action = "index" });
         }
