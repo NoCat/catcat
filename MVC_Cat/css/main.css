@@ -1376,6 +1376,12 @@ table {
 .widget-image .actions .resave:hover {
   background-image: linear-gradient(#00ace6, #008ebd);
 }
+.widget-image .actions .praise,
+.widget-image .actions .unpraise {
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
 .widget-image .actions .praise {
   padding: 0 13px;
   font-size: 13px;
@@ -1387,9 +1393,32 @@ table {
   color: #333333;
   background-image: linear-gradient(#f7f7f7, #e3e3e3);
   border: 1px solid #e3e3e3;
+  background-image: url(/img/heart_grey_16_14.png);
 }
 .widget-image .actions .praise:hover {
   background-image: linear-gradient(#ffffff, #ebebeb);
+}
+.widget-image .actions .praise:hover {
+  background-image: url(/img/heart_grey_hover_16_14.png);
+}
+.widget-image .actions .unpraise {
+  padding: 0 13px;
+  font-size: 13px;
+  line-height: 24px;
+  height: 24px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 3px;
+  color: #333333;
+  background-image: linear-gradient(#f7f7f7, #e3e3e3);
+  border: 1px solid #e3e3e3;
+  background-image: url(/img/heart_red_16_14.png);
+}
+.widget-image .actions .unpraise:hover {
+  background-image: linear-gradient(#ffffff, #ebebeb);
+}
+.widget-image .actions .unpraise:hover {
+  background-image: url(/img/heart_red_hover_16_14.png);
 }
 .widget-image .actions .edit {
   padding: 0 13px;
