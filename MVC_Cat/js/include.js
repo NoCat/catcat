@@ -41,6 +41,7 @@
 /// <reference path="Template/template.js" />
 /// <reference path="Template/Page/search.js" />
 /// <reference path="Template/Page/user.js" />
+/// <reference path="Template/Page/setting.js" />
 /// <reference path="Template/Widget/image.js" />
 /// <reference path="Template/Widget/comment.js" />
 /// <reference path="Template/Widget/frame.js" />

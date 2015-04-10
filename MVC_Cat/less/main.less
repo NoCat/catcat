@@ -1715,20 +1715,6 @@ table {
             border-radius: @border-radius;
             background: @baseWhite;
 
-            &.avtset {
-                .avt {
-                    height: 150px;
-                    width: 150px;
-                    float: left;
-                }
-
-                .upload {
-                    .btnblue(30px);
-                    padding-left: 170px;
-                    display: inline-block;
-                }
-            }
-
             .line {
                 @height: 32px;
                 @h3Width: 90px;
@@ -1761,6 +1747,18 @@ table {
 
                 textarea {
                     .mp_input.mp_input_textarea(400px,80px);
+                }
+
+                .avt {
+                    height: 150px;
+                    width: 150px;
+                    float: left;
+                }
+
+                .upload {
+                    .btnblue(30px);
+                    margin-left: 20px;
+                    display: inline-block;
                 }
             }
 

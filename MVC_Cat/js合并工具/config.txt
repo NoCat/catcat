@@ -24,6 +24,7 @@
 ../js/template/template.js
 ../js/template/page/search.js
 ../js/template/page/user.js
+../js/template/page/setting.js
 ../js/template/widget/package.js
 ../js/template/widget/image.js
 ../js/template/widget/comment.js

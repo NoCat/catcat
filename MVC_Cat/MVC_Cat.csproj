@@ -150,6 +150,7 @@
     <Content Include="css\setting.css" />
     <Content Include="css\signup-email.css" />
     <Content Include="css\signup.css" />
+    <Content Include="dialogs\crop-dialog.html" />
     <Content Include="dialogs\link.html" />
     <Content Include="dialogs\reset-password-success.html" />
     <Content Include="dialogs\reset-password.html" />
@@ -221,6 +222,7 @@
     <Content Include="js\search.js" />
     <Content Include="js\signup-email.js" />
     <Content Include="js\Template\Page\search.js" />
+    <Content Include="js\Template\Page\setting.js" />
     <Content Include="js\Template\Page\user.js" />
     <Content Include="js\Template\template.js" />
     <Content Include="js\Template\Widget\comment.js" />
