@@ -80,3 +80,11 @@ MPTemplate.Widget.Package.Options = {
     SmallButton: 0,
     BigButton: 1
 };
+
+MPTemplate.Widget.Package.Buttons = {};
+
+MPTemplate.Widget.Package.Buttons.Edit = function (data,options)
+{
+    var str = "<div class=\"package-edit {0}\" data-id=\"{1}\" data-title=\"{2}\" data-description=\"{4}\">编辑</div>".Format(options.class, data.id, data.title, data.description);
+    return str;
+}

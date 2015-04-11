@@ -25,5 +25,5 @@ MPTemplate.Widget.User.Buttons = {};
 //关注按钮(会根据data的状态自动生成关注或者取消关注)
 MPTemplate.Widget.User.Buttons.Follow = function (data, options)
 {
-    return "<div class=\"{0}\" data-id=\"{1}\" title=\"关注{2}\"></div>".Format(data.followed ? "user-unfollow" : "user-follow", data.id, data.name);
+    return "<div class=\"{0} {4}\" data-id=\"{1}\" title=\"关注{2}\"></div>".Format(data.followed ? "user-unfollow" : "user-follow", data.id, data.name,options.class);
 }

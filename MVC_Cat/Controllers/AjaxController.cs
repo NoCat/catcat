@@ -385,6 +385,20 @@ namespace MVC_Cat.Controllers
                         }
                         break;
                     #endregion
+                    #region edit-package 编辑图包
+                    case "edit-package":
+                        {
+                            var user = CheckLogin();
+                            var id = Tools.GetInt32FromRequest(Request.Form["id"]);
+                            var title = Tools.GetStringFromRequest(Request.Form["title"]);
+                            var description = Tools.GetStringFromRequest(Request.Form["description"]);
+
+                            var package = new MPPackage(id);
+                            package.Title = title;
+                            package.Description = description;
+                        }
+                        break;
+                    #endregion
                     #region follow-package 关注图包
                     case "follow-package":
                         {
