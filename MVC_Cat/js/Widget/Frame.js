@@ -42,7 +42,7 @@ MPWidget.Frame.New = function ()
             $.post(host + "/ajax/logout", {}, function (data) {
                 if (data.code==0) {
                     $.cookie("login", null);
-                    location.reload();
+                    location.href = host;
                 }
             }, "json");
         });

@@ -1,5 +1,5 @@
-﻿/// <reference path="../main.js" />
-/// <reference path="../Format/User.js" />
+﻿/// <reference path="../include.js" />
+
 MPWidget.PackageInfo = {};
 MPWidget.PackageInfo.New=function(packageDetail)
 {
@@ -46,7 +46,7 @@ MPWidget.PackageInfo.Bind = function () {
     function edit_click() {
         //提取id
         var id = $(this).attr("data-id");
-        location.href = "/package/" + id + "/edit";
+        MPCreatePackageDialog.New(true, id,"这是标题","description");
         //跳转到编辑页
     }
 
