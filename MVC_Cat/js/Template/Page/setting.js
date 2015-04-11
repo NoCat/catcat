@@ -30,7 +30,7 @@ MPTemplate.Page.Setting = function (data, options)
         strVar += "            <div class=\"line\">";
         strVar += "                <h3>自我介绍<\/h3>";
         strVar += "                <div>";
-        strVar += "                    <textarea id=\"desecription\">{0}<\/textarea>".Format(MPData.basic_description);
+        strVar += "                    <textarea id=\"description\">{0}<\/textarea>".Format(MPData.basic_description);
         strVar += "                <\/div>";
         strVar += "            <\/div>";
         strVar += "            <div class=\"line\">";
