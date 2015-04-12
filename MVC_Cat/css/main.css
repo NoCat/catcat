@@ -1807,3 +1807,8 @@ table {
 .page-setting .right .content .actions .cancel:hover {
   background-image: linear-gradient(#ffffff, #ebebeb);
 }
+
+#origin {
+    width: 500px;
+    height: 500px;
+}

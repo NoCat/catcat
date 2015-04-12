@@ -10,6 +10,7 @@ $(function () {
     switch (MPData.sub1) {
         case "password":
             {
+                //确认修改密码
                 var oldPassword = body.find("#oldpassword");
                 var newPassword1 = body.find("#newpassword1");
                 var newPassword = body.find("#newpassword");
@@ -30,14 +31,26 @@ $(function () {
                             MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
                         }
                     }, "json");
-                });//确认修改密码
+                });
             }
             break;
         default:
             {
                 var inputUsername = body.find("#username");
                 var inputDescription = body.find("#description");
-                var f
+                var avt_hash;
+                var avt_offset_x;
+                var avt_offset_y;
+                var avt_size;
+
+                body.find(".upload").click(function () {
+                    var dialog = MPUploadDialog.New("上传头像图片");
+                    dialog.onSuccess =function () {
+                        avt_hash = dialog.hash;
+                        MPAvtCutDialog.New(avt_hash);
+                    }
+                })
+
 
 
                 body.find(".submit").click(function () {

@@ -194,6 +194,7 @@
     <Content Include="js\Dialog\CreateImageDialog.js" />
     <Content Include="js\Dialog\CreatePackageDialog.js" />
     <Content Include="js\Dialog\Dialog.js" />
+    <Content Include="js\Dialog\AvtCutDialog.js" />
     <Content Include="js\Dialog\LoginDialog.js" />
     <Content Include="js\Dialog\MessageBox.js" />
     <Content Include="js\Dialog\ResetPasswordDialog.js" />
