@@ -45,9 +45,8 @@ $(function () {
 
                 body.find(".upload").click(function () {
                     var dialog = MPUploadDialog.New("上传头像图片");
-                    dialog.onSuccess =function () {
-                        avt_hash = dialog.hash;
-                        MPAvtCutDialog.New(avt_hash);
+                    dialog.onSuccess =function (file) {
+                        MPAvtCutDialog.New(file);
                     }
                 })
 

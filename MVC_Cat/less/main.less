@@ -1,4 +1,6 @@
-﻿@baseBlue: #0099CC;
+﻿@import (inline) "../css/jquery.jcrop.min.css";
+
+@baseBlue: #0099CC;
 @baseWhite: #ffffff;
 @baseGrey: #666666;
 
@@ -680,8 +682,10 @@ table {
     }*/
     .dialog-btns {
         clear: both;
-        padding: 10px 20px;
+        padding: 20px;
         text-align: center;
+        border-top:@innerBorder;
+        background-color:darken(@baseWhite,2%);
 
         .ok, .cancel, .delete {
             display: inline-block;
@@ -1030,6 +1034,41 @@ table {
 
         .package-description {
             .mp_input.mp_input_textarea(@width,80px);
+        }
+    }
+}
+
+.crop-dialog {
+    .img {
+        position:relative;
+        float: left;
+    }
+
+    .previews {
+        padding-left: 420px;
+        padding-top:20px;
+
+        .big, .normal {
+            overflow: hidden;
+            border: 5px solid @baseWhite;
+            box-shadow: 0 0 3px 0 @baseGrey;
+            margin-left: 15px;
+            border-radius: 3px;
+
+            img {
+                position: relative;
+            }
+        }
+
+        .big {
+            width: 150px;
+            height: 150px;
+        }
+
+        .normal {
+            width: 75px;
+            height: 75px;
+            margin-top:20px;
         }
     }
 }
@@ -1392,26 +1431,26 @@ table {
             .btnblue(26px);
         }
 
-        .praise,.unpraise{
-            background-color:white;
-            background-repeat:no-repeat;
-            background-position:center center;
+        .praise, .unpraise {
+            background-color: white;
+            background-repeat: no-repeat;
+            background-position: center center;
         }
 
         .praise {
             .btnwhite(26px);
-            background-image:url(/img/heart_grey_16_14.png);
+            background-image: url(/img/heart_grey_16_14.png);
 
-            &:hover{
+            &:hover {
                 background-image: url(/img/heart_grey_hover_16_14.png);
             }
         }
 
-        .unpraise{
+        .unpraise {
             .btnwhite(26px);
             background-image: url(/img/heart_red_16_14.png);
 
-            &:hover{
+            &:hover {
                 background-image: url(/img/heart_red_hover_16_14.png);
             }
         }
@@ -1773,6 +1812,14 @@ table {
                     height: 150px;
                     width: 150px;
                     float: left;
+                    overflow:hidden;
+                    border:5px solid @baseWhite;
+                    box-shadow:0 0 3px 0 @baseGrey;
+                    border-radius:3px;
+
+                    img{
+                        position:relative;
+                    }
                 }
 
                 .upload {

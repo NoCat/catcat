@@ -7,7 +7,6 @@ $(function ()
     MPWidget.Package.Bind();
     MPWidget.User.Bind();
     MPWidget.ImageView.Bind();
-    MPWidget.PackageInfo.Bind();
     MPWidget.UserInfo.Bind();
 
     MPPage = {};

@@ -51,9 +51,9 @@ MPWidget.Frame.New = function ()
         add.click(function ()
         {
             var dialog = MPUploadDialog.New("上传图片");
-            dialog.onSuccess = function ()
+            dialog.onSuccess = function (file)
             {
-                var c = MPCreateImageDialog.New(imageHost + "/" + dialog.hash + "_fw236", "上传图片", dialog.filename);
+                var c = MPCreateImageDialog.New(imageHost + "/" + file.hash + "_fw236", "上传图片", dialog.filename);
                 c.onOK = function ()
                 {
                     $.post(host + "/ajax/create-image", { package_id: c.packageId, file_hash: dialog.hash, description: MPHtmlEncode(c.description) }, function (msg)

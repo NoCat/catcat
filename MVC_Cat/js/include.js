@@ -33,7 +33,6 @@
 //组件实现
 /// <reference path="Widget/image-view.js" />
 /// <reference path="Widget/Image.js" />
-/// <reference path="Widget/package-info.js" />
 /// <reference path="Widget/package.js" />
 /// <reference path="Widget/Search.js" />
 /// <reference path="Widget/user-info.js" />
@@ -53,3 +52,4 @@
 /// <reference path="Template/Widget/image-view.js" />
 /// <reference path="Template/Widget/link.js" />
 /// <reference path="Template/Widget/user.js" />
+/// <reference path="Template/Dialog/avt-cut-dialog.js" />

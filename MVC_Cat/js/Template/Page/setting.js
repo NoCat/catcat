@@ -36,7 +36,9 @@ MPTemplate.Page.Setting = function (data, options)
         strVar += "            <div class=\"line\">";
         strVar += "                <h3>头像<\/h3>";
         strVar += "                <div>";
-        strVar += "                    <img class=\"avt\" src=\"{0}\" />".Format(MPObject.User.BigAvt(MPData.user));
+        strVar += "                    <div class=\"avt\">";
+        strVar += "                         <img src=\"{0}\" />".Format(MPObject.User.BigAvt(MPData.user));
+        strVar += "                    </div>";
         strVar += "                    <div class=\"upload\">上传头像<\/div>";
         strVar += "                    <div class=\"clear\"><\/div>";
         strVar += "                <\/div>";

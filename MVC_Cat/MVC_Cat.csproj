@@ -174,6 +174,7 @@
     <Content Include="img\heart_grey_hover_16_14.png" />
     <Content Include="img\heart_red_16_14.png" />
     <Content Include="img\heart_red_hover_16_14.png" />
+    <Content Include="img\Jcrop.gif" />
     <Content Include="img\left_29_50.png" />
     <Content Include="img\link_16_16.png" />
     <Content Include="img\Magnet_16_16.png" />
@@ -191,10 +192,10 @@
     <Content Include="img\triangle_right_down_4_4.png" />
     <Content Include="img\warn_24_24.png" />
     <Content Include="js\all.js" />
+    <Content Include="js\Dialog\AvtCutDialog.js" />
     <Content Include="js\Dialog\CreateImageDialog.js" />
     <Content Include="js\Dialog\CreatePackageDialog.js" />
     <Content Include="js\Dialog\Dialog.js" />
-    <Content Include="js\Dialog\AvtCutDialog.js" />
     <Content Include="js\Dialog\LoginDialog.js" />
     <Content Include="js\Dialog\MessageBox.js" />
     <Content Include="js\Dialog\ResetPasswordDialog.js" />
@@ -229,6 +230,7 @@
     <Content Include="js\reset-password.js" />
     <Content Include="js\search.js" />
     <Content Include="js\signup-email.js" />
+    <Content Include="js\Template\Dialog\avt-cut-dialog.js" />
     <Content Include="js\Template\Page\package.js" />
     <Content Include="js\Template\Page\search.js" />
     <Content Include="js\Template\Page\setting.js" />
@@ -243,7 +245,6 @@
     <Content Include="js\Widget\Frame.js" />
     <Content Include="js\Widget\image-view.js" />
     <Content Include="js\Widget\Image.js" />
-    <Content Include="js\Widget\package-info.js" />
     <Content Include="js\Widget\package.js" />
     <Content Include="js\Template\Widget\image.js" />
     <Content Include="js\Template\Widget\package.js" />

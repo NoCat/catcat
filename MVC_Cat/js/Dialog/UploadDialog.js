@@ -7,7 +7,6 @@
         {
             UpLoad(this);
         })
-        dialog.hash = null;
         dialog.filename = "";
         dialog.onSuccess = null;
         function UpLoad(a)
@@ -19,12 +18,11 @@
             var chunks = Math.ceil(file.size / 128 / 1024);
             UpBegin(function (name)
             {
-                SendChunk(0, chunks, file, name, function (hash)
+                SendChunk(0, chunks, file, name, function (file)
                 {
-                    dialog.hash = hash;
                     if (dialog.onSuccess != null)
                     {
-                        dialog.onSuccess();
+                        dialog.onSuccess(file);
                     }
                     dialog.Close();
                 });
@@ -62,7 +60,7 @@
                         if (chunk == chunks - 1)
                         {
                             process.find(".percentage").text("正在上传(100%)...");
-                            callback(d.hash);
+                            callback(d.file);
                             return;
                         }
                         else
