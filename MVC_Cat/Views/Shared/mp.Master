@@ -10,9 +10,12 @@
     <meta name="keywords" content="<%=ViewBag.Keywords==null?"动漫 acg 图片 图包": ViewBag.Keywords%>" />
     <meta name="description" content="<%=ViewBag.Description==null?"专注于动漫图片的收集和分享": ViewBag.Description%>" />
     <link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/css/main.css") %>" />
+    <link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/css/jquery.Jcrop.min.css") %>" />
     <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
     <script type="text/javascript" src="<%=ResolveUrl("~/js/jquery.cookie.js")%>"></script>
     <script src="<%=ResolveClientUrl("~/js/main.js") %>"></script>
+    <script src="<%=ResolveClientUrl("~/js/jquery.color.js") %>"></script>
+    <script src="<%=ResolveClientUrl("~/js/jquery.Jcrop.js") %>"></script>
 
     <script src="<%=ResolveClientUrl("~/js/Dialog/Dialog.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/Dialog/TitleDialog.js") %>"></script>
@@ -25,6 +28,7 @@
     <script src="<%=ResolveClientUrl("~/js/Dialog/CreatePackageDialog.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/Dialog/CreateImageDialog.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/Dialog/UploadDialog.js") %>"></script>
+    <script src="<%=ResolveClientUrl("~/js/Dialog/AvtCutDialog.js") %>"></script>
 
     <script src="<%=ResolveClientUrl("~/js/Format/User.js") %>"></script>
 

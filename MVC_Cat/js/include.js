@@ -5,6 +5,8 @@
 /// <reference path="initialize.js" />
 /// <reference path="jquery.cookie.js" />
 /// <reference path="jquery.js" />
+/// <reference path="jquery.Jcrop.js" />
+/// <reference path="jquery.color.js" />
 /// <reference path="main.js" />
 /// <reference path="miaopass.js" />
 /// <reference path="package.js" />
@@ -23,6 +25,7 @@
 /// <reference path="Dialog/SignUpSuccessDialog.js" />
 /// <reference path="Dialog/TitleDialog.js" />
 /// <reference path="Dialog/UploadDialog.js" />
+/// <reference path="Dialog/AvtCutDialog.js" />
 
 /// <reference path="Object/image.js" />
 /// <reference path="Object/package.js" />

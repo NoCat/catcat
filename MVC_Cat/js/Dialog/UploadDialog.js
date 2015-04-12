@@ -1,7 +1,8 @@
 ﻿MPUploadDialog = {
-    New: function ()
+    New: function (title)
     {
-        var dialog = MPTitleDialog.New('<div class="dialog-mask"><div class="dialog-box"><div class="dialog-title"><span class="text">上传图片</span><div class="dialog-close"></div></div><div class="dialog-content"><div class="upload-dialog"><div class="select"><div class="img"></div><div class="button">选择图片</div><div class="more">请选择上传的图片，支持jpg和png图片</div><input type="file" class="upload"></div><div class="process"><div class="img"></div><div class="percentage">正在上传(0%)...</div></div></div></div></div></div>', "上传图片");
+        title = title ? title : "";
+        var dialog = MPTitleDialog.New('<div class="dialog-mask"><div class="dialog-box"><div class="dialog-title"><span class="text">上传图片</span><div class="dialog-close"></div></div><div class="dialog-content"><div class="upload-dialog"><div class="select"><div class="img"></div><div class="button">选择图片</div><div class="more">请选择上传的图片，支持jpg和png图片</div><input type="file" class="upload"></div><div class="process"><div class="img"></div><div class="percentage">正在上传(0%)...</div></div></div></div></div></div>', title);
         dialog.Content.find(".upload").change(function ()//上传按钮
         {
             UpLoad(this);

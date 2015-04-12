@@ -50,7 +50,7 @@ MPWidget.Frame.New = function ()
         var add = content.find(".add-nav");
         add.click(function ()
         {
-            var dialog = MPUploadDialog.New();
+            var dialog = MPUploadDialog.New("上传图片");
             dialog.onSuccess = function ()
             {
                 var c = MPCreateImageDialog.New(imageHost + "/" + dialog.hash + "_fw236", "上传图片", dialog.filename);
