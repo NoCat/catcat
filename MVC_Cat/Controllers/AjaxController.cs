@@ -175,8 +175,8 @@ namespace MVC_Cat.Controllers
                                         }
                                         System.IO.File.Delete(fragmentName);
                                     }
-                                    MPFile.Create(merger);
-                                    okMsg.hash = Tools.FileMd5(merger);
+                                    int fileid= MPFile.Create(merger);
+                                    okMsg.file = new JSON.File(new MPFile(fileid));
                                 }
                                 System.IO.File.Delete(mergerName);
                                 //}
