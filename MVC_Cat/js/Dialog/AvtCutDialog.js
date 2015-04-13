@@ -2,13 +2,14 @@
 
 MPAvtCutDialog = {
     //创建对话框,参数file为file对象{hash,width,height}
-    New: function (file) { 
+    New: function (file) {
         var dialog = MPTitleDialog.New(MPTemplate.Dialog.AvtCutDialog(file), "裁剪头像");
         var origin = dialog.Content.find(".main");
         var preview = dialog.Content.find("#preview");
         dialog.offset_x = null;
         dialog.offset_y = null;
         dialog.size = null;
+        dialog.onSuccess = null;
         //预览图处理函数
 
         var jcrop_api,
@@ -16,12 +17,7 @@ MPAvtCutDialog = {
         boundy,
 
         // Grab some information about the preview pane
-        $preview = $('.preview-pane'),
-        $pcnt = $('.preview-pane .preview-container'),
-        $pimg = $('.preview-pane .preview-container img'),
-
-        xsize = $pcnt.width(),
-        ysize = $pcnt.height();
+        $preview = $('.previews');
 
         //console.log('init',[xsize,ysize]);
         origin.Jcrop({
@@ -36,24 +32,45 @@ MPAvtCutDialog = {
             // Store the API in the jcrop_api variable
             jcrop_api = this;
 
-            // Move the preview into the jcrop container for css positioning
-            $preview.appendTo(jcrop_api.ui.holder);
         });
 
         function updatePreview(c) {
             if (parseInt(c.w) > 0) {
-                var rx = xsize / c.w;
-                var ry = ysize / c.h;
+                $(".previews").children("div").each(function () {
 
-                $pimg.css({
-                    width: Math.round(rx * boundx) + 'px',
-                    height: Math.round(ry * boundy) + 'px',
-                    marginLeft: '-' + Math.round(rx * c.x) + 'px',
-                    marginTop: '-' + Math.round(ry * c.y) + 'px'
-                });
+                    var $pcontainer = $(this),
+                    $pimg = $(this).find("img"),
+                    xsize = $pcontainer.width();
+
+                    var rx = xsize / c.w;
+
+                    $pimg.css({
+                        width: Math.round(rx * boundx) + 'px',
+                        height: Math.round(rx * boundy) + 'px',
+                        marginLeft: '-' + Math.round(rx * c.x) + 'px',
+                        marginTop: '-' + Math.round(rx * c.y) + 'px'
+                    });
+                })
             }
         };
 
+
+        dialog.ButtonOK.click(function () {
+            var ratio = file.width / $(".jcrop-tracker").width();
+            var c = jcrop_api.tellScaled();
+            dialog.offset_x = Math.round(c.x * ratio);
+            dialog.offset_y = Math.round(c.y * ratio);
+            //获取比例
+            dialog.size = Math.round(c.w * ratio);
+            if (dialog.onSuccess) {
+                dialog.onSuccess();
+            }
+            dialog.Close();
+        })
+
+        dialog.Content.find(".cancle").click(function () {
+            dialog.Close();
+        })
         return dialog;
     }
 }
