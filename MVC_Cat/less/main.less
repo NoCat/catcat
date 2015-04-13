@@ -269,6 +269,7 @@ table {
         border-radius: 5px;
         box-shadow: 0 0 5px lighten(@baseGrey,30%);
         background-color: @baseWhite;
+        overflow: hidden;
     }
 
     .bar1 {
@@ -287,20 +288,33 @@ table {
             float: right;
 
             .btn {
-                .btnwhite(25px);
+                .btnwhite(30px);
                 display: inline-block;
+                margin: 0 2px;
             }
-        }
 
-        .description {
-            width: 70%;
-            padding-left: 5px;
-            color: @baseGrey;
+            .package-follow{
+                .btnblue(30px);
+            }
+
+            .package-follow::after {
+                content: "关注";
+            }
+
+            .package-unfollow::after {
+                content: "已关注";
+            }
+
+            .description {
+                width: 70%;
+                padding-left: 5px;
+                color: @baseGrey;
+            }
         }
     }
 
     .bar2 {
-        @bar2Height: 50px;
+        @bar2Height: 40px;
         font-size: 15px;
         border-top: 1px solid darken(@baseWhite,10%);
         background-color: darken(@baseWhite,2.5%);
@@ -308,7 +322,7 @@ table {
         height: @bar2Height;
 
         .user {
-            @imgSize: 35px;
+            @imgSize: 28px;
             float: left;
             height: @imgSize;
             margin-top: (@bar2Height - @imgSize)/2;
@@ -319,11 +333,22 @@ table {
                 width: @imgSize;
                 height: @imgSize;
                 display: inline-block;
+                border-radius: 1px;
+                box-shadow: 0 0 1px 0 @baseGrey;
             }
 
             .user-name {
-                float: left;
+                display: inline-block;
+                margin-left: 5px;
                 line-height: @imgSize;
+                font-size: 14px;
+                color: @baseBlue;
+            }
+
+            &:hover {
+                .user-name {
+                    text-decoration: underline;
+                }
             }
         }
 
@@ -607,7 +632,7 @@ table {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0,0,0,0.2);
 }
 
 .dialog-link() {
@@ -684,8 +709,8 @@ table {
         clear: both;
         padding: 20px;
         text-align: center;
-        border-top:@innerBorder;
-        background-color:darken(@baseWhite,2%);
+        border-top: @innerBorder;
+        background-color: darken(@baseWhite,2%);
 
         .ok, .cancel, .delete {
             display: inline-block;
@@ -1040,13 +1065,13 @@ table {
 
 .crop-dialog {
     .img {
-        position:relative;
+        position: relative;
         float: left;
     }
 
     .previews {
         padding-left: 420px;
-        padding-top:20px;
+        padding-top: 20px;
 
         .big, .normal {
             overflow: hidden;
@@ -1068,7 +1093,7 @@ table {
         .normal {
             width: 75px;
             height: 75px;
-            margin-top:20px;
+            margin-top: 20px;
         }
     }
 }
@@ -1436,28 +1461,28 @@ table {
             background-repeat: no-repeat;
             background-position: center center;
         }
+    }
 
-        .praise {
-            .btnwhite(26px);
-            background-image: url(/img/heart_grey_16_14.png);
+    .praise {
+        .btnwhite(26px);
+        background-image: url(/img/heart_grey_16_14.png);
 
-            &:hover {
-                background-image: url(/img/heart_grey_hover_16_14.png);
-            }
+        &:hover {
+            background-image: url(/img/heart_grey_hover_16_14.png);
         }
+    }
 
-        .unpraise {
-            .btnwhite(26px);
-            background-image: url(/img/heart_red_16_14.png);
+    .unpraise {
+        .btnwhite(26px);
+        background-image: url(/img/heart_red_16_14.png);
 
-            &:hover {
-                background-image: url(/img/heart_red_hover_16_14.png);
-            }
+        &:hover {
+            background-image: url(/img/heart_red_hover_16_14.png);
         }
+    }
 
-        .edit {
-            .btnwhite(26px);
-        }
+    .edit {
+        .btnwhite(26px);
     }
 
     .img {
@@ -1812,13 +1837,13 @@ table {
                     height: 150px;
                     width: 150px;
                     float: left;
-                    overflow:hidden;
-                    border:5px solid @baseWhite;
-                    box-shadow:0 0 3px 0 @baseGrey;
-                    border-radius:3px;
+                    overflow: hidden;
+                    border: 5px solid @baseWhite;
+                    box-shadow: 0 0 3px 0 @baseGrey;
+                    border-radius: 3px;
 
-                    img{
-                        position:relative;
+                    img {
+                        position: relative;
                     }
                 }
 

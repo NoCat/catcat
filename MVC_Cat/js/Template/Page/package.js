@@ -7,11 +7,15 @@ MPTemplate.Page.Package = function (data, options)
     strVar += "<div class=\"inner\">";
     strVar += "    <div class=\"bar1\">";
     strVar += "        <h1 class=\"title\">{0}<\/h1>".Format(data.title);
-    strVar += "        <div class=\"action-btns\">";
-    strVar += MPTemplate.Widget.Package.Buttons.Edit(data, { "class": "btn" });
-    strVar += "            <div class=\"btn organize\" data-id=\"{0}\">批量管理<\/div>".Format(data.id);
-    strVar += "            <div class=\"btn follow\" data-id=\"{0}\">关注<\/div>".Format(data.id);
-    strVar += "            <div class=\"btn praise\" data-id=\"{0}\">赞<\/div>".Format(data.id);
+    strVar += "        <div class=\"action-btns\">";    
+    if (data.user.id != MPData.user.id)
+    {
+        strVar += MPTemplate.Widget.Package.Buttons.Follow(data, { "class": "btn" });
+    }
+    else
+    {
+        strVar += MPTemplate.Widget.Package.Buttons.Edit(data, { "class": "btn" });
+    }
     strVar += "        <\/div>";
     strVar += "        <div class=\"clear\"><\/div>";
     strVar += "        <div class=\"description\">{0}<\/div>".Format(data.description);
