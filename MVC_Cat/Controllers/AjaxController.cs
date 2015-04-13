@@ -459,19 +459,19 @@ namespace MVC_Cat.Controllers
 
                             if (form["avt-hash"] != null)
                             {
-                                var hash = Tools.GetStringFromRequest(form["avt-hash"]);
-                                var offsetX = Tools.GetInt32FromRequest(form["avt-offset-x"]);
-                                var offsetY = Tools.GetInt32FromRequest(form["avt-offset-y"]);
-                                var size = Tools.GetInt32FromRequest(form["avt-size"]);
+                                var hash = Tools.GetStringFromRequest(form["avt_hash"]);
+                                var offsetX = Tools.GetInt32FromRequest(form["avt_offset_x"]);
+                                var offsetY = Tools.GetInt32FromRequest(form["avt_offset_y"]);
+                                var size = Tools.GetInt32FromRequest(form["avt_size"]);
 
                                 var file = new MPFile(hash);
                                 using (var s = OssFile.Open(file.MD5))
                                 {
                                     using (var bmp = Image.FromStream(s))
                                     {
-                                        using (var bigAvt = bmp.Crop(offsetX, offsetY, size, size, 150, 150))
+                                        using (var avt = bmp.Crop(offsetX, offsetY, size, size, 150, 150))
                                         {
-                                            OssFile.Create(string.Format("avt/{0}_big", user.ID), bigAvt.SaveAsJpeg());
+                                            OssFile.Create(string.Format("avt/{0}_big", user.ID), avt.SaveAsJpeg());
                                         }
                                         using (var avt = bmp.Crop(offsetX, offsetY, size, size, 75, 75))
                                         {
@@ -488,8 +488,8 @@ namespace MVC_Cat.Controllers
                     case "settiong-password":
                         {
                             var user = CheckLogin();
-                            var oldPassword = Tools.GetStringFromRequest(Request.Form["old-password"]);
-                            var newPassword = Tools.GetStringFromRequest(Request.Form["new-password"]);
+                            var oldPassword = Tools.GetStringFromRequest(Request.Form["old_password"]);
+                            var newPassword = Tools.GetStringFromRequest(Request.Form["new_password"]);
 
                             if(user.Password!=Tools.SHA256Hash(oldPassword))
                             {

@@ -1,12 +1,14 @@
 ﻿/// <reference path="../include.js" />
 
-$(function () {
+$(function ()
+{
     var frame = MPWidget.Frame.New();
     frame.Body.append(MPTemplate.Page.Package(MPData.package));
     var waterfall = MPWaterFall.New($(window), frame.Body.find(".page-package .waterfall"), 4, 236, 6, 6, 6, 6);
     $("body").append(frame);
 
-    switch (MPData.sub1) {
+    switch (MPData.sub1)
+    {
 
         case "follower":
             waterfallPush(MPWidget.User, null, "id");
@@ -20,11 +22,14 @@ $(function () {
     waterfall.Resize();
 
     //这里做了修改,去除掉多余的参数,自己看看
-    function waterfallPush(type, typeDetail, returnField) {
+    function waterfallPush(type, typeDetail, returnField)
+    {
         var max = waterfall.Push(MPData.datas, type, typeDetail, returnField);
-        waterfall.onBottom = function () {
+        waterfall.onBottom = function ()
+        {
             waterfall.BeginUpdate();
-            $.getJSON("", { ajax: true, max: max }, function (data) {
+            $.getJSON("", { ajax: true, max: max }, function (data)
+            {
                 max = waterfall.Push(data, type, typeDetail, returnField);
                 waterfall.EndUpdate();
             });
@@ -34,8 +39,8 @@ $(function () {
 
     //注意下方,注释怎么都写在了程序末尾?!
     $(document).on("click", ".page-package .package-edit", edit_click)
-
-    .on("click", ".page-package .unfollow", unfollow_click);
+        .on("click", ".page-package .packge-follow", follow_click)
+    .on("click", ".page-package .packge-unfollow", unfollow_click);
 
     function edit_click()
     {

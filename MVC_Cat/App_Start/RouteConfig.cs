@@ -17,6 +17,7 @@ namespace MVC_Cat
             routes.MapRoute("all", "all/", new { controller = "all", action = "index" });
             routes.MapRoute("ajax", "ajax/{act}", new { controller = "ajax", action = "index" });
             routes.MapRoute("image", "image/{id}", new { controller = "image", action = "index" }, new { id="\\d+"});
+            routes.MapRoute("from", "from/{host}", new { controller = "from", action = "index" });
             routes.MapRoute("pick", "pick", new { controller = "pick", action = "index" });
             routes.MapRoute("package", "package/{id}/{sub1}", new { controller = "package", action = "index", sub1 = "" }, new { id="\\d+"});
             routes.MapRoute("user", "user/{id}/{sub1}/{sub2}", new { controller = "user", action = "index", sub1 = "", sub2 = "" }, new { id = "\\d+" });
