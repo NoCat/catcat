@@ -31,6 +31,11 @@ MPObject.Image._info = function (image, width, shape) {
     return res;
 }
 
+MPObject.Image.sq236=function(image)
+{
+    return MPObject.Image._info(image, 236, "sq");
+}
+
 MPObject.Image.fw78 = function (image) {
     return MPObject.Image._info(image, 78, "fw");
 }

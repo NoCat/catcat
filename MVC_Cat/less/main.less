@@ -293,13 +293,13 @@ table {
                 margin: 0 2px;
             }
 
-            .package-follow{
+            .package-follow {
                 .btnblue(30px);
             }
 
-            .package-follow::after {
-                content: "关注";
-            }
+                .package-follow::after {
+                    content: "关注";
+                }
 
             .package-unfollow::after {
                 content: "已关注";
@@ -397,12 +397,12 @@ table {
         .tool-bar {
             position: relative;
 
-            @btnHeight: 28px;
+            @btnHeight: 30px;
 
             .btn {
-                font-size: 14px;
                 display: inline-block;
                 margin: 0 3px;
+                vertical-align: top;
             }
 
             .resave {
@@ -416,6 +416,46 @@ table {
             .delete {
                 .btnwhite(@btnHeight);
             }
+
+            .image-praise, .image-unpraise {
+                position: relative;
+                width: 0;
+                .btnwhite(@btnHeight);
+
+                em {
+                    @emSize: 16px;
+                    width: @emSize;
+                    height: @emSize;
+                    position: absolute;
+                    left: ceil((@btnHeight+(-@emSize))/2);
+                    top: ceil((@btnHeight+(-@emSize))/2);
+                }
+            }
+
+            .image-praise {
+
+                em {
+                    background: center center no-repeat url( /img/heart_grey_16_14.png);
+                }
+
+                &:hover {
+                    em {
+                        background: center center no-repeat url( /img/heart_grey_hover_16_14.png);
+                    }
+                }
+            }
+
+            .image-unpraise {
+                em {
+                    background: center center no-repeat url( /img/heart_red_16_14.png);
+                }
+
+                &:hover {
+                    em {
+                        background: center center no-repeat url( /img/heart_red_hover_16_14.png);
+                    }
+                }
+            }
         }
 
         .image {
@@ -426,19 +466,25 @@ table {
             }
         }
 
-        .tool-bar-bottom {
-            .source {
-                margin-right: 8px;
-                float: right;
-                display: block;
-                height: 24px;
-                color: @baseGrey;
-                font-size: 14px;
-                line-height: 24px;
+        .bar-bottom {            
+            margin:0 -15px -15px -15px;
+            padding:10px 15px;
+            border-top:1px solid darken(@baseWhite,10%);
+            background-color:darken(@baseWhite,2%);
 
-                &:hover {
-                    color: darken(@baseGrey,20%);
-                    text-decoration: underline;
+            .source {
+                font-size:14px;
+                span{
+                    color:darken(@baseGrey,20%);
+                }
+                a{
+                    font-size:14px;
+                    color:@baseBlue;
+                    margin-left:8px;
+
+                    &:hover{
+                        text-decoration:underline;
+                    }
                 }
             }
         }
@@ -620,6 +666,39 @@ table {
                 float: right;
                 .btnblue(28px);
                 margin-top: 10px;
+            }
+        }
+    }
+
+    .from-piece{
+        font-size:14px;
+        display:none;
+
+        &:hover{
+            background-color:darken(@baseWhite,2%);
+        }
+        .text{
+            color:@baseGrey;
+        }
+
+        .host{
+            color:darken(@baseGrey,10%);
+            font-weight:bold;
+        }
+        .thumbs{
+            margin-top:8px;
+
+            .thumb{
+                float:left;
+                border-radius:2px;
+                width:80px;
+                height:80px;
+                border:1px solid #ccc;
+                margin-right:2px;
+
+                &:last-child{
+                    margin:0;
+                }
             }
         }
     }
