@@ -24,7 +24,7 @@ $(function () {
                         return;
                     }
                     $.post(host + "/ajax/setting-password", { old_password: MPHtmlEncode(oldPassword.val()), new_password: MPHtmlEncode(newPassword1.val()) }, function (data) {
-                        if (data.code==0) {
+                        if (data.code == 0) {
                             MPMessageBox.New(MPMessageBox.Icons.OK, "密码修改成功");
                         }
                         else {
@@ -45,26 +45,35 @@ $(function () {
 
                 body.find(".upload").click(function () {
                     var dialog = MPUploadDialog.New("上传头像图片");
-                    dialog.onSuccess =function (file) {
-                        avt_hash=file.hash;
+                    dialog.onSuccess = function (file) {
+                        avt_hash = file.hash;
                         var d = MPAvtCutDialog.New(file);
                         d.onSuccess = function () {
                             avt_offset_x = d.offset_x;
                             avt_offset_y = d.offset_y;
                             avt_size = d.size;
+                            //改变设置页预览头像
+                            var container = $(".page-setting .avt");
+                            var pimg = container.find("img");
+                            var ratio = container.width() / avt_size;
+                            pimg.attr("src", imageHost + "/" + file.hash);
+                            pimg.css({
+                                width: Math.round(ratio * file.width) + 'px',
+                                height: Math.round(ratio * file.height) + 'px',
+                                marginLeft: '-' + Math.round(ratio * avt_offset_x) + 'px',
+                                marginTop: '-' + Math.round(ratio * avt_offset_y) + 'px'
+                            });
                         }
                     }
                 })
 
-
-
                 body.find(".submit").click(function () {
-                    if (inputUsername.val()=="") {
+                    if (inputUsername.val() == "") {
                         MPMessageBox.New(MPMessageBox.Icons.Warn, "请输入昵称");
                         return;
                     }
-                    $.post(host + "/ajax/setting-basic", { name: MPHtmlEncode(inputUsername.val()), description: MPHtmlEncode(inputDescription.val()),avt_hash:avt_hash,avt_offset_x:avt_offset_x,avt_offset_y:avt_offset_y,avt_size:avt_size }, function (data) {
-                        if (data.code==0) {
+                    $.post(host + "/ajax/setting-basic", { name: MPHtmlEncode(inputUsername.val()), description: MPHtmlEncode(inputDescription.val()), avt_hash: avt_hash, avt_offset_x: avt_offset_x, avt_offset_y: avt_offset_y, avt_size: avt_size }, function (data) {
+                        if (data.code == 0) {
                             MPMessageBox.New(MPMessageBox.Icons.OK, "用户信息修改成功");
                         }
                         else {

@@ -6,16 +6,27 @@ MPCreatePackageDialog = {
         strVar += "<div class=\"dialog-mask\">";
         strVar += "        <div class=\"dialog-box\">";
         strVar += "            <div class=\"dialog-title\">";
-        strVar += "                <span class=\"text\">{0}<\/span>";
+        strVar += "                <span class=\"text\"><\/span>";
         strVar += "                <div class=\"dialog-close\"><\/div>";
         strVar += "            <\/div>";
         strVar += "            <div class=\"dialog-content\">";
         strVar += "                <div class=\"package-dialog\">";
         strVar += "                    <div class=\"title\">标题<\/div>";
-        strVar += "                    <input type=\"text\" class=\"package-title\" placeholder=\"请输入图包标题\" />";
-        strVar += "                    <div class=\"title\">{1}<\/div>";
+        if (isEdit == true) {
+            strVar += "                    <input type=\"text\" class=\"package-title\" placeholder={0} />".Format(packagetitle);
+        }
+        else {
+            strVar += "                <input type=\"text\" class=\"package-title\" placeholder=\"请输入图包标题\" />";
+        }
+
         strVar += "                    <div class=\"title\">描述<\/div>";
-        strVar += "                    <textarea class=\"package-description\">{2}<\/textarea>";
+        if (isEdit == true) {
+            strVar += "                    <textarea class=\"package-description\">{0}<\/textarea>".Format(description);
+        }
+        else {
+            strVar += "                    <textarea class=\"package-description\">请输入图片描述<\/textarea>";
+        }
+
         strVar += "                <\/div>";
         strVar += "            <\/div>";
         strVar += "            <div class=\"dialog-btns\">";
@@ -28,13 +39,14 @@ MPCreatePackageDialog = {
         strVar += "        <\/div>";
         strVar += "<\/div>";
         var title = "";
-        if (isEdit == true)
-            title = "编辑图包"
-        else
+        if (isEdit==true) {
+            title = "编辑图包";
+        }
+        else {
             title = "创建图包";
-        packagetitle = packagetitle ? packagetitle : "";
-        description = description ? description : "";
-        var dialog = MPTitleDialog.New(strVar.Format(title, packagetitle, description));
+        }
+              
+        var dialog = MPTitleDialog.New(strVar,title);
         dialog.packageid = null;
         var inputtitle = dialog.Content.find(".package-title");
         var inputdescription = dialog.Content.find(".package-description");
@@ -66,6 +78,10 @@ MPCreatePackageDialog = {
                 }, "json");
             })
         }
+
+        dialog.Content.find(".cancel").click(function () {
+            dialog.Close();
+        })
         return dialog;
     }
 }
