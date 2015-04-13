@@ -46,7 +46,13 @@ $(function () {
                 body.find(".upload").click(function () {
                     var dialog = MPUploadDialog.New("上传头像图片");
                     dialog.onSuccess =function (file) {
-                        MPAvtCutDialog.New(file);
+                        avt_hash=file.hash;
+                        var d = MPAvtCutDialog.New(file);
+                        d.onSuccess = function () {
+                            avt_offset_x = d.offset_x;
+                            avt_offset_y = d.offset_y;
+                            avt_size = d.size;
+                        }
                     }
                 })
 
@@ -57,7 +63,7 @@ $(function () {
                         MPMessageBox.New(MPMessageBox.Icons.Warn, "请输入昵称");
                         return;
                     }
-                    $.post(host + "/ajax/setting-basic", { name: MPHtmlEncode(inputUsername.val()), description: MPHtmlEncode(inputDescription.val()) }, function (data) {
+                    $.post(host + "/ajax/setting-basic", { name: MPHtmlEncode(inputUsername.val()), description: MPHtmlEncode(inputDescription.val()),avt_hash:avt_hash,avt_offset_x:avt_offset_x,avt_offset_y:avt_offset_y,avt_size:avt_size }, function (data) {
                         if (data.code==0) {
                             MPMessageBox.New(MPMessageBox.Icons.OK, "用户信息修改成功");
                         }
