@@ -218,6 +218,7 @@
     <Content Include="js\Object\package.js" />
     <Content Include="js\Object\user.js" />
     <Content Include="js\package.js" />
+    <Content Include="js\Page\from.js" />
     <Content Include="js\Page\package.js" />
     <Content Include="js\Page\search.js" />
     <Content Include="js\Page\setting.js" />
@@ -232,6 +233,7 @@
     <Content Include="js\search.js" />
     <Content Include="js\signup-email.js" />
     <Content Include="js\Template\Dialog\avt-cut-dialog.js" />
+    <Content Include="js\Template\Page\from.js" />
     <Content Include="js\Template\Page\package.js" />
     <Content Include="js\Template\Page\search.js" />
     <Content Include="js\Template\Page\setting.js" />

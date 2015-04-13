@@ -457,7 +457,7 @@ namespace MVC_Cat.Controllers
                                 user.Description = description;
                             }
 
-                            if (form["avt-hash"] != null)
+                            if (form["avt_hash"] != null)
                             {
                                 var hash = Tools.GetStringFromRequest(form["avt_hash"]);
                                 var offsetX = Tools.GetInt32FromRequest(form["avt_offset_x"]);
