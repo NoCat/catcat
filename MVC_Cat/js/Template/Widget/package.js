@@ -39,7 +39,7 @@ MPTemplate.Widget.Package = function (data, options)
     strVar += "    <div class=\"actions\">";
     if (data.user.id == MPData.user.id)
     {
-        strVar += "<div class=\"btn2 edit\" data-id=\"{0}\"><\/div>".Format(data.id);
+        strVar += "<div class=\"btn2 edit\" data-id=\"{0}\" data-title=\"{1}\" data-description=\"{2}\"><\/div>".Format(data.id,data.title,data.description);
     }
     else
     {

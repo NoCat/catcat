@@ -119,6 +119,7 @@ MPObject.Image.Delete = function (imageID, callback) {
             if (callback) {
                 callback();
             }
+            location.reload();
         }
         else {
             MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);

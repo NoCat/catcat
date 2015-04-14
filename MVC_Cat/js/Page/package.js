@@ -46,9 +46,12 @@ $(function ()
     {
         //提取id
         var id = $(this).attr("data-id");
-        MPCreatePackageDialog.New(true, id, "这是标题", "description");
+        var title = $(this).attr("data-title");
+        var description = $(this).attr("data-description");
+        MPObject.Package.Edit(id, title, description);
     }
 
+    //关注操作
     function follow_click()
     {
         var t = $(this);
@@ -59,8 +62,9 @@ $(function ()
             t.addClass("unfollow");
             MPMessageBox.New(MPMessageBox.Icons.OK, "关注成功!");
         })
-    }//关注操作
+    }
 
+    //取消关注
     function unfollow_click()
     {
         var t = $(this);
@@ -74,5 +78,5 @@ $(function ()
                 t.addClass("follow");
             })
         }
-    }//取消关注
+    }
 })
