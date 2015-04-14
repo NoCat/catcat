@@ -262,6 +262,7 @@
     <Content Include="Views\Account\ResetPassword.aspx" />
     <Content Include="Views\Account\SignupEmail.aspx" />
     <Content Include="Views\All\Index.aspx" />
+    <Content Include="Views\From\Index.aspx" />
     <Content Include="Views\Image\Index.aspx" />
     <Content Include="Views\Package\Index.aspx" />
     <Content Include="Views\Pick\Index.aspx" />

@@ -173,7 +173,7 @@ public static class Tools
        using(var g=Graphics.FromImage(desc))
        {
            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
-           g.DrawImage(img, new Rectangle(x, y, width, height), new Rectangle(0, 0, desc.Width, desc.Height), GraphicsUnit.Pixel);
+           g.DrawImage(img, new Rectangle(0, 0, desc.Width, desc.Height),new Rectangle(x, y, width, height),  GraphicsUnit.Pixel);
        }
        return desc;
     }

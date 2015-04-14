@@ -42,6 +42,7 @@
     <script src="<%=ResolveClientUrl("~/js/template/page/user.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/template/page/setting.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/template/page/package.js") %>"></script>
+    <script src="<%=ResolveClientUrl("~/js/template/page/from.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/template/widget/package.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/template/widget/image.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/template/widget/comment.js") %>"></script>
