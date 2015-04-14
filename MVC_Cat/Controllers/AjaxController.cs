@@ -485,7 +485,7 @@ namespace MVC_Cat.Controllers
                         break;
                     #endregion
                     #region setting-password 设置密码
-                    case "settiong-password":
+                    case "setting-password":
                         {
                             var user = CheckLogin();
                             var oldPassword = Tools.GetStringFromRequest(Request.Form["old_password"]);
@@ -493,7 +493,7 @@ namespace MVC_Cat.Controllers
 
                             if(user.Password!=Tools.SHA256Hash(oldPassword))
                             {
-                                throw new MiaopassException("旧密码错误");
+                                throw new MiaopassException("原密码错误");
                             }
 
                             user.Password = Tools.SHA256Hash(newPassword);

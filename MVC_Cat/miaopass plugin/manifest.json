@@ -1,9 +1,11 @@
 ﻿{
     "name": "miaopass图片收集工具",
-    "description": "右键点击即可下载图片",
+    "description": "收集你喜欢的图片到喵帕斯和朋友一起分享(ง •̀_•́)ง",
     "version": "0.1",
 	 "content_scripts": [
     {
+	  "exclude_matches":["http://*.miaopass.net/*"],
+	  "css":["style.css"],
       "matches": ["http://*/*"],
       "js": ["jquery.js", "miaopass.js"]
     }
@@ -11,5 +13,6 @@
     "permissions": [
         "http://*/*"
     ],
+	"update_url":"http://www.miaopass.net/extension/chrome/update.xml",
     "manifest_version": 2
 }

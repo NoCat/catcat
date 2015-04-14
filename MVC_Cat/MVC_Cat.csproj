@@ -210,7 +210,9 @@
     <Content Include="js\image.js" />
     <Content Include="js\include.js" />
     <Content Include="js\initialize.js" />
+    <Content Include="js\jquery.color.js" />
     <Content Include="js\jquery.cookie.js" />
+    <Content Include="js\jquery.Jcrop.js" />
     <Content Include="js\jquery.js" />
     <Content Include="js\main.js" />
     <Content Include="js\miaopass.js" />
@@ -283,6 +285,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="extension\chrome\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

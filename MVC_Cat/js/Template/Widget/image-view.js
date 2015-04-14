@@ -84,7 +84,7 @@ MPTemplate.Widget.ImageView = function (data, options)
     strVar += "        <div class=\"ad-piece piece\">";
     strVar += "        <\/div>";
     strVar += "         <div class=\"from-piece piece\">"
-    strVar += "             <a href=\"/from/{0}\">";
+    strVar += "             <a href=\"/from/{0}\">".Format(data.host);
     strVar += "                     <div class=\"text\">更多来自</div>";
     strVar += "                     <div class=\"host\"></div>";
     strVar += "                     <div class=\"thumbs\">";
