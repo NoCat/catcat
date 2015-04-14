@@ -56,7 +56,7 @@ MPAvtCutDialog = {
 
 
         dialog.ButtonOK.click(function () {
-            var ratio = file.width / $(".jcrop-tracker").width();
+            var ratio = file.width / $(".jcrop-holder").width();
             var c = jcrop_api.tellScaled();
             dialog.offset_x = Math.round(c.x * ratio);
             dialog.offset_y = Math.round(c.y * ratio);
@@ -68,7 +68,7 @@ MPAvtCutDialog = {
             dialog.Close();
         })
 
-        dialog.Content.find(".cancle").click(function () {
+        dialog.Content.find(".cancel").click(function () {
             dialog.Close();
         })
         return dialog;
