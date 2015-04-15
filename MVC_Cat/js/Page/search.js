@@ -36,6 +36,7 @@ $(function ()
         $.getJSON("", { ajax: true, page: ++page }, function (data)
         {
             wf.Push(data, type, null, null);
+            wf.EndUpdate();
         })
     }
 })

@@ -224,13 +224,8 @@
     <Content Include="js\Page\package.js" />
     <Content Include="js\Page\search.js" />
     <Content Include="js\Page\setting.js" />
+    <Content Include="js\Page\user.js" />
     <Content Include="js\pick.js" />
-    <Content Include="js\Render\Render.Body.Image.js" />
-    <Content Include="js\Render\Render.Body.js" />
-    <Content Include="js\Render\Render.Frame.js" />
-    <Content Include="js\Render\Render.Head.js" />
-    <Content Include="js\Render\Render.js" />
-    <Content Include="js\Render\RenderElement.js" />
     <Content Include="js\reset-password.js" />
     <Content Include="js\search.js" />
     <Content Include="js\signup-email.js" />
@@ -241,6 +236,7 @@
     <Content Include="js\Template\Page\setting.js" />
     <Content Include="js\Template\Page\user.js" />
     <Content Include="js\Template\template.js" />
+    <Content Include="js\Template\Widget\add.js" />
     <Content Include="js\Template\Widget\comment.js" />
     <Content Include="js\Template\Widget\frame.js" />
     <Content Include="js\Template\Widget\image-view.js" />

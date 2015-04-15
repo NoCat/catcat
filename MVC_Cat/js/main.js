@@ -254,6 +254,13 @@ var MPWaterFall = {
             return dataList[n - 1][returnField];
         }
 
+        waterFall.PushElement=function(element)
+        {
+            var item = Add(element);
+            Arrange(item);
+            _list.push(item);
+        }
+
         waterFall.Insert = function (startIndex, newItems)
         {
             var list = [];

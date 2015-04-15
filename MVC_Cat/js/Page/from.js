@@ -13,7 +13,8 @@ $(function ()
     wf.onBottom=function(){
         wf.BeginUpdate();
         $.getJSON("",{ajax:true,max:max},function (data) {
-            max= wf.Push(data, MPWidget.Image, null, "id");
+            max = wf.Push(data, MPWidget.Image, null, "id");
+            wf.EndUpdate();
         })
     }
 });

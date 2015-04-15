@@ -162,6 +162,16 @@
                     <td class="column_type">string</td>
                     <td class="column_description">来源主机名(即www.pixiv.net之类的,没有了后面奇奇怪怪的一大堆东西)</td>
                 </tr>
+                <tr>
+                    <td class="column_name">resave_count</td>
+                    <td class="column_type">int</td>
+                    <td class="column_description">转存次数</td>
+                </tr>
+                <tr>
+                    <td class="column_name">resave_praise</td>
+                    <td class="column_type">int</td>
+                    <td class="column_description">赞次数</td>
+                </tr>
             </table>
         </div>
 
@@ -245,6 +255,11 @@
                     <td class="column_name">default_head</td>
                     <td class="column_type">bool</td>
                     <td class="column_description">是否使用默认头像</td>
+                </tr>
+                <tr>
+                    <td class="column_name">description</td>
+                    <td class="column_type">string</td>
+                    <td class="column_description">个人描述</td>
                 </tr>
                 <tr>
                     <td class="column_name">follows_count</td>
@@ -471,6 +486,11 @@
                     <td class="column_name">datas</td>
                     <td class="column_type">Array</td>
                     <td class="column_description">附带的数组,根据不同的情况有不同类型</td>
+                </tr>
+                <tr>
+                    <td class="column_name">data_max</td>
+                    <td class="column_type">int</td>
+                    <td class="column_description">最后一个元素的id</td>
                 </tr>
             </table>
         </div>

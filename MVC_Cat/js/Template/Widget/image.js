@@ -27,6 +27,22 @@ MPTemplate.Widget.Image = function (data, options)
     strVar += "        <img src=\"{0}\" width=\"236\" height=\"{1}\" />".Format(imageHost + "/" + data.file.hash + "_fw236", Math.ceil(236 * data.file.height / data.file.width));
     strVar += "        <div class=\"cover\"><\/div>";
     strVar += "    <\/a>";
+    strVar += "    <div class=\"count\">";
+    if (data.resave_count != 0)
+    {
+        strVar += "         <span title=\"{0}人转存了这张图片\">".Format(data.resave_count);
+        strVar += "             <em class=\"resave\"></em>";
+        strVar += "             <span>{0}</span>".Format(data.resave_count);
+        strVar += "         </span>";
+    }
+    if (data.praise_count != 0)
+    {
+        strVar += "         <span title=\"{0}人赞过这张图片\">".Format(data.praise_count);
+        strVar += "             <em class=\"resave\"></em>";
+        strVar += "             <span>{0}</span>".Format(data.praise_count);
+        strVar += "         </span>";
+    }
+    strVar += "    </div>";
     strVar += "    <div class=\"description\">{0}<\/div>".FormatNoEncode(MPWidget.Image.Description(data.description));
     strVar += "    <div class=\"info\">";
     if (options == MPTemplate.Widget.Image.Options.ShowUser)

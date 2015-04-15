@@ -15,6 +15,16 @@ $(function ()
             break;
 
         default:
+            if (MPData.user.id == MPData.package.user.id)
+            {
+                var add = MPTemplate.Widget.Add;
+                var element = $(add(MPData.package, add.Options.AddImage));
+                element.click(function ()
+                {
+                    //在这里写上添加图片点击后的响应函数
+                });
+                waterfall.PushElement(element);
+            }
             waterfallPush(MPWidget.Image, MPTemplate.Widget.Image.Options.ShowSource, "id");
             break;
     }

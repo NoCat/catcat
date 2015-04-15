@@ -500,6 +500,21 @@ namespace MVC_Cat.Controllers
                         }
                         break;
                     #endregion
+                    #region get-following-user 获取关注的用户列表
+                    case "get-following-user":
+                            {
+                                var user = CheckLogin();
+                                var res = DB.SExecuteReader("select info from following where userid=? and type=? order by id desc", user.ID, MPFollowingTypes.User);
+                                var list = new List<object>();
+                                foreach (var item in res)
+                                {
+                                    var u = new MPUser(Convert.ToInt32(item[0]));
+                                    list.Add(new JSON.User(u));
+                                }
+                                okMsg.users = list;
+                            }
+                            break;
+                    #endregion
                 }
             }
             catch (MiaopassException exception)
