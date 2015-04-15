@@ -1,7 +1,10 @@
 ﻿/// <reference path="../include.js" />
 
 MPCreatePackageDialog = {
-    New: function (isEdit, packageid, packagetitle, description) {
+    New: function (isEdit, packageid, packagetitle, description)
+    {
+        packagetitle = packagetitle ? packagetitle : "";
+        description = description ? description : "";
         var strVar = "";
         strVar += "<div class=\"dialog-mask\">";
         strVar += "        <div class=\"dialog-box\">";
@@ -48,9 +51,11 @@ MPCreatePackageDialog = {
               
         var dialog = MPTitleDialog.New(strVar,title);
         dialog.packageid = null;
+        dialog.onDelete = null;
         var inputtitle = dialog.Content.find(".package-title");
         var inputdescription = dialog.Content.find(".package-description");
         if (isEdit == true) {
+            dialog.packageid = packageid;
             dialog.ButtonOK.click(function () {
                 $.post(host + "/ajax/edit-package", { id: packageid, title: MPHtmlEncode(inputtitle.val()), description: MPHtmlEncode(inputdescription.val()) }, function (data) {
                     if (data.code == 0) {
@@ -81,6 +86,21 @@ MPCreatePackageDialog = {
 
         dialog.Content.find(".cancel").click(function () {
             dialog.Close();
+        })
+
+        //删除图包的处理函数
+        dialog.Content.find(".delete").click(function () {
+            $.post(host + "/ajax/delete-package", { id: dialog.packageid }, function (data) {
+                if (data.code == 0) {
+                    if (dialog.onDelete) {
+                        dialog.onDelete();
+                    }
+                    dialog.Close();
+                }
+                else {
+                    MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
+                }
+            },"json")
         })
         return dialog;
     }
