@@ -13,7 +13,7 @@ MPTemplate.Widget.Image = function (data, options)
     if (data.user.id == MPData.user.id)
     {
         strVar += "<div class=\"right\">";
-        strVar += "    <div class=\"edit\" title=\"编辑\" data-id=\"{0}\" data-hash=\"{1}\" data-description=\"{2}\" data-packageid=\"{3}\" data-source=\"{4}\" >编辑<\/div>".Format(data.id, data.file.hash, data.description, data.package.id, data.source);
+        strVar += "    <div class=\"edit\" title=\"编辑\" data-id=\"{0}\" data-hash=\"{1}\" data-description=\"{2}\" data-packageid=\"{3}\" data-source=\"{4}\" data-packagetitle=\"{5}\" >编辑<\/div>".Format(data.id, data.file.hash, data.description, data.package.id, data.source, data.package.title);
         strVar += "<\/div>";
     }
     else

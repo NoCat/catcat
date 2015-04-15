@@ -38,8 +38,11 @@ MPWidget.Image.Bind = function ()
         var t = $(this);
         var id = t.attr("data-id");
         var hash = t.attr("data-hash");
-        var description = t.attr("data-description")
-        MPObject.Image.Edit(id, hash, description, "");
+        var source = t.attr("data-source");
+        var description = t.attr("data-description");
+        var packageID = t.attr("data-packageid");
+        var packagetitle = t.attr("data-packagetitle");
+        MPObject.Image.Edit(id, hash, description, source, packageID, packagetitle);
     }
 
     function img_click(e)

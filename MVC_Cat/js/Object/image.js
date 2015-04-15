@@ -83,12 +83,12 @@ MPObject.Image.Resave = function (imageID, imageHash, description, source) {
     }
 }
 
-MPObject.Image.Edit = function (imageID, imageHash, description, source,callback) {
+MPObject.Image.Edit = function (imageID, imageHash, description, source,packageID,packageTitle,callback) {
     if (!MPCheckLogin()) {
         return;
     }
     var url = imageHost + "/" + imageHash + "_fw236";
-    var dialog = MPCreateImageDialog.New(url, "编辑图片", description, true, source);
+    var dialog = MPCreateImageDialog.New(url, "编辑图片", description, true, source,packageID,packageTitle);
     dialog.onOK = function () {
         $.post(host + "/ajax/edit-image", { id: imageID, package_id: dialog.packageId, description: dialog.description, source: dialog.source }, function (data) {
             if (data.code == 0) {
@@ -147,4 +147,28 @@ MPObject.Image.UnPraise = function (imageID, callback) {
             callback();
         }
     }, "json");
+}
+
+MPObject.Image.CreateImage = function ()
+{
+    var dialog = MPUploadDialog.New("上传图片");
+    dialog.onSuccess = function (file)
+    {
+        var c = MPCreateImageDialog.New(imageHost + "/" + file.hash + "_fw236", "上传图片", dialog.filename);
+        c.onOK = function ()
+        {
+            $.post(host + "/ajax/create-image", { package_id: c.packageId, file_hash: file.hash, description: MPHtmlEncode(c.description) }, function (msg)
+            {
+                if (msg.code == 0)
+                {
+                    MPMessageBox.New(MPMessageBox.Icons.OK, "上传图片成功");
+                    c.Close();
+                }
+                else
+                {
+                    MPMessageBox.New(MPMessageBox.Icons.Error, msg.msg);
+                }
+            }, "json");
+        }
+    }
 }

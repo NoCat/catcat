@@ -1,4 +1,5 @@
-﻿
+﻿/// <reference path="../include.js" />
+
 MPWidget.Frame.New = function ()
 {
     var content = $(MPTemplate.Widget.Frame());
@@ -50,27 +51,14 @@ MPWidget.Frame.New = function ()
         var add = content.find(".add-nav");
         add.click(function ()
         {
-            var dialog = MPUploadDialog.New("上传图片");
-            dialog.onSuccess = function (file)
-            {
-                var c = MPCreateImageDialog.New(imageHost + "/" + file.hash + "_fw236", "上传图片", dialog.filename);
-                c.onOK = function ()
-                {
-                    $.post(host + "/ajax/create-image", { package_id: c.packageId, file_hash: file.hash, description: MPHtmlEncode(c.description) }, function (msg)
-                    {
-                        if (msg.code == 0)
-                        {
-                            MPMessageBox.New(MPMessageBox.Icons.OK, "上传图片成功");
-                            c.Close();
-                        }
-                        else
-                        {
-                            MPMessageBox.New(MPMessageBox.Icons.Error, msg.msg);
-                        }
-                    }, "json");
-                }
-            }
+            MPObject.Image.CreateImage();
         });
+
+        //返回顶端按钮
+        //content.find(".float-tools .top").click(function ()
+        //{
+
+        //})
     }
     return content;
 };

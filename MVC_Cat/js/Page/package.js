@@ -21,7 +21,7 @@ $(function ()
                 var element = $(add(MPData.package, add.Options.AddImage));
                 element.click(function ()
                 {
-                    //在这里写上添加图片点击后的响应函数
+                    MPObject.Image.CreateImage();
                 });
                 waterfall.PushElement(element);
             }
