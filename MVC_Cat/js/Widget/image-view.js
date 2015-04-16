@@ -68,13 +68,15 @@ MPWidget.ImageView.Bind = function () {
     //删除按钮
     .on("click", ".image-view .delete", delete_click)
     //添加评论
-    .on("click", ".image-view .submit", submit_click);
+    .on("click", ".image-view .submit", submit_click)
+    //监听键盘输入,主要针对@的使用
+    .on("keyup", keyup);
 
     function resave_click() {
         var t = $(this);
         var id = t.attr("data-id");
         var hash = t.attr("data-hash");
-       //待处理
+        //待处理
         MPObject.Image.Resave(id, hash);
     }
 
@@ -110,5 +112,30 @@ MPWidget.ImageView.Bind = function () {
                 MPMessageBox.New(MPMessageBox.Icons.Error, data.mag);
             }
         }, "json");
+    }
+
+    function keyup(e)
+    {
+        if (e.shiftKey&&e.keyCode==50)
+        {
+            $.post(host + "/ajax/get-following-user", {}, function (data)
+            {
+                if (data.code==0)
+                {
+                    var folUserList = data.users;
+                    var container = $("</div>");
+                    if (folUserList.length==0)
+                        return  ;
+                    for (var i = 0; i < folUserList.length; i++)
+                    {
+                        var option = $("</div>");
+                        option.text(folUserList[i].name);
+                        option.attr("data-id", folUserList[i].id);
+                        container.append(option);
+                    }
+                    $("body").append(container);
+                }
+            }, "json");
+        }
     }
 }
