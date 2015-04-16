@@ -10,7 +10,7 @@ MPTemplate.Widget.ImageView = function (data, options)
     strVar += "                <div class=\"resave btn\" data-id=\"{0}\" data-hash=\"{1}\" data-descripition=\"{2}\">转存<\/div>".Format(data.id, data.file.hash, data.description);
     if (MPData.user.id == data.user.id)
     {
-        strVar += "                <div class=\"edit btn\" data-id=\"{0}\" data-hash=\"{1}\" data-descripition=\"{2}\" data-source=\"{3}\" data-packageid=\"{4}\">编辑<\/div>".Format(data.id, data.file.hash, data.description, data.source, data.package.id);
+        strVar += "                <div class=\"edit btn\" data-id=\"{0}\" data-hash=\"{1}\" data-descripition=\"{2}\" data-source=\"{3}\" data-packageid=\"{4}\" data-packagetitle=\"{5}\">编辑<\/div>".Format(data.id, data.file.hash, data.description, data.source, data.package.id,data.package.title);
         strVar += "                <div class=\"delete btn\" data-id=\"{0}\" data-hash=\"{1}\">删除<\/div>".Format(data.id, data.file.hash);
     }
     else

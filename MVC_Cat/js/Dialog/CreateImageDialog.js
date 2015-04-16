@@ -4,7 +4,7 @@
 /// <reference path="Dialog.js" />
 MPCreateImageDialog =
     {
-        New: function (imageSrc, title, description,isEdit,source) {
+        New: function (imageSrc,title, description,isEdit,source,packageID,packageTitle) {
             var strVar = "";
             strVar += "<div class=\"dialog-mask\">";
             strVar += "    <div class=\"dialog-box\">";
@@ -91,11 +91,18 @@ MPCreateImageDialog =
                         option.attr("data-package-id", packagelist[i].id);
                         select.append(option);
                     }
-                    if (packagelist.length != 0) {
+                    if (isEdit==true)
+                    {
+                        bCurrent.attr("data-package-id", packageID);
+                        bCurrent.find(".name").text(packageTitle);
+                    }
+                    else if (packagelist.length != 0)
+                    {
                         bCurrent.attr("data-package-id", packagelist[0].id);
                         bCurrent.find(".name").text(packagelist[0].title);
                     }
                 }
+
             }, "json");//获取图包
 
 

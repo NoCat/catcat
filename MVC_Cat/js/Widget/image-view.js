@@ -82,7 +82,11 @@ MPWidget.ImageView.Bind = function () {
         var t=$(this);
         var id = t.attr("data-id");
         var hash = t.attr("data-hash");
-        MPObject.Image.Edit(id, hash);
+        var packageID = t.attr("data-packageid");
+        var packagetitle = t.attr("data-packagetitle");
+        var description=t.attr("data-description");
+        var sourve=t.attr("data-source");
+        MPObject.Image.Edit(id, hash, description, sourve, packageID, packagetitle);
     }
 
     function delete_click() {

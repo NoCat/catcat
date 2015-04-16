@@ -62,6 +62,7 @@ $(function ()
                 var element = $(add(MPData.user, add.Options.AddPackage));
                 element.click(function ()
                 {
+                    MPCreatePackageDialog.New(false);
                     ////在这里写上创建图包点击后的响应函数
                 });
                 wf.PushElement(element);
