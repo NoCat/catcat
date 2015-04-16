@@ -111,6 +111,20 @@ public class MPUser
         }
     }
 
+    DateTime _lastGetNoticeTime = new DateTime();
+    public DateTime LastGetNoticeTime
+    {
+        get
+        {
+            return _lastGetNoticeTime;
+        }
+        set
+        {
+            SetAttribute("lastgetnoticetime", value);
+            _lastGetNoticeTime = value;
+        }
+    }
+
     public MPUser(int id)
     {
         if (id == 0)
@@ -140,7 +154,7 @@ public class MPUser
 
     void Initialize(string condition, params object[] objs)
     {
-        var res = DB.SExecuteReader("select name,password,authority,email,defaulthead,description,sinauserid,sinaurl,id from user where " + condition, objs);
+        var res = DB.SExecuteReader("select name,password,authority,email,defaulthead,description,sinauserid,sinaurl,id,lastgetnoticetime from user where " + condition, objs);
 
         if (res.Count == 0)
             throw new MiaopassUserNotExistException();
@@ -155,6 +169,7 @@ public class MPUser
         _sinaUserID = Convert.ToInt64(row[6]);
         _sinaUrl = (string)row[7];
         ID = Convert.ToInt32(row[8]);
+        _lastGetNoticeTime = Convert.ToDateTime(row[9]);
     }
 
     void SetAttribute(string attributeName, object value)

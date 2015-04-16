@@ -94,7 +94,7 @@ public class MPImage
 
     public void Edit(int packageid,string description,string url)
     {
-        DB.SExecuteNonQuery("update image set packageid=?,description=?,url=?,host=? where id=?", packageid, description, url, ID,GetHost(url));
+        DB.SExecuteNonQuery("update image set packageid=?,description=?,url=?,host=? where id=?", packageid, description, url,GetHost(url), ID);
     }
 
     public static int Create(int packageid, int fileid, int userid, int via, string url, string description)
