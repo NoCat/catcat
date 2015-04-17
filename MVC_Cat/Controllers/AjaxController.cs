@@ -521,10 +521,103 @@ namespace MVC_Cat.Controllers
                     case "get-notice-count":
                         {
                             var user = CheckLogin();
-                            var lastTime = user.LastGetNoticeTime;
-                            var activityCount =Convert.ToInt32( DB.SExecuteScalar("select count(*) from activity where reciever=? and time>?", user.ID, lastTime));
-                            var messageCount =Convert.ToInt32( DB.SExecuteScalar("select count(*) from message where reciever=? and time>?", user.ID, lastTime));
-                            okMsg.count = activityCount + messageCount;
+                            var activityCount = Convert.ToInt32(DB.SExecuteScalar("select count(*) from activity where reciever=? and time>?", user.ID, user.LastGetActivityTime));
+                            var messageCount = Convert.ToInt32(DB.SExecuteScalar("select count(*) from message where reciever=? and time>?", user.ID, user.LastGetMessageTime));
+                            okMsg.activity_count = activityCount;
+                            okMsg.message_count = messageCount;
+                        }
+                        break;
+                    #endregion
+                    #region get-activity 获取动态
+                    case "get-activity":
+                        {
+                            var user = CheckLogin();
+                            var max = Tools.GetInt32FromRequest(Request.Form["max"]);
+                            if (max == 0)
+                                max = Int32.MaxValue;
+
+                            var res = DB.SExecuteReader("select id,sender,target,addition,type from activity where id<? order by id desc limit 15", max);
+                            var list = new List<object>();
+                            foreach (var item in res)
+                            {
+                                MPActivityTypes type = (MPActivityTypes)Convert.ToByte(item[4]);
+                                var sender = Convert.ToInt32(item[1]);
+                                var target = Convert.ToInt32(item[2]);
+                                var addition = Convert.ToInt32(item[3]);
+
+                                switch (type)
+                                {
+                                    case MPActivityTypes.Praise:
+                                        {
+                                            list.Add(new JSON.Notice.Activity.Praise(sender, target));
+                                        }
+                                        break;
+                                    case MPActivityTypes.Resave:
+                                        {
+                                            list.Add(new JSON.Notice.Activity.Resave(sender, target, addition));
+                                        }
+                                        break;
+                                    case MPActivityTypes.FollowUser:
+                                        {
+                                            list.Add(new JSON.Notice.Activity.FollowUser(sender));
+                                        }
+                                        break;
+                                    case MPActivityTypes.FollowPackage:
+                                        {
+                                            list.Add(new JSON.Notice.Activity.FollowPackage(sender, target));
+                                        }
+                                        break;
+                                }
+                            }
+
+                            okMsg.datas = list;
+                            okMsg.data_max = res[res.Count - 1][0];
+                        }
+                        break;
+                    #endregion
+                    #region get-message 获取消息
+                    case "get-message":
+                        {
+                            var user = CheckLogin();
+                            var max = Tools.GetInt32FromRequest(Request.Form["max"]);
+                            if (max == 0)
+                                max = Int32.MaxValue;
+
+                            var res = DB.SExecuteReader("select id,sender,target,addition,type from message where id<? order by id desc limit 15", max);
+                            var list = new List<object>();
+                            foreach (var item in res)
+                            {
+                                MPMessageTypes type = (MPMessageTypes)Convert.ToByte(item[4]);
+                                var sender = Convert.ToInt32(item[1]);
+                                var target = Convert.ToInt32(item[2]);
+                                var addition = Convert.ToInt32(item[3]);
+
+                                switch (type)
+                                {
+                                    case MPMessageTypes.PrivateMail:
+                                        break;
+                                    case MPMessageTypes.Comment:
+                                        {
+                                            list.Add(new JSON.Notice.Message.Comment(sender, target));
+                                        }
+                                        break;
+                                    case MPMessageTypes.Mention:
+                                        {
+                                            list.Add(new JSON.Notice.Message.Memtion(sender, target));
+                                        }
+                                        break;
+                                    case MPMessageTypes.Reply:
+                                        {
+                                            list.Add(new JSON.Notice.Message.Reply(sender, target));
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+
+                            okMsg.datas = list;
+                            okMsg.data_max = res[res.Count - 1][0];
                         }
                         break;
                     #endregion

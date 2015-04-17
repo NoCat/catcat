@@ -133,6 +133,7 @@
     <Compile Include="Models\Downloader.cs" />
     <Compile Include="Models\Exceptions.cs" />
     <Compile Include="Models\JSON.cs" />
+    <Compile Include="Models\JSON.Notice.cs" />
     <Compile Include="Models\Mail.cs" />
     <Compile Include="Models\MPComment.cs" />
     <Compile Include="Models\MPEnums.cs" />
@@ -282,6 +283,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="extension\chrome\" />
+    <Folder Include="miaopass 说明文档\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
