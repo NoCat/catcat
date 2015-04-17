@@ -175,7 +175,7 @@ namespace MVC_Cat.Controllers
                                         }
                                         System.IO.File.Delete(fragmentName);
                                     }
-                                    int fileid= MPFile.Create(merger);
+                                    int fileid = MPFile.Create(merger);
                                     okMsg.file = new JSON.File(new MPFile(fileid));
                                 }
                                 System.IO.File.Delete(mergerName);
@@ -380,6 +380,8 @@ namespace MVC_Cat.Controllers
                                 throw new MiaopassException("无权限操作");
 
                             var package = new MPPackage(packageId);
+                            if (package.UserID != user.ID)
+                                throw new MiaopassException("无权限操作");
 
                             image.Edit(packageId, description, source);
                         }
@@ -491,7 +493,7 @@ namespace MVC_Cat.Controllers
                             var oldPassword = Tools.GetStringFromRequest(Request.Form["old_password"]);
                             var newPassword = Tools.GetStringFromRequest(Request.Form["new_password"]);
 
-                            if(user.Password!=Tools.SHA256Hash(oldPassword))
+                            if (user.Password != Tools.SHA256Hash(oldPassword))
                             {
                                 throw new MiaopassException("原密码错误");
                             }
@@ -502,18 +504,29 @@ namespace MVC_Cat.Controllers
                     #endregion
                     #region get-following-user 获取关注的用户列表
                     case "get-following-user":
+                        {
+                            var user = CheckLogin();
+                            var res = DB.SExecuteReader("select info from following where userid=? and type=? order by id desc", user.ID, MPFollowingTypes.User);
+                            var list = new List<object>();
+                            foreach (var item in res)
                             {
-                                var user = CheckLogin();
-                                var res = DB.SExecuteReader("select info from following where userid=? and type=? order by id desc", user.ID, MPFollowingTypes.User);
-                                var list = new List<object>();
-                                foreach (var item in res)
-                                {
-                                    var u = new MPUser(Convert.ToInt32(item[0]));
-                                    list.Add(new JSON.User(u));
-                                }
-                                okMsg.users = list;
+                                var u = new MPUser(Convert.ToInt32(item[0]));
+                                list.Add(new JSON.User(u));
                             }
-                            break;
+                            okMsg.users = list;
+                        }
+                        break;
+                    #endregion
+                    #region get-notice-count 获取通知数量
+                    case "get-notice-count":
+                        {
+                            var user = CheckLogin();
+                            var lastTime = user.LastGetNoticeTime;
+                            var activityCount =Convert.ToInt32( DB.SExecuteScalar("select count(*) from activity where reciever=? and time>?", user.ID, lastTime));
+                            var messageCount =Convert.ToInt32( DB.SExecuteScalar("select count(*) from message where reciever=? and time>?", user.ID, lastTime));
+                            okMsg.count = activityCount + messageCount;
+                        }
+                        break;
                     #endregion
                 }
             }

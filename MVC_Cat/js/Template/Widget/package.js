@@ -29,6 +29,10 @@ MPTemplate.Widget.Package = function (data, options)
     strVar += "            <div class=\"thumb-border\"><\/div>";
     strVar += "            <div class=\"thumb-border\"><\/div>";
     strVar += "        <\/div>";
+    if (data.imageCount != 0)
+    {
+        strVar += "        <div class=\"count\">{0}<\/div>".Format(data.imageCount);
+    }
     strVar += "        <div class=\"over{0}\">".Format(data.thumbs.length == 0 ? " empty-package" : "");
     strVar += "            <h3>{0}<\/h3>".Format(data.title);
     strVar += "            <h4>{0}<\/h4>".Format(data.description);
