@@ -203,7 +203,7 @@ public class MPUser
             throw new MiaopassEmailConflictException();
         try
         {
-            return DB.SInsert("insert into user (name,password,email,description,sinauserid,sinaurl) values (?,?,?,'',0,'')", name, Tools.SHA256Hash(password), email);
+            return DB.SInsert("insert into user (name,password,email,description,sinauserid,sinaurl,lastgetactivitytime,lastgetmessagetime) values (?,?,?,'',0,'',now(),now())", name, Tools.SHA256Hash(password), email);
         }
         catch (MySql.Data.MySqlClient.MySqlException)
         {

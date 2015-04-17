@@ -267,6 +267,8 @@ namespace MVC_Cat.Controllers
                             var image = new MPImage(Convert.ToInt32(Tools.GetInt32FromRequest(Request.Form["image_id"])));
 
                             DB.SExecuteNonQuery("insert ignore into praise (userid,type,info) values (?,?,?)", user.ID, MPPraiseTypes.Image, image.ID);
+
+                            DB.SExecuteNonQuery("insert ignore into activity(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID, image.UserID, image.ID, 0, MPActivityTypes.Praise);
                         }
                         break;
                     #endregion
@@ -277,6 +279,8 @@ namespace MVC_Cat.Controllers
                             var image = new MPImage(Convert.ToInt32(Tools.GetInt32FromRequest(Request.Form["image_id"])));
 
                             DB.SExecuteNonQuery("delete from praise where userid=? and type=? and info=?", user.ID, MPPraiseTypes.Image, image.ID);
+
+                            DB.SExecuteNonQuery("delete from activity where sender=? and reciever=? and target=?  and type=?", user.ID, image.UserID, image.ID, MPActivityTypes.Praise);
                         }
                         break;
                     #endregion
@@ -289,6 +293,8 @@ namespace MVC_Cat.Controllers
                             var description = Tools.GetStringFromRequest(Request.Form["description"]);
 
                             MPImage.Create(package.ID, image.FileID, user.ID, image.ID, image.Url, description);
+
+                            DB.SExecuteNonQuery("insert ignore into activity(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID, image.UserID, image.ID, package.ID, MPActivityTypes.Resave);
                         }
                         break;
                     #endregion
@@ -321,6 +327,18 @@ namespace MVC_Cat.Controllers
                             var image = new MPImage(imageId);
 
                             int commentId = MPComment.Create(image.ID, user.ID, text);
+                            
+                            //添加xxx评论了你的xxx消息
+                            DB.SExecuteNonQuery("insert ignore into message(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID,image.UserID, commentId, 0, MPMessageTypes.Comment);
+
+                            //添加xxx在评论xxx是提到了你消息
+                            var res = DB.SExecuteReader("select id from comment_mention where commentid=?", commentId);
+                            foreach (var item in res)
+                            {
+                                var mention = new MPCommentMention(Convert.ToInt32( item[0]));
+                                DB.SExecuteNonQuery("insert ignore into message(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID, mention.UserID, commentId, 0, MPMessageTypes.Mention);
+                            }
+
                             okMsg.comment = new JSON.Comment(new MPComment(commentId));
                         }
                         break;
@@ -408,6 +426,8 @@ namespace MVC_Cat.Controllers
                             var user = CheckLogin();
                             var package = new MPPackage(packageId);
                             DB.SExecuteNonQuery("insert ignore into following (userid,type,info) values (?,?,?)", user.ID, MPFollowingTypes.Package, packageId);
+
+                            DB.SExecuteNonQuery("insert ignore into activity(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID, package.UserID, package.ID, 0, MPActivityTypes.FollowPackage);
                         }
                         break;
                     #endregion
@@ -418,6 +438,8 @@ namespace MVC_Cat.Controllers
                             var user = CheckLogin();
                             var package = new MPPackage(packageId);
                             DB.SExecuteNonQuery("delete from following where userid=? and type=? and info=?", user.ID, MPFollowingTypes.Package, packageId);
+
+                            DB.SExecuteNonQuery("delete from activity where sender=? and reciever=?  and target=? and type=?", user.ID, package.UserID,package.ID,MPActivityTypes.FollowPackage);
                         }
                         break;
                     #endregion
@@ -428,6 +450,8 @@ namespace MVC_Cat.Controllers
                             var user = CheckLogin();
                             var followUser = new MPUser(userId);
                             DB.SExecuteNonQuery("insert ignore into following (userid,type,info) values (?,?,?)", user.ID, MPFollowingTypes.User, userId);
+
+                            DB.SExecuteNonQuery("insert ignore into activity(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID, followUser.ID, 0, 0, MPActivityTypes.FollowUser);
                         }
                         break;
                     #endregion
@@ -438,6 +462,8 @@ namespace MVC_Cat.Controllers
                             var user = CheckLogin();
                             var followUser = new MPUser(userId);
                             DB.SExecuteNonQuery("delete from following where userid=? and type=? and info=?", user.ID, MPFollowingTypes.User, userId);
+
+                            DB.SExecuteNonQuery("delete from activity where sender=? and reciever=?  and type=?", user.ID, followUser.ID,  MPActivityTypes.FollowUser);
                         }
                         break;
                     #endregion
@@ -603,7 +629,7 @@ namespace MVC_Cat.Controllers
                                         break;
                                     case MPMessageTypes.Mention:
                                         {
-                                            list.Add(new JSON.Notice.Message.Memtion(sender, target));
+                                            list.Add(new JSON.Notice.Message.Mention(sender, target));
                                         }
                                         break;
                                     case MPMessageTypes.Reply:

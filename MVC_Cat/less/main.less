@@ -204,26 +204,44 @@ table {
                 .notice-nav {
                     width: @headerHeight;
 
-                    em {
-                        background-color: #cc3030;
-                        border-radius: 14px;
-                        color:@baseWhite;
-                        font-size: 11px;
-                        font-style: normal;
-                        height: 14px;
-                        line-height: 14px;
-                        min-width: 14px;
-                        position: absolute;
-                        right: 5px;
-                        text-align: center;
-                        top: 5px;
-                    }
-
                     .nav-link {
                         background-image: url(/img/comment_16_16.png);
 
+                        em {
+                            background-color: lighten(#cc3030,10%);
+                            border-radius: 14px;
+                            color: @baseWhite;
+                            font-size: 11px;
+                            font-style: normal;
+                            height: 14px;
+                            line-height: 14px;
+                            min-width: 14px;
+                            position: absolute;
+                            right: 5px;
+                            text-align: center;
+                            top: 5px;
+                        }
+
                         &:hover {
                             background-image: url(/img/comment_hover_16_16.png);
+                            em{
+                                background-color:#cc3030;
+                            }                            
+                        }
+                    }
+
+                    .hide-menu{
+                        top:@headerHeight+10px;
+                        height:20px;
+                        width:200px;
+                        .triangle{
+                            width:0;
+                            height:0;
+                            border:10px solid @baseWhite transparent transparent transparent;
+                            /*background-image:url(/img/notice_box_triangle.png);
+                            position:absolute;*/
+                            top:-20px;
+                            right:20px;
                         }
                     }
                 }
@@ -293,6 +311,7 @@ table {
     }
 
     .float-tools {
+        display:none;
         position: fixed;
         z-index: 99;
         right: 20px;

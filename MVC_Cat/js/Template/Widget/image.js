@@ -30,7 +30,7 @@ MPTemplate.Widget.Image = function (data, options)
             cls = "praise";
             title = "赞";
         }
-        strVar += "    <div class=\"{0}\" title=\"{1}\" data-id=\"{3}\" ><em></em><\/div>".Format(cls,title,data.id);
+        strVar += "    <div class=\"{0}\" title=\"{1}\" data-id=\"{2}\" ><em></em><\/div>".Format(cls,title,data.id);
         strVar += "<\/div>";
     }
     strVar += "    <\/div>";

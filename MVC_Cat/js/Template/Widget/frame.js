@@ -27,7 +27,9 @@ MPTemplate.Widget.Frame = function ()
         strVar += "    <div class=\"nav-link\" title=\"通知\">";
         strVar += "         <em class=\"count\">1</em>";
         strVar += "    <\/div>";
-        strVar += "    <div class=\"hide-menu\"><\/div>";
+        strVar += "    <div class=\"hide-menu\" style=\"display:block\">";
+        strVar += "         <div class=\"triangle\"></div>";
+        strVar += "    </div>";
         strVar += "<\/div>";
         //用户按钮
         strVar += "<div class=\"nav add-nav\">";

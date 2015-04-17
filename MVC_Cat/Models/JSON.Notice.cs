@@ -83,12 +83,12 @@ namespace JSON
                 }
             }
 
-            public class Memtion : Comment
+            public class Mention : Comment
             {
-                public Memtion(int userId, int commentId)
+                public Mention(int userId, int commentId)
                     : base(userId, commentId)
                 {
-                    type = "memtion";
+                    type = "mention";
                 }
             }
 

@@ -359,8 +359,8 @@
         </div>
 
         <div class="class">
-            <a class="title" id="class_notice_activity">notice_activity</a>
-            <div class="description">评论提及的人</div>
+            <a class="title" id="class_notice_activity_praise">notice_activity_praise</a>
+            <div class="description">赞的通知</div>
             <table>
                 <tr>
                     <td class="column_name">名称</td>
@@ -368,22 +368,200 @@
                     <td class="column_description">说明</td>
                 </tr>
                 <tr>
-                    <td class="column_name">user_id</td>
-                    <td class="column_type">int</td>
-                    <td class="column_description">提及的人的id</td>
+                    <td class="column_name">user</td>
+                    <td class="column_type"><a href="#class_user">user</a></td>
+                    <td class="column_description">通知发起者</td>
                 </tr>
                 <tr>
-                    <td class="column_name">pos</td>
-                    <td class="column_type">int</td>
-                    <td class="column_description">开始的位置</td>
+                    <td class="column_name">image</td>
+                    <td class="column_type"><a href="#class_image">image</a></td>
+                    <td class="column_description">赞的图片</td>
                 </tr>
                 <tr>
-                    <td class="column_name">len</td>
-                    <td class="column_type">int</td>
-                    <td class="column_description">长度</td>
+                    <td class="column_name">type</td>
+                    <td class="column_type">string</td>
+                    <td class="column_description">类型,固定为"praise"</td>
                 </tr>
             </table>
         </div>
+
+        <div class="class">
+            <a class="title" id="class_notice_activity_resave">notice_activity_resave</a>
+            <div class="description">转存的通知</div>
+            <table>
+                <tr>
+                    <td class="column_name">名称</td>
+                    <td class="column_type">类型</td>
+                    <td class="column_description">说明</td>
+                </tr>
+                <tr>
+                    <td class="column_name">user</td>
+                    <td class="column_type"><a href="#class_user">user</a></td>
+                    <td class="column_description">通知发起者</td>
+                </tr>
+                <tr>
+                    <td class="column_name">image</td>
+                    <td class="column_type"><a href="#class_image">image</a></td>
+                    <td class="column_description">转存的图片</td>
+                </tr>
+                <tr>
+                    <td class="column_name">package</td>
+                    <td class="column_type"><a href="#class_package">package</a></td>
+                    <td class="column_description">转存到哪个图包</td>
+                </tr>
+                <tr>
+                    <td class="column_name">type</td>
+                    <td class="column_type">string</td>
+                    <td class="column_description">类型,固定为"resave"</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="class">
+            <a class="title" id="class_notice_activity_followuser">notice_activity_followuser</a>
+            <div class="description">关注人</div>
+            <table>
+                <tr>
+                    <td class="column_name">名称</td>
+                    <td class="column_type">类型</td>
+                    <td class="column_description">说明</td>
+                </tr>
+                <tr>
+                    <td class="column_name">user</td>
+                    <td class="column_type"><a href="#class_user">user</a></td>
+                    <td class="column_description">通知发起者</td>
+                </tr>
+                <tr>
+                    <td class="column_name">type</td>
+                    <td class="column_type">string</td>
+                    <td class="column_description">类型,固定为"follow_user"</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="class">
+            <a class="title" id="class_notice_activity_followpackage">notice_activity_followpackage</a>
+            <div class="description">关注图包</div>
+            <table>
+                <tr>
+                    <td class="column_name">名称</td>
+                    <td class="column_type">类型</td>
+                    <td class="column_description">说明</td>
+                </tr>
+                <tr>
+                    <td class="column_name">user</td>
+                    <td class="column_type"><a href="#class_user">user</a></td>
+                    <td class="column_description">通知发起者</td>
+                </tr>
+                <tr>
+                    <td class="column_name">package</td>
+                    <td class="column_type"><a href="#class_package">package</a></td>
+                    <td class="column_description">关注了哪个图包</td>
+                </tr>
+                <tr>
+                    <td class="column_name">type</td>
+                    <td class="column_type">string</td>
+                    <td class="column_description">类型,固定为"follow_package"</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="class">
+            <a class="title" id="class_notice_message_comment">notice_message_comment</a>
+            <div class="description">收到的评论</div>
+            <table>
+                <tr>
+                    <td class="column_name">名称</td>
+                    <td class="column_type">类型</td>
+                    <td class="column_description">说明</td>
+                </tr>
+                <tr>
+                    <td class="column_name">user</td>
+                    <td class="column_type"><a href="#class_user">user</a></td>
+                    <td class="column_description">通知发起者</td>
+                </tr>
+                <tr>
+                    <td class="column_name">image</td>
+                    <td class="column_type"><a href="#class_image">image</a></td>
+                    <td class="column_description">被评论的图片</td>
+                </tr>
+                <tr>
+                    <td class="column_name">comment</td>
+                    <td class="column_type">string</td>
+                    <td class="column_description">评论的内容</td>
+                </tr>
+                <tr>
+                    <td class="column_name">type</td>
+                    <td class="column_type">string</td>
+                    <td class="column_description">类型,固定为"comment"</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="class">
+            <a class="title" id="class_notice_message_memtion">notice_message_memtion</a>
+            <div class="description">评论时@的</div>
+            <table>
+                <tr>
+                    <td class="column_name">名称</td>
+                    <td class="column_type">类型</td>
+                    <td class="column_description">说明</td>
+                </tr>
+                <tr>
+                    <td class="column_name">user</td>
+                    <td class="column_type"><a href="#class_user">user</a></td>
+                    <td class="column_description">通知发起者</td>
+                </tr>
+                <tr>
+                    <td class="column_name">image</td>
+                    <td class="column_type"><a href="#class_image">image</a></td>
+                    <td class="column_description">被评论的图片</td>
+                </tr>
+                <tr>
+                    <td class="column_name">comment</td>
+                    <td class="column_type">string</td>
+                    <td class="column_description">评论的内容</td>
+                </tr>
+                <tr>
+                    <td class="column_name">type</td>
+                    <td class="column_type">string</td>
+                    <td class="column_description">类型,固定为"memtion"</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="class">
+            <a class="title" id="class_notice_message_reply">notice_message_reply</a>
+            <div class="description">回复评论</div>
+            <table>
+                <tr>
+                    <td class="column_name">名称</td>
+                    <td class="column_type">类型</td>
+                    <td class="column_description">说明</td>
+                </tr>
+                <tr>
+                    <td class="column_name">user</td>
+                    <td class="column_type"><a href="#class_user">user</a></td>
+                    <td class="column_description">通知发起者</td>
+                </tr>
+                <tr>
+                    <td class="column_name">image</td>
+                    <td class="column_type"><a href="#class_image">image</a></td>
+                    <td class="column_description">被评论的图片</td>
+                </tr>
+                <tr>
+                    <td class="column_name">comment</td>
+                    <td class="column_type">string</td>
+                    <td class="column_description">评论的内容</td>
+                </tr>
+                <tr>
+                    <td class="column_name">type</td>
+                    <td class="column_type">string</td>
+                    <td class="column_description">类型,固定为"reply"</td>
+                </tr>
+            </table>
+        </div>
+
     </div>
 
     <h2>页面数据</h2>
