@@ -242,6 +242,7 @@
     <Content Include="js\Template\Widget\frame.js" />
     <Content Include="js\Template\Widget\image-view.js" />
     <Content Include="js\Template\Widget\link.js" />
+    <Content Include="js\Template\Widget\notice.js" />
     <Content Include="js\Template\Widget\user.js" />
     <Content Include="js\user.js" />
     <Content Include="js\Widget\Frame.js" />

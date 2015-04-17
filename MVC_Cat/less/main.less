@@ -103,7 +103,10 @@ table {
     border-spacing: 0;
 }
 
-.clear {
+.clear::after {
+    content: " ";
+    width: 0;
+    height: 0;
     clear: both;
 }
 
@@ -224,24 +227,77 @@ table {
 
                         &:hover {
                             background-image: url(/img/comment_hover_16_16.png);
-                            em{
-                                background-color:#cc3030;
-                            }                            
+
+                            em {
+                                background-color: #cc3030;
+                            }
                         }
                     }
 
-                    .hide-menu{
-                        top:@headerHeight+10px;
-                        height:20px;
-                        width:200px;
-                        .triangle{
-                            width:0;
-                            height:0;
-                            border:10px solid @baseWhite transparent transparent transparent;
-                            /*background-image:url(/img/notice_box_triangle.png);
-                            position:absolute;*/
-                            top:-20px;
-                            right:20px;
+                    .hide-menu {
+                        top: @headerHeight+10px;
+                        right: -1*2*@headerHeight;
+                        width: 400px;
+
+                        .triangle {
+                            position: absolute;
+                            top: -10px;
+                            width: 20px;
+                            height: 10px;
+                            right: 91px;
+                            background-image: url(/img/notice_box_triangle.png);
+                        }
+
+                        ul {
+                            font-size: 12px;
+                            display: table;
+                            margin: 6px auto;
+                            border: 1px solid darken(@baseWhite,20%);
+                            border-radius: 5px;
+                            overflow: hidden;
+
+                            li {
+                                float: left;
+                                border-right: 1px solid darken(@baseWhite,20%);
+                                background-image: linear-gradient(@baseWhite,darken(@baseWhite,4%));
+                                padding: 3px 20px;
+                                cursor: pointer;
+
+                                &:last-child {
+                                    border-right: none;
+                                }
+
+                                &.on {
+                                    background-image: linear-gradient(darken(@baseWhite,4%),@baseWhite);
+                                }
+                            }
+                        }
+
+                        .content{
+                            margin: 0 6px;
+                            height:300px;
+                        }
+
+                        .all{
+                            font-size:13px;
+                            padding:6px;
+                            text-align:center;
+                            border-top:1px solid darken(@baseWhite,15%);
+                            background-color:darken(@baseWhite,7%);
+                            color:@baseBlue;
+                            cursor:pointer;
+
+                            &:hover{
+                                text-decoration:underline;
+                            }
+
+                            &.activity::after{
+                                content:"查看所有的动态>>"
+                            }
+
+                            &.message::after{
+                                content:"查看所有的消息>>";
+                            }
                         }
                     }
                 }
@@ -311,7 +367,6 @@ table {
     }
 
     .float-tools {
-        display:none;
         position: fixed;
         z-index: 99;
         right: 20px;
@@ -331,6 +386,7 @@ table {
             }
 
             &.top {
+                display: none;
                 background-image: url(/img/up_32_32.png);
             }
         }
