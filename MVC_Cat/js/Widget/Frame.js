@@ -35,13 +35,17 @@ MPWidget.Frame.New = function ()
         var l = content.find("#logout");//登出
         MPMenu(p, m);
 
-        l.click(function () {
-            if ($.cookie("login")==null) {
+        l.click(function ()
+        {
+            if ($.cookie("login") == null)
+            {
                 MPMessageBox.New(MPMessageBox.Icons.Error, "请先登录");
                 return;
             }
-            $.post(host + "/ajax/logout", {}, function (data) {
-                if (data.code==0) {
+            $.post(host + "/ajax/logout", {}, function (data)
+            {
+                if (data.code == 0)
+                {
                     $.cookie("login", null);
                     location.href = host;
                 }
@@ -55,10 +59,20 @@ MPWidget.Frame.New = function ()
         });
 
         //返回顶端按钮
-        //content.find(".float-tools .top").click(function ()
-        //{
-
-        //})
     }
+    var toTopButton = content.find(".float-tools .top");
+
+    $(document).scroll(function ()
+    {
+        if ($(document).scrollTop() <200)
+            toTopButton.fadeOut();
+        else
+            toTopButton.fadeIn().css("display","block");
+    })
+
+    toTopButton.click(function ()
+    {
+        $("html,body").animate({ scrollTop: 0 }, 200);
+    })
     return content;
 };
