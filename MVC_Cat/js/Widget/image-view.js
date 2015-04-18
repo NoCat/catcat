@@ -70,7 +70,9 @@ MPWidget.ImageView.Bind = function () {
     //添加评论
     .on("click", ".image-view .submit", submit_click)
     //监听键盘输入,主要针对@的使用
-    .on("keyup", keyup);
+    .on("keyup", ".new-comment textarea", keyup)
+    //点击@人
+    .on("click", ".mention-option",mention_click);
 
     function resave_click() {
         var t = $(this);
@@ -123,19 +125,38 @@ MPWidget.ImageView.Bind = function () {
                 if (data.code==0)
                 {
                     var folUserList = data.users;
-                    var container = $("</div>");
+                    var container = $("<div/>").addClass("mention-container ");
                     if (folUserList.length==0)
                         return  ;
                     for (var i = 0; i < folUserList.length; i++)
                     {
-                        var option = $("</div>");
+                        var option = $("<div/>").addClass("mention-option");
                         option.text(folUserList[i].name);
-                        option.attr("data-id", folUserList[i].id);
                         container.append(option);
                     }
-                    $("body").append(container);
+                    var position = $(".new-comment textarea").caret("position");
+                    container.offset({ left:position.left+2,top:-66+position.top});
+                    $(".new-comment").append(container);
+
+                    $(document).click(function (e)
+                    {
+                        var point = {};
+                        point.X = e.clientX;
+                        point.Y = e.clientY;
+                        if (!MPCheckInEle(container,point))
+                        {
+                            container.hide();
+                        }
+                    })
                 }
             }, "json");
         }
+    }
+
+    function mention_click() {
+        var aText = $(this).text() + " ";
+        var oText = $(".new-comment textarea").val();
+        $(".new-comment textarea").val(oText + aText);
+        $(".new-comment .mention-container").hide();
     }
 }

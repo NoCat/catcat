@@ -7,6 +7,7 @@
 /// <reference path="jquery.js" />
 /// <reference path="jquery.Jcrop.js" />
 /// <reference path="jquery.color.js" />
+/// <reference path="jquery.caret.min.js" />
 /// <reference path="main.js" />
 /// <reference path="package.js" />
 /// <reference path="pick.js" />
@@ -14,6 +15,8 @@
 /// <reference path="signup-email.js" />
 /// <reference path="user.js" />
 /// <reference path="Format/User.js" />
+
+//dialog
 /// <reference path="Dialog/CreateImageDialog.js" />
 /// <reference path="Dialog/CreatePackageDialog.js" />
 /// <reference path="Dialog/Dialog.js" />
