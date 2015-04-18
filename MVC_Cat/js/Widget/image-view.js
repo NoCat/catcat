@@ -125,7 +125,7 @@ MPWidget.ImageView.Bind = function () {
                 if (data.code==0)
                 {
                     var folUserList = data.users;
-                    var container = $("<div/>").addClass("mention-container");
+                    var container = $("<div/>").addClass("mention-container ");
                     if (folUserList.length==0)
                         return  ;
                     for (var i = 0; i < folUserList.length; i++)
@@ -134,8 +134,20 @@ MPWidget.ImageView.Bind = function () {
                         option.text(folUserList[i].name);
                         container.append(option);
                     }
+                    var position = $(".new-comment textarea").caret("position");
+                    container.offset({ left:position.left+2,top:-66+position.top});
                     $(".new-comment").append(container);
 
+                    $(document).click(function (e)
+                    {
+                        var point = {};
+                        point.X = e.clientX;
+                        point.Y = e.clientY;
+                        if (!MPCheckInEle(container,point))
+                        {
+                            container.hide();
+                        }
+                    })
                 }
             }, "json");
         }
@@ -145,5 +157,6 @@ MPWidget.ImageView.Bind = function () {
         var aText = $(this).text() + " ";
         var oText = $(".new-comment textarea").val();
         $(".new-comment textarea").val(oText + aText);
+        $(".new-comment .mention-container").hide();
     }
 }

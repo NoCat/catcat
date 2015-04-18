@@ -16,6 +16,7 @@
     <script src="<%=ResolveClientUrl("~/js/main.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/jquery.color.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/jquery.Jcrop.js") %>"></script>
+    <script src="<%=ResolveClientUrl("~/js/jquery.caret.min.js") %>"></script>
 
     <script src="<%=ResolveClientUrl("~/js/Dialog/Dialog.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/Dialog/TitleDialog.js") %>"></script>
