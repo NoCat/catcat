@@ -1,0 +1,24 @@
+﻿.widget-frame .float-tools {
+    display: block;
+}
+
+    .widget-frame .float-tools em.top {
+        background-image: url(/img/up_32_32.png);
+        display: none;
+    }
+
+.mention-container {
+    height:70px;
+    border: 1px solid black;
+    overflow-y: scroll;
+    width:200px;
+    position:relative;
+}
+
+.mention-option {
+    cursor: pointer;
+    overflow: hidden;
+    padding: 0 6px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

@@ -153,6 +153,7 @@
     <Content Include="css\setting.css" />
     <Content Include="css\signup-email.css" />
     <Content Include="css\signup.css" />
+    <Content Include="css\new.css" />
     <Content Include="dialogs\crop-dialog.html" />
     <Content Include="dialogs\link.html" />
     <Content Include="dialogs\reset-password-success.html" />
