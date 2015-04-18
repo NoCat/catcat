@@ -33,6 +33,7 @@ MPTemplate.Widget.Frame = function ()
         strVar += "             <li class=\"on\">消息</li>";
         strVar += "             <li>动态</li>";
         strVar += "         </ul>";
+        strVar += "         <div class=\"clear\"></div>";
         strVar += "         <div class=\"content\">";
         strVar += "         </div>";
         strVar += "         <div class=\"all activity\"></div>";

@@ -562,7 +562,7 @@ namespace MVC_Cat.Controllers
                             if (max == 0)
                                 max = Int32.MaxValue;
 
-                            var res = DB.SExecuteReader("select id,sender,target,addition,type from activity where id<? order by id desc limit 15", max);
+                            var res = DB.SExecuteReader("select id,sender,target,addition,type from activity where id<? and reciever=? order by id desc limit 15", max,user.ID);
                             var list = new List<object>();
                             foreach (var item in res)
                             {
@@ -597,7 +597,10 @@ namespace MVC_Cat.Controllers
                             }
 
                             okMsg.datas = list;
-                            okMsg.data_max = res[res.Count - 1][0];
+                            if (res.Count != 0)
+                            {
+                                okMsg.data_max = res[res.Count - 1][0];
+                            }
                         }
                         break;
                     #endregion

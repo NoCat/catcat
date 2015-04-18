@@ -74,5 +74,19 @@ MPWidget.Frame.New = function ()
     {
         $("html,body").animate({ scrollTop: 0 }, 200);
     })
+
+
+    ///////
+    //这里的是测试代码,实际使用时去掉
+    $.post("/ajax/get-activity", { max: 0 }, function (data)
+    {
+        var container = content.find(".notice-nav .content");
+        for(var n=data.datas.length,i=0;i<n;i++)
+        {
+            container.append(MPTemplate.Widget.Notice.Activity(data.datas[i]));
+        }
+    },"json");
+    ///////
+
     return content;
 };

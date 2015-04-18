@@ -49,6 +49,7 @@
     <script src="<%=ResolveClientUrl("~/js/template/widget/link.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/template/widget/user.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/template/widget/add.js") %>"></script>
+    <script src="<%=ResolveClientUrl("~/js/template/widget/notice.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/template/dialog/avt-cut-dialog.js") %>"></script>
 
     <script src="<%=ResolveClientUrl("~/js/Widget/widget.js") %>"></script>

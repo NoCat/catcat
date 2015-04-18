@@ -123,10 +123,12 @@ namespace JSON
     {
         public int id { get; set; }
         public JSON.File file { get; set; }
+        public string description { get; set; }
         public Image(MPImage image)
         {
             id = image.ID;
             file = new JSON.File(new MPFile(image.FileID));
+            description = image.Description;
         }
 
     }

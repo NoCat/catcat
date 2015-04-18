@@ -103,10 +103,7 @@ table {
     border-spacing: 0;
 }
 
-.clear::after {
-    content: " ";
-    width: 0;
-    height: 0;
+.clear {
     clear: both;
 }
 
@@ -273,30 +270,35 @@ table {
                             }
                         }
 
-                        .content{
-                            margin: 0 6px;
-                            height:300px;
+                        .content {
+                            overflow:auto;
+                            height: 300px;
+                            background-color:@baseWhite;
+
+                            .widget-notice{
+                                border-top:1px solid darken(@baseWhite,10%);
+                            }
                         }
 
-                        .all{
-                            font-size:13px;
-                            padding:6px;
-                            text-align:center;
-                            border-top:1px solid darken(@baseWhite,15%);
-                            background-color:darken(@baseWhite,7%);
-                            color:@baseBlue;
-                            cursor:pointer;
+                        .all {
+                            font-size: 13px;
+                            padding: 6px;
+                            text-align: center;
+                            border-top: 1px solid darken(@baseWhite,15%);
+                            background-color: darken(@baseWhite,7%);
+                            color: @baseBlue;
+                            cursor: pointer;
 
-                            &:hover{
-                                text-decoration:underline;
+                            &:hover {
+                                text-decoration: underline;
                             }
 
-                            &.activity::after{
-                                content:"查看所有的动态>>"
+                            &.activity::after {
+                                content: "查看所有的动态>>";
                             }
 
-                            &.message::after{
-                                content:"查看所有的消息>>";
+                            &.message::after {
+                                content: "查看所有的消息>>";
                             }
                         }
                     }
@@ -2193,6 +2195,37 @@ table {
         a:hover {
             text-decoration: underline;
             color: @baseBlue;
+        }
+    }
+}
+
+.widget-notice {
+    overflow:hidden;
+    padding: 12px;
+    @avtSize:40px;
+
+    .avt {
+        width: @avtSize;
+        height: @avtSize;
+        float: left;
+        box-shadow:0 0 2px 0 darken(@baseWhite,20%);
+    }
+
+    .r{
+        font-size:14px;
+        padding-left:@avtSize+10;
+
+        a,span{
+            display:inline-block;
+            line-height:@avtSize/2;
+        }
+
+        a{
+            color:@baseBlue;
+
+            &:hover{
+                text-decoration:underline;
+            }
         }
     }
 }
