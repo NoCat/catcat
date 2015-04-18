@@ -10,6 +10,7 @@
     <meta name="keywords" content="<%=ViewBag.Keywords==null?"动漫 acg 图片 图包": ViewBag.Keywords%>" />
     <meta name="description" content="<%=ViewBag.Description==null?"专注于动漫图片的收集和分享": ViewBag.Description%>" />
     <link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/css/main.css") %>" />
+    <link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/css/new.css") %>" />
     <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
     <script type="text/javascript" src="<%=ResolveUrl("~/js/jquery.cookie.js")%>"></script>
     <script src="<%=ResolveClientUrl("~/js/main.js") %>"></script>
