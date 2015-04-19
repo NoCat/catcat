@@ -40,13 +40,22 @@ MPWidget.Frame.New = function ()
         MPPopUpMenu(notice_nav, notice_nav_menu, function ()
         {
             MPMenu(user_nav, user_nav_menu);
-            $(".notice-nav .content").clear();
+            $(".widget-notice").remove();
         },//callback
         function ()
         {
             user_nav.unbind();
-            GetMessage(20);
-            $("#activity").click(GetActivity(20));
+            GetMessage();           
+        });
+
+        $("#activity").click(function ()
+        {
+            if ($("#activity").hasClass("on"))
+                return;
+
+            $(".widget-notice").remove();
+            GetActivity();
+            $(this).addClass("on");
         });
 
         l.click(function ()
@@ -70,7 +79,8 @@ MPWidget.Frame.New = function ()
         add.click(function ()
         {
             MPObject.Image.CreateImage();
-        });  
+        });
+
     }
 
     //返回顶端按钮
@@ -101,9 +111,9 @@ MPWidget.Frame.New = function ()
         }
     }, "json");
 
-    function GetMessage(max)
+    function GetMessage()
     {
-        $.post(host + "/ajax/get-message", { max: max }, function (data)
+        $.post(host + "/ajax/get-message", { max: 0 }, function (data)
         {
             if (data.code == 0)
             {
@@ -116,9 +126,9 @@ MPWidget.Frame.New = function ()
         }, "json");
     }
 
-    function GetActivity(max)
+    function GetActivity()
     {
-        $.post(host + "/ajax/get-activity", { max: max }, function (data)
+        $.post(host + "/ajax/get-activity", { max: 0 }, function (data)
         {
             if (data.code == 0)
             {
@@ -130,7 +140,7 @@ MPWidget.Frame.New = function ()
             }
         }, "json");
     }
-    
+
 
 
     /////

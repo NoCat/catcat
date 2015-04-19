@@ -15,7 +15,7 @@ MPTemplate.Widget.ImageView = function (data, options)
     }
     else
     {
-        strVar += "<div class=\"{0} btn\"><em></em></div>".Format(data.praised == true ? "image-unpraise" : "image-praise");
+        strVar += "<div class=\"{0} btn\" data-id=\"{1}\"><em></em></div>".Format(data.praised == true ? "image-unpraise" : "image-praise",data.id);
     }
     strVar += "            <\/div>";
     strVar += "            <div class=\"image\">";
