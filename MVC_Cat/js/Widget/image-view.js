@@ -70,7 +70,7 @@ MPWidget.ImageView.Bind = function () {
     //添加评论
     .on("click", ".image-view .submit", submit_click)
     //监听键盘输入,主要针对@的使用
-    .on("keyup", ".new-comment textarea", keyup)
+    .on("keydown", ".new-comment textarea", keydown)
     //点击@人
     .on("click", ".mention-option",mention_click);
 
@@ -100,15 +100,17 @@ MPWidget.ImageView.Bind = function () {
 
     function submit_click() {
         var id = $(".image-view .resave").attr("data-id");
-        var text = $(".new-comment textarea").val();//评论内容
-        if ($.trim(text) == "") {
-            MPMessageBox.New(MPMessageBox.Icons.OK, "请输入评论内容");
+        var text = $(".new-comment textarea");//评论内容
+        if ($.trim(text.val()) == "") {
+            MPMessageBox.New(MPMessageBox.Icons.Warn, "请输入评论内容");
             return;
         }
-        $.post(host + "/ajax/add-comment", { text: text, image_id: id }, function (data) {
-            if (data.code == 0) {
-                $(".image-view .comments").prepend($(MPTemplate.Widget.Comment(data.comment)));
+        $.post(host + "/ajax/add-comment", { text: MPHtmlEncode(text.val()), image_id: id }, function (data) {
+            if (data.code == 0)
+            {
                 //成功的处理
+                $(".image-view .comments").prepend($(MPTemplate.Widget.Comment(data.comment)));
+                text.val("");                
             }
             else {
                 MPMessageBox.New(MPMessageBox.Icons.Error, data.mag);
@@ -116,9 +118,9 @@ MPWidget.ImageView.Bind = function () {
         }, "json");
     }
 
-    function keyup(e)
+    function keydown(e)
     {
-        if (e.shiftKey&&e.keyCode==50)
+        if (e.keyCode == 50 && e.shiftKey)
         {
             $.post(host + "/ajax/get-following-user", {}, function (data)
             {
@@ -134,8 +136,10 @@ MPWidget.ImageView.Bind = function () {
                         option.text(folUserList[i].name);
                         container.append(option);
                     }
+                    var t = $(".new-comment textarea").position().top;
+                    var l = $(".new-comment textarea").position().left
                     var position = $(".new-comment textarea").caret("position");
-                    container.offset({ left:position.left+2,top:-66+position.top});
+                    container.offset({ left:position.left+l+2,top:position.top+t+1});
                     $(".new-comment").append(container);
 
                     $(document).click(function (e)
@@ -145,8 +149,13 @@ MPWidget.ImageView.Bind = function () {
                         point.Y = e.clientY;
                         if (!MPCheckInEle(container,point))
                         {
-                            container.hide();
+                            container.remove();
                         }
+                    })
+
+                    $(document).keydown(function (e)
+                    {
+                        container.remove();
                     })
                 }
             }, "json");
@@ -157,6 +166,6 @@ MPWidget.ImageView.Bind = function () {
         var aText = $(this).text() + " ";
         var oText = $(".new-comment textarea").val();
         $(".new-comment textarea").val(oText + aText);
-        $(".new-comment .mention-container").hide();
+        $(".new-comment .mention-container").remove();
     }
 }

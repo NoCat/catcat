@@ -157,4 +157,5 @@ MPTemplate.Widget.Notice.Message=function(data,options)
             }
             break;
     }
+    return str;
 }

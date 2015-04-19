@@ -254,7 +254,7 @@ var MPWaterFall = {
             return dataList[n - 1][returnField];
         }
 
-        waterFall.PushElement=function(element)
+        waterFall.PushElement = function (element)
         {
             var item = Add(element);
             Arrange(item);
@@ -371,7 +371,8 @@ function MPCheckLogin(showDialog)
         if (showDialog === true)
         {
             var dialog = MPLoginDialog.New();
-            dialog.onSuccess = function () {
+            dialog.onSuccess = function ()
+            {
                 location.reload();
             }
         }
@@ -497,7 +498,7 @@ function MPMenu(parent, menu, staytime, delaytime)//parent为点击目标 menu�
 
 }
 
-function MPPopUpMenu(parent, menu, callback)//parent为点击目标 menu为弹出窗口 callback为menu关闭后响应的事件
+function MPPopUpMenu(parent, menu, onMenuClose, callback)//parent为点击目标 menu为弹出窗口 onMenuClose为menu关闭后响应的事件,callback回调
 {
     var _parent = $(parent);
     var _menu = $(menu);
@@ -520,11 +521,13 @@ function MPPopUpMenu(parent, menu, callback)//parent为点击目标 menu为弹�
                 _menu.hide();
                 $(window).off("click", clickfn);
             }
-            if (callback != undefined || callback != null)
+            if (onMenuClose)
             {
-                callback();
+                onMenuClose();
             }
         })
+        if (callback)
+            callback();
     })
 }
 

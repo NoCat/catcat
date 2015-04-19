@@ -27,11 +27,11 @@ MPTemplate.Widget.Frame = function ()
         strVar += "    <div class=\"nav-link\" title=\"通知\">";
         strVar += "         <em class=\"count\">1</em>";
         strVar += "    <\/div>";       
-        strVar += "    <div class=\"hide-menu\" style=\"display:block\">";
+        strVar += "    <div class=\"hide-menu\" >";
         strVar += "         <div class=\"triangle\"></div>";
         strVar += "         <ul>";
-        strVar += "             <li class=\"on\">消息</li>";
-        strVar += "             <li>动态</li>";
+        strVar += "             <li id=\"message\" class=\"on\">消息</li>";
+        strVar += "             <li id=\"activity\">动态</li>";
         strVar += "         </ul>";
         strVar += "         <div class=\"clear\"></div>";
         strVar += "         <div class=\"content\">";

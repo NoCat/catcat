@@ -12,7 +12,7 @@
     border: 1px solid black;
     overflow-y: scroll;
     width:200px;
-    position:relative;
+    position:absolute;
 }
 
 .mention-option {
@@ -21,4 +21,12 @@
     padding: 0 6px;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.new-comment{
+    position:relative;
+}
+
+.widget-frame .header .menu-bar .right .notice-nav .hide-menu{
+    display:none;
 }
