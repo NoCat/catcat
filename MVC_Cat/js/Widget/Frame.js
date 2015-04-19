@@ -30,10 +30,24 @@ MPWidget.Frame.New = function ()
     }
     else
     {
-        var p = content.find(".user-nav");
-        var m = p.find(".hide-menu");
+        var user_nav = content.find(".user-nav");
+        var user_nav_menu = user_nav.find(".hide-menu");
         var l = content.find("#logout");//登出
-        MPMenu(p, m);
+        MPMenu(user_nav, user_nav_menu);
+
+        var notice_nav = content.find(".notice-nav");
+        var notice_nav_menu = notice_nav.find(".hide-menu");
+        MPPopUpMenu(notice_nav, notice_nav_menu, function ()
+        {
+            MPMenu(user_nav, user_nav_menu);
+            $(".notice-nav .content").clear();
+        },//callback
+        function ()
+        {
+            user_nav.unbind();
+            GetMessage(20);
+            $("#activity").click(GetActivity(20));
+        });
 
         l.click(function ()
         {
@@ -56,18 +70,18 @@ MPWidget.Frame.New = function ()
         add.click(function ()
         {
             MPObject.Image.CreateImage();
-        });
-
-        //返回顶端按钮
+        });  
     }
+
+    //返回顶端按钮
     var toTopButton = content.find(".float-tools .top");
 
     $(document).scroll(function ()
     {
-        if ($(document).scrollTop() <200)
+        if ($(document).scrollTop() < 200)
             toTopButton.fadeOut();
         else
-            toTopButton.fadeIn().css("display","block");
+            toTopButton.fadeIn().css("display", "block");
     })
 
     toTopButton.click(function ()
@@ -75,18 +89,61 @@ MPWidget.Frame.New = function ()
         $("html,body").animate({ scrollTop: 0 }, 200);
     })
 
-
-    ///////
-    //这里的是测试代码,实际使用时去掉
-    $.post("/ajax/get-activity", { max: 0 }, function (data)
+    $.post(host + "/ajax/get-notice-count", {}, function (data)
     {
-        var container = content.find(".notice-nav .content");
-        for(var n=data.datas.length,i=0;i<n;i++)
+        if (data.code == 0)
         {
-            container.append(MPTemplate.Widget.Notice.Activity(data.datas[i]));
+            var total = data.activity_count + data.message_count;
+            if (total == 0)
+                $(".notice-nav .count").hide();
+            else
+                $(".notice-nav .count").text(total);
         }
-    },"json");
-    ///////
+    }, "json");
+
+    function GetMessage(max)
+    {
+        $.post(host + "/ajax/get-message", { max: max }, function (data)
+        {
+            if (data.code == 0)
+            {
+                var container = content.find(".notice-nav .content");
+                for (var n = data.datas.length, i = 0; i < n; i++)
+                {
+                    container.append(MPTemplate.Widget.Notice.Message(data.datas[i]));
+                }
+            }
+        }, "json");
+    }
+
+    function GetActivity(max)
+    {
+        $.post(host + "/ajax/get-activity", { max: max }, function (data)
+        {
+            if (data.code == 0)
+            {
+                var container = content.find(".notice-nav .content");
+                for (var n = data.datas.length, i = 0; i < n; i++)
+                {
+                    container.append(MPTemplate.Widget.Notice.Activity(data.datas[i]));
+                }
+            }
+        }, "json");
+    }
+    
+
+
+    /////
+    ////这里的是测试代码,实际使用时去掉
+    //$.post("/ajax/get-activity", { max: 0 }, function (data)
+    //{
+    //    var container = content.find(".notice-nav .content");
+    //    for(var n=data.datas.length,i=0;i<n;i++)
+    //    {
+    //        container.append(MPTemplate.Widget.Notice.Activity(data.datas[i]));
+    //    }
+    //},"json");
+    /////
 
     return content;
 };
