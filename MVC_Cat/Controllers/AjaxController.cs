@@ -595,7 +595,7 @@ namespace MVC_Cat.Controllers
                                         break;
                                 }
                             }
-
+                            user.LastGetActivityTime = DateTime.Now;
                             okMsg.datas = list;
                             if (res.Count != 0)
                             {
@@ -644,6 +644,7 @@ namespace MVC_Cat.Controllers
                                         break;
                                 }
                             }
+                            user.LastGetMessageTime = DateTime.Now;
 
                             okMsg.datas = list;
                             okMsg.data_max = res[res.Count - 1][0];

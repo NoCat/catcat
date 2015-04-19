@@ -27,7 +27,7 @@ MPTemplate.Widget.Frame = function ()
         strVar += "    <div class=\"nav-link\" title=\"通知\">";
         strVar += "         <em class=\"count\">1</em>";
         strVar += "    <\/div>";       
-        strVar += "    <div class=\"hide-menu\" >";
+        strVar += "    <div class=\"hide-menu\">";
         strVar += "         <div class=\"triangle\"></div>";
         strVar += "         <ul>";
         strVar += "             <li id=\"message\" class=\"on\">消息</li>";
@@ -69,7 +69,7 @@ MPTemplate.Widget.Frame = function ()
     strVar += "        <div class=\"body\"><\/div>";
     strVar += "    <\/div>";
     strVar += "    <div class=\"float-tools\">";
-    strVar += "        <em class=\"top\" title\"回到顶部\"><\/em>";
+    strVar += "        <em class=\"top\" title=\"回到顶部\"><\/em>";
     strVar += "    <\/div>";
     strVar += "<\/div>";
 
