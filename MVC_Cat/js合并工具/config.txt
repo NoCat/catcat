@@ -4,6 +4,7 @@
 ../js/main.js
 ../js/jquery.color.js
 ../js/jquery.jcrop.js
+../js/jquery.caret.min.js
 
 ../js/dialog/dialog.js
 ../js/dialog/titledialog.js
@@ -37,6 +38,8 @@
 ../js/template/widget/image-view.js
 ../js/template/widget/link.js
 ../js/template/widget/user.js
+../js/template/widget/add.js
+../js/template/widget/notice.js
 ../js/template/dialog/avt-cut-dialog.js
 
 ../js/widget/widget.js
@@ -46,7 +49,6 @@
 ../js/Widget/image.js
 ../js/Widget/package.js
 ../js/Widget/image-view.js
-../js/Widget/user-info.js
 ../js/Widget/User.js
 ../js/Widget/window.js
 

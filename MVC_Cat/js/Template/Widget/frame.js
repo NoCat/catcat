@@ -69,7 +69,7 @@ MPTemplate.Widget.Frame = function ()
     strVar += "        <div class=\"body\"><\/div>";
     strVar += "    <\/div>";
     strVar += "    <div class=\"float-tools\">";
-    strVar += "        <em class=\"top\" title\"回到顶部\"><\/em>";
+    strVar += "        <em class=\"top\" title=\"回到顶部\"><\/em>";
     strVar += "    <\/div>";
     strVar += "<\/div>";
 

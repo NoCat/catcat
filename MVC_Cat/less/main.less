@@ -232,7 +232,7 @@ table {
                     }
 
                     .hide-menu {
-                        display:none;
+                        display: none;
                         top: @headerHeight+10px;
                         right: -1*2*@headerHeight;
                         width: 400px;
@@ -272,12 +272,12 @@ table {
                         }
 
                         .content {
-                            overflow:auto;
+                            overflow: auto;
                             height: 300px;
-                            background-color:@baseWhite;
+                            background-color: @baseWhite;
 
-                            .widget-notice{
-                                border-top:1px solid darken(@baseWhite,10%);
+                            .widget-notice {
+                                border-top: 1px solid darken(@baseWhite,10%);
                             }
                         }
 
@@ -707,7 +707,6 @@ table {
 
         .info {
 
-
             .avt {
                 float: left;
 
@@ -782,6 +781,7 @@ table {
             }
 
             .new-comment {
+                position: relative;
                 padding-left: @avtSize+10px;
                 width: auto;
 
@@ -2201,32 +2201,54 @@ table {
 }
 
 .widget-notice {
-    overflow:hidden;
+    overflow: hidden;
     padding: 12px;
-    @avtSize:40px;
+    @avtSize: 40px;
 
     .avt {
         width: @avtSize;
         height: @avtSize;
         float: left;
-        box-shadow:0 0 2px 0 darken(@baseWhite,20%);
+        box-shadow: 0 0 2px 0 darken(@baseWhite,20%);
     }
 
-    .r{
-        font-size:14px;
-        padding-left:@avtSize+10;
+    .r {
+        font-size: 14px;
+        padding-left: @avtSize+10;
 
-        a,span{
-            display:inline-block;
-            line-height:@avtSize/2;
+        a, span {
+            display: inline-block;
+            line-height: @avtSize/2;
         }
 
-        a{
-            color:@baseBlue;
+        a {
+            color: @baseBlue;
 
-            &:hover{
-                text-decoration:underline;
+            &:hover {
+                text-decoration: underline;
             }
+        }
+    }
+}
+
+.mention-container {
+    height: 70px;
+    border: 1px solid darken(@baseWhite,25%);
+    overflow-y: scroll;
+    width: 200px;
+    position: absolute;
+    font-size:13px;
+    background-color:@baseWhite;
+
+    .mention-option {
+        cursor: pointer;
+        overflow: hidden;
+        padding: 1px 6px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &:hover{
+            background:darken(@baseWhite,6%);
         }
     }
 }
