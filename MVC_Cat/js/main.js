@@ -527,7 +527,7 @@ function MPPopUpMenu(parent, menu, onMenuClose, callback)//parent为点击目标
             point.Y = event.clientY;
             if (MPCheckInEle(_menu, point))
             {
-                _menu.show();
+                _menu.show();                
             }
             else
             {

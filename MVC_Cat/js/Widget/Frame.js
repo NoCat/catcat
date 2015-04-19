@@ -41,22 +41,80 @@ MPWidget.Frame.New = function ()
         {
             MPMenu(user_nav, user_nav_menu);
             $(".widget-notice").remove();
+            $("#activity").removeClass("on");
+            $("#message").removeClass("on");
         },//callback
         function ()
         {
             user_nav.unbind();
-            GetMessage();           
+            if (!($("#activity").hasClass("on") || $("#message").hasClass("on")))
+            {
+                $("#message").addClass("on");
+                GetMessage(0);
+                IsBottom("#message");
+            }
+
+            $("#activity").click(function (e)
+            {
+                e.stopPropagation();
+                $("notice-nav .content").unbind();
+                if ($(this).hasClass("on"))
+                    return;
+                $("#message").removeClass("on");
+                $(this).addClass("on");
+                $(".widget-notice").remove();
+                GetActivity(0);
+                IsBottom("#activity");
+            });
+
+            $("#message").click(function (e)
+            {
+                e.stopPropagation();
+                $("notice-nav .content").unbind();//用于消去上一个滚动绑定事件
+                if ($(this).hasClass("on"))
+                    return;
+                $("#activity").removeClass("on");
+                $(this).addClass("on");
+                $(".widget-notice").remove();
+                GetMessage(0);
+                IsBottom("#message");
+            })
         });
 
-        $("#activity").click(function ()
+        function update(target)
         {
-            if ($("#activity").hasClass("on"))
-                return;
+            $("notice-nav .content").unbind();
+            if (target == "#message")
+            {
+                GetMessage($(target).attr("data-max"));
+                alert($(".widget-notice").length);
+            }
+            else
+            {
+                GetActivity($(target).attr("data-max"));
+                alert($(".widget-notice").length);
+            }
+            IsBottom(target);
+        }
 
-            $(".widget-notice").remove();
-            GetActivity();
-            $(this).addClass("on");
-        });
+        function IsBottom(target)
+        {
+            var b = $(target);
+            var a= $(target).attr("data-max");
+            if ($(target).attr("data-max")==1)
+            {
+                $("notice-nav .content").unbind();
+                return;
+            }
+            $(".notice-nav .content").scroll(function ()
+            {
+                var scrollMax = $(this)[0].scrollHeight;
+                var scrollTop = $(this)[0].scrollTop;　 //滚动到的当前位置
+                var divHight = $(this).height();
+                if (divHight + scrollTop >= scrollMax)
+                    update(target);
+            })
+        }
 
         l.click(function ()
         {
@@ -111,31 +169,41 @@ MPWidget.Frame.New = function ()
         }
     }, "json");
 
-    function GetMessage()
+    function GetMessage(max)
     {
-        $.post(host + "/ajax/get-message", { max: 0 }, function (data)
+        if (max==1)
+        {
+            return;
+        }
+        $.post(host + "/ajax/get-message", { max: max }, function (data)
         {
             if (data.code == 0)
             {
-                var container = content.find(".notice-nav .content");
+                var container = content.find(".notice-nav .content ");
                 for (var n = data.datas.length, i = 0; i < n; i++)
                 {
                     container.append(MPTemplate.Widget.Notice.Message(data.datas[i]));
+                    $("#message").attr("data-max", data.data_max);
                 }
             }
         }, "json");
     }
 
-    function GetActivity()
+    function GetActivity(max)
     {
-        $.post(host + "/ajax/get-activity", { max: 0 }, function (data)
+        if (max==1)
+        {
+            return;
+        }
+        $.post(host + "/ajax/get-activity", { max: max }, function (data)
         {
             if (data.code == 0)
             {
-                var container = content.find(".notice-nav .content");
+                var container = content.find(".notice-nav .content ");
                 for (var n = data.datas.length, i = 0; i < n; i++)
                 {
                     container.append(MPTemplate.Widget.Notice.Activity(data.datas[i]));
+                    $("#activity").attr("data-max", data.data_max);
                 }
             }
         }, "json");
