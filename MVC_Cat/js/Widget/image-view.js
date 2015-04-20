@@ -2,12 +2,12 @@
 
 MPWidget.ImageView = {};
 MPWidget.ImageView.New = function (imageDetail)
-{  
+{
     var res = $(MPTemplate.Widget.ImageView(imageDetail));
     res.Run = function ()
     {
         //缩略图瀑布流处理
-        var wf = MPWaterFall.New(res.find(".images"), res.find(".image-waterfall"), 3, 76, 1, 1, 1, 1,false);
+        var wf = MPWaterFall.New(res.find(".images"), res.find(".image-waterfall"), 3, 76, 1, 1, 1, 1, false);
         var max = 0;
         wf.onBottom = function ()
         {
@@ -23,13 +23,13 @@ MPWidget.ImageView.New = function (imageDetail)
         var ad = res.find(".ad-piece.piece");
         ad.append(MPPage.ad);
         //更多来自同一个网站的图片处理
-        if(imageDetail.host!="")
+        if (imageDetail.host != "")
         {
             $.getJSON("/from/" + imageDetail.host, { ajax: true, limit: 3 })
             .success(function (data)
             {
                 var n = data.length;
-                if(n!=0)
+                if (n != 0)
                 {
                     res.find(".from-piece").show();
                     res.find(".from-piece .host").text(imageDetail.host);
@@ -60,7 +60,8 @@ MPWidget.ImageView.New = function (imageDetail)
     return res;
 }
 
-MPWidget.ImageView.Bind = function () {
+MPWidget.ImageView.Bind = function ()
+{
     //转存按钮
     $(document).on("click", ".image-view .resave", resave_click)
     //编辑按钮
@@ -72,9 +73,36 @@ MPWidget.ImageView.Bind = function () {
     //监听键盘输入,主要针对@的使用
     .on("keydown", ".new-comment textarea", keydown)
     //点击@人
-    .on("click", ".mention-option",mention_click);
+    .on("click", ".mention-option", mention_click)
+     //赞图片
+    .on("click", ".image-view .image-praise", praise_click)
+    //取消赞图片
+    .on("click", ".image-view .image-unpraise", unpraise_click);
 
-    function resave_click() {
+    function praise_click()
+    {
+        var t = $(this);
+        var id = t.attr("data-id");
+        MPObject.Image.Praise(id, function ()
+        {
+            t.removeClass("image-praise ");
+            t.addClass("image-unpraise");
+        })
+    }
+
+    function unpraise_click()
+    {
+        var t = $(this);
+        var id = t.attr("data-id");
+        MPObject.Image.UnPraise(id, function ()
+        {
+            t.removeClass("image-unpraise");
+            t.addClass("image-praise ");
+        })
+    }
+
+    function resave_click()
+    {
         var t = $(this);
         var id = t.attr("data-id");
         var hash = t.attr("data-hash");
@@ -82,37 +110,43 @@ MPWidget.ImageView.Bind = function () {
         MPObject.Image.Resave(id, hash);
     }
 
-    function edit_click() {
-        var t=$(this);
+    function edit_click()
+    {
+        var t = $(this);
         var id = t.attr("data-id");
         var hash = t.attr("data-hash");
         var packageID = t.attr("data-packageid");
         var packagetitle = t.attr("data-packagetitle");
-        var description=t.attr("data-description");
-        var sourve=t.attr("data-source");
+        var description = t.attr("data-description");
+        var sourve = t.attr("data-source");
         MPObject.Image.Edit(id, hash, description, sourve, packageID, packagetitle);
     }
 
-    function delete_click() {
+    function delete_click()
+    {
         var id = $(this).attr("data-id");
         MPObject.Image.Delete(id);
     }
 
-    function submit_click() {
+    function submit_click()
+    {
         var id = $(".image-view .resave").attr("data-id");
         var text = $(".new-comment textarea");//评论内容
-        if ($.trim(text.val()) == "") {
+        if ($.trim(text.val()) == "")
+        {
             MPMessageBox.New(MPMessageBox.Icons.Warn, "请输入评论内容");
             return;
         }
-        $.post(host + "/ajax/add-comment", { text: MPHtmlEncode(text.val()), image_id: id }, function (data) {
+        $.post(host + "/ajax/add-comment", { text: MPHtmlEncode(text.val()), image_id: id }, function (data)
+        {
             if (data.code == 0)
             {
                 //成功的处理
                 $(".image-view .comments").prepend($(MPTemplate.Widget.Comment(data.comment)));
-                text.val("");                
+                text.val("");
             }
-            else {
+            else
+            {
                 MPMessageBox.New(MPMessageBox.Icons.Error, data.mag);
             }
         }, "json");
@@ -124,12 +158,12 @@ MPWidget.ImageView.Bind = function () {
         {
             $.post(host + "/ajax/get-following-user", {}, function (data)
             {
-                if (data.code==0)
+                if (data.code == 0)
                 {
                     var folUserList = data.users;
                     var container = $("<div/>").addClass("mention-container ");
-                    if (folUserList.length==0)
-                        return  ;
+                    if (folUserList.length == 0)
+                        return;
                     for (var i = 0; i < folUserList.length; i++)
                     {
                         var option = $("<div/>").addClass("mention-option");
@@ -139,7 +173,7 @@ MPWidget.ImageView.Bind = function () {
                     var t = $(".new-comment textarea").position().top;
                     var l = $(".new-comment textarea").position().left
                     var position = $(".new-comment textarea").caret("position");
-                    container.offset({ left:position.left+l+2,top:position.top+t+1});
+                    container.offset({ left: position.left + l + 2, top: position.top + t + 1 });
                     $(".new-comment").append(container);
 
                     $(document).click(function (e)
@@ -147,7 +181,7 @@ MPWidget.ImageView.Bind = function () {
                         var point = {};
                         point.X = e.clientX;
                         point.Y = e.clientY;
-                        if (!MPCheckInEle(container,point))
+                        if (!MPCheckInEle(container, point))
                         {
                             container.remove();
                         }
@@ -162,7 +196,8 @@ MPWidget.ImageView.Bind = function () {
         }
     }
 
-    function mention_click() {
+    function mention_click()
+    {
         var aText = $(this).text() + " ";
         var oText = $(".new-comment textarea").val();
         $(".new-comment textarea").val(oText + aText);

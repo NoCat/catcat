@@ -441,7 +441,7 @@ function MPLogOut()
 
 function MPMenu(parent, menu, staytime, delaytime)//parent为点击目标 menu自行定义 staytime为鼠标离开menu后滞留时间 delaytime为点击后延时处理时间
 {
-    var _stayTime = staytime ? staytime : 1000;
+    var _stayTime = staytime ? staytime : 500;
     var _delayTime = delaytime ? delaytime : 0;
     var _timerIdDisplay;
     var _timerIdHide;
@@ -480,6 +480,17 @@ function MPMenu(parent, menu, staytime, delaytime)//parent为点击目标 menu�
             }, _stayTime);
         })
     }
+
+    $(window).click(function (e)
+    {
+        var point = {};
+        point.X = e.clientX;
+        point.Y = e.clientY;
+        if (!MPCheckInEle(_menu,point))
+        {
+            _menu.hide();
+        }
+    })
     //检查菜单是否为点击目标的子元素
     function CheckChild(obj, parentObj)
     {
@@ -506,6 +517,8 @@ function MPPopUpMenu(parent, menu, onMenuClose, callback)//parent为点击目标
     {
         e.stopPropagation();
         _menu.show();
+        if (callback)
+            callback();
         var clickfn;
         $(window).on("click", clickfn = function (event)
         {
@@ -514,7 +527,7 @@ function MPPopUpMenu(parent, menu, onMenuClose, callback)//parent为点击目标
             point.Y = event.clientY;
             if (MPCheckInEle(_menu, point))
             {
-                _menu.show();
+                _menu.show();                
             }
             else
             {
@@ -526,8 +539,6 @@ function MPPopUpMenu(parent, menu, onMenuClose, callback)//parent为点击目标
                 onMenuClose();
             }
         })
-        if (callback)
-            callback();
     })
 }
 
