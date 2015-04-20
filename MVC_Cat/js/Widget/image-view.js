@@ -106,8 +106,9 @@ MPWidget.ImageView.Bind = function ()
         var t = $(this);
         var id = t.attr("data-id");
         var hash = t.attr("data-hash");
+        var description = t.attr("data-description");
         //待处理
-        MPObject.Image.Resave(id, hash);
+        MPObject.Image.Resave(id, hash,description);
     }
 
     function edit_click()

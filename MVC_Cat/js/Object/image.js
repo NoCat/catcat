@@ -61,12 +61,12 @@ MPObject.Image.Origin = function (image) {
     return MPObject.Image._info(image);
 }
 
-MPObject.Image.Resave = function (imageID, imageHash, description, source) {
+MPObject.Image.Resave = function (imageID, imageHash, description) {
     if (!MPCheckLogin()) {
         return;
     }
     var url = imageHost + "/" + imageHash + "_fw236";
-    var dialog = MPCreateImageDialog.New(url, "转存", description, false, source);
+    var dialog = MPCreateImageDialog.New(url, "转存", description, false, "");
     dialog.onOK = function () {
         $.post(host + "/ajax/resave", { image_id: imageID, package_id: dialog.packageId, description: dialog.description }, function (data) {
             if (data.code == 0) {

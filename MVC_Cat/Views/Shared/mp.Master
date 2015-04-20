@@ -11,7 +11,7 @@
     <meta name="description" content="<%=ViewBag.Description==null?"专注于动漫图片的收集和分享": ViewBag.Description%>" />
     <link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/css/main.css") %>" />
 <%--    <link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/css/new.css") %>" />--%>
-<%--    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
+    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
     <script src="<%=ResolveUrl("~/js/jquery.cookie.js")%>"></script>
     <script src="<%=ResolveClientUrl("~/js/main.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/jquery.color.js") %>"></script>
@@ -64,8 +64,8 @@
     <script src="<%=ResolveClientUrl("~/js/Widget/User.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/Widget/window.js") %>"></script>
 
-    <script src="<%=ResolveClientUrl("~/js/initialize.js") %>"></script>--%>
-    <script src="<%=ResolveClientUrl("~/js/miaopass_1504200.js") %>"></script>
+    <script src="<%=ResolveClientUrl("~/js/initialize.js") %>"></script>
+<%--    <script src="<%=ResolveClientUrl("~/js/miaopass_1504200.js") %>"></script>--%>
     <script type="text/javascript">
         host =location.protocol+"//"+ location.host;
         imageHost = "<%=Tools.GetSetting("ImageHost")%>";

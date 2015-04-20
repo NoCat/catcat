@@ -16,18 +16,18 @@ MPCreatePackageDialog = {
         strVar += "                <div class=\"package-dialog\">";
         strVar += "                    <div class=\"title\">标题<\/div>";
         if (isEdit == true) {
-            strVar += "                    <input type=\"text\" class=\"package-title\" placeholder={0} />".Format(packagetitle);
+            strVar += "                    <input type=\"text\" class=\"package-title\" value={0} />".Format(packagetitle);
         }
         else {
-            strVar += "                <input type=\"text\" class=\"package-title\" placeholder=\"请输入图包标题\" />";
+            strVar += "                <input type=\"text\" class=\"package-title\"/>";
         }
 
         strVar += "                    <div class=\"title\">描述<\/div>";
         if (isEdit == true) {
-            strVar += "                    <textarea class=\"package-description\">{0}<\/textarea>".Format(description);
+            strVar += "                    <textarea class=\"package-description\" placeholder=\"请输入图包描述\">{0}<\/textarea>".Format(description);
         }
         else {
-            strVar += "                    <textarea class=\"package-description\">请输入图片描述<\/textarea>";
+            strVar += "                    <textarea class=\"package-description\" placeholder=\"请输入图包描述\"><\/textarea>";
         }
 
         strVar += "                <\/div>";
