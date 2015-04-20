@@ -87,12 +87,12 @@ MPWidget.Frame.New = function ()
             if (target == "#message")
             {
                 GetMessage($(target).attr("data-max"));
-                alert($(".widget-notice").length);
+                //alert($(".widget-notice").length);
             }
             else
             {
                 GetActivity($(target).attr("data-max"));
-                alert($(".widget-notice").length);
+                //alert($(".widget-notice").length);
             }
             IsBottom(target);
         }
@@ -165,7 +165,11 @@ MPWidget.Frame.New = function ()
             if (total == 0)
                 $(".notice-nav .count").hide();
             else
-                $(".notice-nav .count").text(total);
+            {
+                var noticeCount = $(".notice-nav .count");
+                noticeCount.text(total);
+                noticeCount.show();
+            }
         }
     }, "json");
 

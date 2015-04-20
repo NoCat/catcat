@@ -208,6 +208,7 @@ table {
                         background-image: url(/img/comment_16_16.png);
 
                         em {
+                            display:none;
                             background-color: lighten(#cc3030,10%);
                             border-radius: 14px;
                             color: @baseWhite;
@@ -278,28 +279,6 @@ table {
 
                             .widget-notice {
                                 border-top: 1px solid darken(@baseWhite,10%);
-                            }
-                        }
-
-                        .all {
-                            font-size: 13px;
-                            padding: 6px;
-                            text-align: center;
-                            border-top: 1px solid darken(@baseWhite,15%);
-                            background-color: darken(@baseWhite,7%);
-                            color: @baseBlue;
-                            cursor: pointer;
-
-                            &:hover {
-                                text-decoration: underline;
-                            }
-
-                            &.activity::after {
-                                content: "查看所有的动态>>";
-                            }
-
-                            &.message::after {
-                                content: "查看所有的消息>>";
                             }
                         }
                     }
@@ -980,6 +959,11 @@ table {
             font-weight: bold;
             width: 150px;
             margin: 5px 0;
+        }
+
+        .email{
+            .mp_input.mp_input_text(240px,30px);
+            margin-bottom:15px;
         }
     }
 

@@ -563,7 +563,7 @@ function MPLogOut()
 
 function MPMenu(parent, menu, staytime, delaytime)//parent为点击目标 menu自行定义 staytime为鼠标离开menu后滞留时间 delaytime为点击后延时处理时间
 {
-    var _stayTime = staytime ? staytime : 1000;
+    var _stayTime = staytime ? staytime : 500;
     var _delayTime = delaytime ? delaytime : 0;
     var _timerIdDisplay;
     var _timerIdHide;
@@ -602,6 +602,17 @@ function MPMenu(parent, menu, staytime, delaytime)//parent为点击目标 menu�
             }, _stayTime);
         })
     }
+
+    $(window).click(function (e)
+    {
+        var point = {};
+        point.X = e.clientX;
+        point.Y = e.clientY;
+        if (!MPCheckInEle(_menu,point))
+        {
+            _menu.hide();
+        }
+    })
     //检查菜单是否为点击目标的子元素
     function CheckChild(obj, parentObj)
     {
@@ -628,6 +639,8 @@ function MPPopUpMenu(parent, menu, onMenuClose, callback)//parent为点击目标
     {
         e.stopPropagation();
         _menu.show();
+        if (callback)
+            callback();
         var clickfn;
         $(window).on("click", clickfn = function (event)
         {
@@ -636,7 +649,7 @@ function MPPopUpMenu(parent, menu, onMenuClose, callback)//parent为点击目标
             point.Y = event.clientY;
             if (MPCheckInEle(_menu, point))
             {
-                _menu.show();
+                _menu.show();                
             }
             else
             {
@@ -648,8 +661,6 @@ function MPPopUpMenu(parent, menu, onMenuClose, callback)//parent为点击目标
                 onMenuClose();
             }
         })
-        if (callback)
-            callback();
     })
 }
 
@@ -4668,18 +4679,17 @@ MPTemplate.Widget.Frame = function ()
         //消息提示
         strVar += "<div class=\"nav notice-nav\">";        
         strVar += "    <div class=\"nav-link\" title=\"通知\">";
-        strVar += "         <em class=\"count\">1</em>";
+        strVar += "         <em class=\"count\"></em>";
         strVar += "    <\/div>";       
         strVar += "    <div class=\"hide-menu\">";
         strVar += "         <div class=\"triangle\"></div>";
         strVar += "         <ul>";
-        strVar += "             <li id=\"message\" class=\"on\">消息</li>";
-        strVar += "             <li id=\"activity\">动态</li>";
+        strVar += "             <li id=\"message\" data-max=\"0\">消息</li>";
+        strVar += "             <li id=\"activity\" data-max=\"0\">动态</li>";
         strVar += "         </ul>";
         strVar += "         <div class=\"clear\"></div>";
-        strVar += "         <div class=\"content\">";
+        strVar += "         <div class=\"content \">";
         strVar += "         </div>";
-        strVar += "         <div class=\"all activity\"></div>";
         strVar += "    </div>";
         strVar += "<\/div>";
         //用户按钮
@@ -4735,7 +4745,7 @@ MPTemplate.Widget.ImageView = function (data, options)
     }
     else
     {
-        strVar += "<div class=\"{0} btn\"><em></em></div>".Format(data.praised == true ? "image-unpraise" : "image-praise");
+        strVar += "<div class=\"{0} btn\" data-id=\"{1}\"><em></em></div>".Format(data.praised == true ? "image-unpraise" : "image-praise",data.id);
     }
     strVar += "            <\/div>";
     strVar += "            <div class=\"image\">";
@@ -5146,14 +5156,81 @@ MPWidget.Frame.New = function ()
         MPPopUpMenu(notice_nav, notice_nav_menu, function ()
         {
             MPMenu(user_nav, user_nav_menu);
-            $(".notice-nav .content").clear();
+            $(".widget-notice").remove();
+            $("#activity").removeClass("on");
+            $("#message").removeClass("on");
         },//callback
         function ()
         {
             user_nav.unbind();
-            GetMessage(20);
-            $("#activity").click(GetActivity(20));
+            if (!($("#activity").hasClass("on") || $("#message").hasClass("on")))
+            {
+                $("#message").addClass("on");
+                GetMessage(0);
+                IsBottom("#message");
+            }
+
+            $("#activity").click(function (e)
+            {
+                e.stopPropagation();
+                $("notice-nav .content").unbind();
+                if ($(this).hasClass("on"))
+                    return;
+                $("#message").removeClass("on");
+                $(this).addClass("on");
+                $(".widget-notice").remove();
+                GetActivity(0);
+                IsBottom("#activity");
+            });
+
+            $("#message").click(function (e)
+            {
+                e.stopPropagation();
+                $("notice-nav .content").unbind();//用于消去上一个滚动绑定事件
+                if ($(this).hasClass("on"))
+                    return;
+                $("#activity").removeClass("on");
+                $(this).addClass("on");
+                $(".widget-notice").remove();
+                GetMessage(0);
+                IsBottom("#message");
+            })
         });
+
+        function update(target)
+        {
+            $("notice-nav .content").unbind();
+            if (target == "#message")
+            {
+                GetMessage($(target).attr("data-max"));
+                //alert($(".widget-notice").length);
+            }
+            else
+            {
+                GetActivity($(target).attr("data-max"));
+                //alert($(".widget-notice").length);
+            }
+            IsBottom(target);
+        }
+
+        function IsBottom(target)
+        {
+            var b = $(target);
+            var a= $(target).attr("data-max");
+            if ($(target).attr("data-max")==1)
+            {
+                $("notice-nav .content").unbind();
+                return;
+            }
+            $(".notice-nav .content").scroll(function ()
+            {
+                var scrollMax = $(this)[0].scrollHeight;
+                var scrollTop = $(this)[0].scrollTop;　 //滚动到的当前位置
+                var divHight = $(this).height();
+                if (divHight + scrollTop >= scrollMax)
+                    update(target);
+            })
+        }
 
         l.click(function ()
         {
@@ -5176,7 +5253,8 @@ MPWidget.Frame.New = function ()
         add.click(function ()
         {
             MPObject.Image.CreateImage();
-        });  
+        });
+
     }
 
     //返回顶端按钮
@@ -5203,20 +5281,29 @@ MPWidget.Frame.New = function ()
             if (total == 0)
                 $(".notice-nav .count").hide();
             else
-                $(".notice-nav .count").text(total);
+            {
+                var noticeCount = $(".notice-nav .count");
+                noticeCount.text(total);
+                noticeCount.show();
+            }
         }
     }, "json");
 
     function GetMessage(max)
     {
+        if (max==1)
+        {
+            return;
+        }
         $.post(host + "/ajax/get-message", { max: max }, function (data)
         {
             if (data.code == 0)
             {
-                var container = content.find(".notice-nav .content");
+                var container = content.find(".notice-nav .content ");
                 for (var n = data.datas.length, i = 0; i < n; i++)
                 {
                     container.append(MPTemplate.Widget.Notice.Message(data.datas[i]));
+                    $("#message").attr("data-max", data.data_max);
                 }
             }
         }, "json");
@@ -5224,19 +5311,24 @@ MPWidget.Frame.New = function ()
 
     function GetActivity(max)
     {
+        if (max==1)
+        {
+            return;
+        }
         $.post(host + "/ajax/get-activity", { max: max }, function (data)
         {
             if (data.code == 0)
             {
-                var container = content.find(".notice-nav .content");
+                var container = content.find(".notice-nav .content ");
                 for (var n = data.datas.length, i = 0; i < n; i++)
                 {
                     container.append(MPTemplate.Widget.Notice.Activity(data.datas[i]));
+                    $("#activity").attr("data-max", data.data_max);
                 }
             }
         }, "json");
     }
-    
+
 
 
     /////
@@ -5431,12 +5523,12 @@ MPWidget.Package.Bind = function () {
 
 MPWidget.ImageView = {};
 MPWidget.ImageView.New = function (imageDetail)
-{  
+{
     var res = $(MPTemplate.Widget.ImageView(imageDetail));
     res.Run = function ()
     {
         //缩略图瀑布流处理
-        var wf = MPWaterFall.New(res.find(".images"), res.find(".image-waterfall"), 3, 76, 1, 1, 1, 1,false);
+        var wf = MPWaterFall.New(res.find(".images"), res.find(".image-waterfall"), 3, 76, 1, 1, 1, 1, false);
         var max = 0;
         wf.onBottom = function ()
         {
@@ -5452,13 +5544,13 @@ MPWidget.ImageView.New = function (imageDetail)
         var ad = res.find(".ad-piece.piece");
         ad.append(MPPage.ad);
         //更多来自同一个网站的图片处理
-        if(imageDetail.host!="")
+        if (imageDetail.host != "")
         {
             $.getJSON("/from/" + imageDetail.host, { ajax: true, limit: 3 })
             .success(function (data)
             {
                 var n = data.length;
-                if(n!=0)
+                if (n != 0)
                 {
                     res.find(".from-piece").show();
                     res.find(".from-piece .host").text(imageDetail.host);
@@ -5489,7 +5581,8 @@ MPWidget.ImageView.New = function (imageDetail)
     return res;
 }
 
-MPWidget.ImageView.Bind = function () {
+MPWidget.ImageView.Bind = function ()
+{
     //转存按钮
     $(document).on("click", ".image-view .resave", resave_click)
     //编辑按钮
@@ -5501,9 +5594,36 @@ MPWidget.ImageView.Bind = function () {
     //监听键盘输入,主要针对@的使用
     .on("keydown", ".new-comment textarea", keydown)
     //点击@人
-    .on("click", ".mention-option",mention_click);
+    .on("click", ".mention-option", mention_click)
+     //赞图片
+    .on("click", ".image-view .image-praise", praise_click)
+    //取消赞图片
+    .on("click", ".image-view .image-unpraise", unpraise_click);
 
-    function resave_click() {
+    function praise_click()
+    {
+        var t = $(this);
+        var id = t.attr("data-id");
+        MPObject.Image.Praise(id, function ()
+        {
+            t.removeClass("image-praise ");
+            t.addClass("image-unpraise");
+        })
+    }
+
+    function unpraise_click()
+    {
+        var t = $(this);
+        var id = t.attr("data-id");
+        MPObject.Image.UnPraise(id, function ()
+        {
+            t.removeClass("image-unpraise");
+            t.addClass("image-praise ");
+        })
+    }
+
+    function resave_click()
+    {
         var t = $(this);
         var id = t.attr("data-id");
         var hash = t.attr("data-hash");
@@ -5511,37 +5631,43 @@ MPWidget.ImageView.Bind = function () {
         MPObject.Image.Resave(id, hash);
     }
 
-    function edit_click() {
-        var t=$(this);
+    function edit_click()
+    {
+        var t = $(this);
         var id = t.attr("data-id");
         var hash = t.attr("data-hash");
         var packageID = t.attr("data-packageid");
         var packagetitle = t.attr("data-packagetitle");
-        var description=t.attr("data-description");
-        var sourve=t.attr("data-source");
+        var description = t.attr("data-description");
+        var sourve = t.attr("data-source");
         MPObject.Image.Edit(id, hash, description, sourve, packageID, packagetitle);
     }
 
-    function delete_click() {
+    function delete_click()
+    {
         var id = $(this).attr("data-id");
         MPObject.Image.Delete(id);
     }
 
-    function submit_click() {
+    function submit_click()
+    {
         var id = $(".image-view .resave").attr("data-id");
         var text = $(".new-comment textarea");//评论内容
-        if ($.trim(text.val()) == "") {
+        if ($.trim(text.val()) == "")
+        {
             MPMessageBox.New(MPMessageBox.Icons.Warn, "请输入评论内容");
             return;
         }
-        $.post(host + "/ajax/add-comment", { text: MPHtmlEncode(text.val()), image_id: id }, function (data) {
+        $.post(host + "/ajax/add-comment", { text: MPHtmlEncode(text.val()), image_id: id }, function (data)
+        {
             if (data.code == 0)
             {
                 //成功的处理
                 $(".image-view .comments").prepend($(MPTemplate.Widget.Comment(data.comment)));
-                text.val("");                
+                text.val("");
             }
-            else {
+            else
+            {
                 MPMessageBox.New(MPMessageBox.Icons.Error, data.mag);
             }
         }, "json");
@@ -5553,12 +5679,12 @@ MPWidget.ImageView.Bind = function () {
         {
             $.post(host + "/ajax/get-following-user", {}, function (data)
             {
-                if (data.code==0)
+                if (data.code == 0)
                 {
                     var folUserList = data.users;
                     var container = $("<div/>").addClass("mention-container ");
-                    if (folUserList.length==0)
-                        return  ;
+                    if (folUserList.length == 0)
+                        return;
                     for (var i = 0; i < folUserList.length; i++)
                     {
                         var option = $("<div/>").addClass("mention-option");
@@ -5568,7 +5694,7 @@ MPWidget.ImageView.Bind = function () {
                     var t = $(".new-comment textarea").position().top;
                     var l = $(".new-comment textarea").position().left
                     var position = $(".new-comment textarea").caret("position");
-                    container.offset({ left:position.left+l+2,top:position.top+t+1});
+                    container.offset({ left: position.left + l + 2, top: position.top + t + 1 });
                     $(".new-comment").append(container);
 
                     $(document).click(function (e)
@@ -5576,7 +5702,7 @@ MPWidget.ImageView.Bind = function () {
                         var point = {};
                         point.X = e.clientX;
                         point.Y = e.clientY;
-                        if (!MPCheckInEle(container,point))
+                        if (!MPCheckInEle(container, point))
                         {
                             container.remove();
                         }
@@ -5591,7 +5717,8 @@ MPWidget.ImageView.Bind = function () {
         }
     }
 
-    function mention_click() {
+    function mention_click()
+    {
         var aText = $(this).text() + " ";
         var oText = $(".new-comment textarea").val();
         $(".new-comment textarea").val(oText + aText);

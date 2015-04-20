@@ -202,7 +202,7 @@
     <Content Include="img\triangle_right_down_4_4.png" />
     <Content Include="img\up_32_32.png" />
     <Content Include="img\warn_24_24.png" />
-    <Content Include="js\all.js" />
+    <Content Include="js\Page\all_1504200.js" />
     <Content Include="js\Dialog\AvtCutDialog.js" />
     <Content Include="js\Dialog\CreateImageDialog.js" />
     <Content Include="js\Dialog\CreatePackageDialog.js" />
@@ -230,11 +230,11 @@
     <Content Include="js\Object\package.js" />
     <Content Include="js\Object\user.js" />
     <Content Include="js\package.js" />
-    <Content Include="js\Page\from.js" />
-    <Content Include="js\Page\package.js" />
-    <Content Include="js\Page\search.js" />
-    <Content Include="js\Page\setting.js" />
-    <Content Include="js\Page\user.js" />
+    <Content Include="js\Page\from_1504200.js" />
+    <Content Include="js\Page\package_1504200.js" />
+    <Content Include="js\Page\search_1504200.js" />
+    <Content Include="js\Page\setting_1504200.js" />
+    <Content Include="js\Page\user_1504200.js" />
     <Content Include="js\pick.js" />
     <Content Include="js\reset-password.js" />
     <Content Include="js\search.js" />

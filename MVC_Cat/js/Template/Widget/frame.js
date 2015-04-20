@@ -25,7 +25,7 @@ MPTemplate.Widget.Frame = function ()
         //消息提示
         strVar += "<div class=\"nav notice-nav\">";        
         strVar += "    <div class=\"nav-link\" title=\"通知\">";
-        strVar += "         <em class=\"count\">1</em>";
+        strVar += "         <em class=\"count\"></em>";
         strVar += "    <\/div>";       
         strVar += "    <div class=\"hide-menu\">";
         strVar += "         <div class=\"triangle\"></div>";
@@ -36,7 +36,6 @@ MPTemplate.Widget.Frame = function ()
         strVar += "         <div class=\"clear\"></div>";
         strVar += "         <div class=\"content \">";
         strVar += "         </div>";
-        strVar += "         <div class=\"all activity\"></div>";
         strVar += "    </div>";
         strVar += "<\/div>";
         //用户按钮

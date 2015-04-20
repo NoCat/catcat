@@ -329,7 +329,10 @@ namespace MVC_Cat.Controllers
                             int commentId = MPComment.Create(image.ID, user.ID, text);
                             
                             //添加xxx评论了你的xxx消息
-                            DB.SExecuteNonQuery("insert ignore into message(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID,image.UserID, commentId, 0, MPMessageTypes.Comment);
+                            if (user.ID != image.UserID)
+                            {
+                                DB.SExecuteNonQuery("insert ignore into message(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID, image.UserID, commentId, 0, MPMessageTypes.Comment);
+                            }
 
                             //添加xxx在评论xxx是提到了你消息
                             var res = DB.SExecuteReader("select id from comment_mention where commentid=?", commentId);
@@ -612,7 +615,7 @@ namespace MVC_Cat.Controllers
                             if (max == 0)
                                 max = Int32.MaxValue;
 
-                            var res = DB.SExecuteReader("select id,sender,target,addition,type from message where id<? order by id desc limit 15", max);
+                            var res = DB.SExecuteReader("select id,sender,target,addition,type from message where id<? and reciever=? order by id desc limit 15", max,user.ID);
                             var list = new List<object>();
                             foreach (var item in res)
                             {
