@@ -22,14 +22,18 @@ MPObject.Package.UnFollow = function (packageID, callback)
 {
     if (!MPCheckLogin())
         return;
-    $.post(host + "/ajax/unfollow-package", { package_id: packageID }, function (data)
+    var box = MPMessageBox.New(MPMessageBox.Icons.Warn, "确认要取消该图包的关注吗>_<");
+    box.onOK = function ()
     {
-        if (data.code == 0)
+        $.post(host + "/ajax/unfollow-package", { package_id: packageID }, function (data)
         {
-            if (callback)
-                callback();
-        }
-    }, "json");
+            if (data.code == 0)
+            {
+                if (callback)
+                    callback();
+            }
+        }, "json");
+    }
 }
 
 //赞图包(实用性待商榷)
