@@ -3340,25 +3340,30 @@ MPCreatePackageDialog = {
         strVar += "            <div class=\"dialog-content\">";
         strVar += "                <div class=\"package-dialog\">";
         strVar += "                    <div class=\"title\">标题<\/div>";
-        if (isEdit == true) {
-            strVar += "                    <input type=\"text\" class=\"package-title\" placeholder={0} />".Format(packagetitle);
+        if (isEdit == true)
+        {
+            strVar += "                    <input type=\"text\" class=\"package-title\" value={0} />".Format(packagetitle);
         }
-        else {
-            strVar += "                <input type=\"text\" class=\"package-title\" placeholder=\"请输入图包标题\" />";
+        else
+        {
+            strVar += "                <input type=\"text\" class=\"package-title\"/>";
         }
 
         strVar += "                    <div class=\"title\">描述<\/div>";
-        if (isEdit == true) {
-            strVar += "                    <textarea class=\"package-description\">{0}<\/textarea>".Format(description);
+        if (isEdit == true)
+        {
+            strVar += "                    <textarea class=\"package-description\" placeholder=\"请输入图包描述\">{0}<\/textarea>".Format(description);
         }
-        else {
-            strVar += "                    <textarea class=\"package-description\">请输入图片描述<\/textarea>";
+        else
+        {
+            strVar += "                    <textarea class=\"package-description\" placeholder=\"请输入图包描述\"><\/textarea>";
         }
 
         strVar += "                <\/div>";
         strVar += "            <\/div>";
         strVar += "            <div class=\"dialog-btns\">";
-        if (isEdit == true) {
+        if (isEdit == true)
+        {
             strVar += "                <div class=\"delete\">删除<\/div>";
         }
         strVar += "                <div class=\"ok\">确认<\/div>";
@@ -3367,65 +3372,90 @@ MPCreatePackageDialog = {
         strVar += "        <\/div>";
         strVar += "<\/div>";
         var title = "";
-        if (isEdit==true) {
+        if (isEdit == true)
+        {
             title = "编辑图包";
         }
-        else {
+        else
+        {
             title = "创建图包";
         }
-              
-        var dialog = MPTitleDialog.New(strVar,title);
+
+        var dialog = MPTitleDialog.New(strVar, title);
         dialog.packageid = null;
         dialog.onDelete = null;
         var inputtitle = dialog.Content.find(".package-title");
         var inputdescription = dialog.Content.find(".package-description");
-        if (isEdit == true) {
+        if (isEdit == true)
+        {
             dialog.packageid = packageid;
-            dialog.ButtonOK.click(function () {
-                $.post(host + "/ajax/edit-package", { id: packageid, title: MPHtmlEncode(inputtitle.val()), description: MPHtmlEncode(inputdescription.val()) }, function (data) {
-                    if (data.code == 0) {
-                        var box = MPMessageBox.New(MPMessage.Icons.OK, "编辑成功");
-                        box.onOK = function () {
+            dialog.ButtonOK.click(function ()
+            {
+                $.post(host + "/ajax/edit-package", { id: packageid, title: MPHtmlEncode(inputtitle.val()), description: MPHtmlEncode(inputdescription.val()) }, function (data)
+                {
+                    if (data.code == 0)
+                    {
+                        var box = MPMessageBox.New(MPMessageBox.Icons.OK, "编辑成功");
+                        box.onOK = function ()
+                        {
                             dialog.Close();
                         }
                     }
-                    else {
-                        MPMessageBox.New(MPMessage.Icons.Error, data.msg);
+                    else
+                    {
+                        MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
                     }
                 }, "json");
             })
         }
-        else {
-            dialog.ButtonOK.click(function () {
-                $.post(host + "/ajax/create-package", { title: MPHtmlEncode(inputtitle.val()), description: MPHtmlEncode(inputdescription.val()) }, function (data) {
-                    if (data.code == 0) {
-                        dialog.packageid = data.id;
-                        dialog.Close();
+        else
+        {
+            dialog.ButtonOK.click(function ()
+            {
+                $.post(host + "/ajax/create-package", { title: MPHtmlEncode(inputtitle.val()), description: MPHtmlEncode(inputdescription.val()) }, function (data)
+                {
+                    if (data.code == 0)
+                    {
+                        dialog.packageid = data.packageid;
+                        //dialog.Close();
+                        location.href = "/package/" + dialog.packageid;
                     }
-                    else {
+                    else
+                    {
                         MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
                     }
                 }, "json");
             })
         }
 
-        dialog.Content.find(".cancel").click(function () {
+        dialog.Content.find(".cancel").click(function ()
+        {
             dialog.Close();
         })
 
         //删除图包的处理函数
-        dialog.Content.find(".delete").click(function () {
-            $.post(host + "/ajax/delete-package", { id: dialog.packageid }, function (data) {
-                if (data.code == 0) {
-                    if (dialog.onDelete) {
-                        dialog.onDelete();
+        dialog.Content.find(".delete").click(function ()
+        {
+            var box = MPMessageBox.New(MPMessageBox.Icons.Warn, "确定要删除图包?一旦删除后就无法还原哦>_<");
+            box.onOK = function ()
+            {
+                $.post(host + "/ajax/delete-package", { id: dialog.packageid }, function (data)
+                {
+                    if (data.code == 0)
+                    {
+                        if (dialog.onDelete)
+                        {
+                            dialog.onDelete();
+                        }
+                        location.href = "/user/" + MPData.user.id;
+                        //dialog.Close();
                     }
-                    dialog.Close();
-                }
-                else {
-                    MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
-                }
-            },"json")
+                    else
+                    {
+                        MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
+                    }
+                }, "json")
+            }
         })
         return dialog;
     }
@@ -3851,25 +3881,29 @@ MPFormat.User.New = function (user)
 
 MPObject.User = {};
 
-MPObject.User.Avt = function (user) {
+MPObject.User.Avt = function (user)
+{
     if (user.default_head == true)
         return imageHost + "/avt/0";
     else
         return imageHost + "/avt/" + user.id;
 }
 
-MPObject.User.BigAvt = function (user) {
+MPObject.User.BigAvt = function (user)
+{
     if (user.default_head == true)
         return imageHost + "/avt/0_big";
     else
         return imageHost + "/avt/" + user.id + "_big";
 }
 
-MPObject.User.ID = function (user) {
+MPObject.User.ID = function (user)
+{
     return user.id;
 }
 
-MPObject.User.Name = function (user) {
+MPObject.User.Name = function (user)
+{
     return user.name;
 }
 
@@ -3877,13 +3911,18 @@ MPObject.User.Name = function (user) {
 MPObject.User.Actions = {};
 
 //关注用户
-MPObject.User.Actions.Follow = function (userid,callback) {
-    if (!MPCheckLogin()) {
+MPObject.User.Actions.Follow = function (userid, callback)
+{
+    if (!MPCheckLogin())
+    {
         return;
     }
-    $.post(host + "/ajax/follow-user", { user_id: userid }, function (data) {
-        if (data.code==0) {
-            if (callback) {
+    $.post(host + "/ajax/follow-user", { user_id: userid }, function (data)
+    {
+        if (data.code == 0)
+        {
+            if (callback)
+            {
                 callback();
             }
         }
@@ -3891,24 +3930,34 @@ MPObject.User.Actions.Follow = function (userid,callback) {
 }
 
 //取消关注用户
-MPObject.User.Actions.UnFollow = function (userid, callback) {
-    if (!MPCheckLogin()) {
+MPObject.User.Actions.UnFollow = function (userid, callback)
+{
+    if (!MPCheckLogin())
+    {
         return;
     }
-    $.post(host + "/ajax/unfollow-user", { user_id: userid }, function (data) {
-        if (data.code == 0) {
-            if (callback) {
-                callback();
+    var box = MPMessageBox.New(MPMessageBox.Icons.Warn, "确认要取消关注吗>_<")
+    box.onOK = function ()
+    {
+        $.post(host + "/ajax/unfollow-user", { user_id: userid }, function (data)
+        {
+            if (data.code == 0)
+            {
+                if (callback)
+                {
+                    callback();
+                }
             }
-        }
-    }, "json");
+        }, "json");
+    }
 }
 
 //用户页面
-MPObject.User.Pages={};
+MPObject.User.Pages = {};
 
 //用户所关注的人的页面
-MPObject.User.Pages.Following = function (user) {
+MPObject.User.Pages.Following = function (user)
+{
     return "/user/" + user.id + "/following";
 }
 
@@ -3918,7 +3967,8 @@ MPObject.User.Pages.FollowingPackage = function (user)
     return "/user/" + user.id + "/following/package";
 }
 //用户的粉丝的页面
-MPObject.User.Pages.Follower = function (user) {
+MPObject.User.Pages.Follower = function (user)
+{
     return "/user/" + user.id + "/follower";
 }
 
@@ -3941,12 +3991,12 @@ MPObject.User.Pages.Home = function (user)
 }
 
 //用户赞的首页面
-MPObject.User.Pages.Praise=function(user)
+MPObject.User.Pages.Praise = function (user)
 {
     return "/user/" + user.id + "/praise";
 }
 //用户赞的图包
-MPObject.User.Pages.PraisePackage=function(user)
+MPObject.User.Pages.PraisePackage = function (user)
 {
     return "/user/" + user.id + "/praise/package";
 }
@@ -3962,7 +4012,7 @@ MPObject.Image._info = function (image, width, shape) {
             {
                 res.url = imageHost + "/" + image.file.hash + "_fw" + width;
                 res.width = width;
-                res.height = Math.ceil(76 * image.file.height / image.file.width);
+                res.height = Math.ceil(width * image.file.height / image.file.width);
             }
             break;
         case "sq":
@@ -3980,6 +4030,7 @@ MPObject.Image._info = function (image, width, shape) {
             }
             break;
     }
+    res.url += ".jpg";
     return res;
 }
 
@@ -4001,24 +4052,24 @@ MPObject.Image.fw658 = function (image) {
 }
 
 
-MPObject.Image.fw75 = function (image) {
+MPObject.Image.sq75 = function (image) {
     return MPObject.Image._info(image, 75, "sq");
 }
 
 MPObject.Image.fw236 = function (image) {
-    return MPObject.Image._info(image, 236, "sq");
+    return MPObject.Image._info(image, 236, "fw");
 }
 
 MPObject.Image.Origin = function (image) {
     return MPObject.Image._info(image);
 }
 
-MPObject.Image.Resave = function (imageID, imageHash, description, source) {
+MPObject.Image.Resave = function (imageID, imageHash, description) {
     if (!MPCheckLogin()) {
         return;
     }
     var url = imageHost + "/" + imageHash + "_fw236";
-    var dialog = MPCreateImageDialog.New(url, "转存", description, false, source);
+    var dialog = MPCreateImageDialog.New(url, "转存", description, false, "");
     dialog.onOK = function () {
         $.post(host + "/ajax/resave", { image_id: imageID, package_id: dialog.packageId, description: dialog.description }, function (data) {
             if (data.code == 0) {
@@ -4065,18 +4116,25 @@ MPObject.Image.Delete = function (imageID, callback) {
     if (!MPCheckLogin()) {
         return;
     }
-    //成功之后的处理考虑一下
-    $.post(host + "/ajax/delete-image", { id: imageID }, function (data) {
-        if (data.code == 0) {
-            if (callback) {
-                callback();
+    var box = MPMessageBox.New(MPMessageBox.Icons.Warn, "图片删除后无法恢复哦!")
+    box.onOK = function ()
+    {
+        $.post(host + "/ajax/delete-image", { id: imageID }, function (data)
+        {
+            if (data.code == 0)
+            {
+                if (callback)
+                {
+                    callback();
+                }
+                location.reload();
             }
-            location.reload();
-        }
-        else {
-            MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
-        }
-    }, "json")
+            else
+            {
+                MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
+            }
+        }, "json");
+    }
 }
 
 MPObject.Image.Praise = function (imageID, callback) {
@@ -4148,6 +4206,9 @@ MPObject.Package.UnFollow = function (packageID, callback)
 {
     if (!MPCheckLogin())
         return;
+    //var box = MPMessageBox.New(MPMessageBox.Icons.Warn, "确认要取消该图包的关注吗>_<");
+    //box.onOK = function ()
+    //{
     $.post(host + "/ajax/unfollow-package", { package_id: packageID }, function (data)
     {
         if (data.code == 0)
@@ -4156,6 +4217,7 @@ MPObject.Package.UnFollow = function (packageID, callback)
                 callback();
         }
     }, "json");
+    //}
 }
 
 //赞图包(实用性待商榷)
@@ -4433,11 +4495,11 @@ MPTemplate.Widget.Package = function (data, options)
         {
             if (i == 0)
             {
-                strVar += " <img class=\"cover\" src=\"{0}\" />".Format(imageHost + "/" + data.thumbs[0].file.hash + "_sq236");
+                strVar += " <img class=\"cover\" src=\"{0}\" />".Format(MPObject.Image.sq236(data.thumbs[i]).url);
             }
             else
             {
-                strVar += " <img class=\"thumb\" src=\"{0}\" />".Format(imageHost + "/" + data.thumbs[i].file.hash + "_sq75");
+                strVar += " <img class=\"thumb\" src=\"{0}\" />".Format(MPObject.Image.sq75(data.thumbs[i]).url);
             }
         }
         strVar += "        <\/div>";
@@ -4570,7 +4632,8 @@ MPTemplate.Widget.Image = function (data, options)
     }
     strVar += "    <\/div>";
     strVar += "    <a class=\"img\" href=\"{0}\">".Format("/image/" + data.id);
-    strVar += "        <img src=\"{0}\" width=\"236\" height=\"{1}\" />".Format(imageHost + "/" + data.file.hash + "_fw236", Math.ceil(236 * data.file.height / data.file.width));
+    var img = MPObject.Image.fw236(data);
+    strVar += "        <img src=\"{0}\" width=\"236\" height=\"{1}\" />".Format(img.url,img.height);
     strVar += "        <div class=\"cover\"><\/div>";
     strVar += "    <\/a>";
     strVar += "    <div class=\"description\">{0}<\/div>".FormatNoEncode(MPWidget.Image.Description(data.description));
@@ -4737,7 +4800,7 @@ MPTemplate.Widget.ImageView = function (data, options)
     strVar += "    <div class=\"main\">";
     strVar += "        <div class=\"image-piece piece\">";
     strVar += "            <div class=\"tool-bar\">";
-    strVar += "                <div class=\"resave btn\" data-id=\"{0}\" data-hash=\"{1}\" data-descripition=\"{2}\">转存<\/div>".Format(data.id, data.file.hash, data.description);
+    strVar += "                <div class=\"resave btn\" data-id=\"{0}\" data-hash=\"{1}\" data-description=\"{2}\">转存<\/div>".Format(data.id, data.file.hash, data.description.replace("\"",""));
     if (MPData.user.id == data.user.id)
     {
         strVar += "                <div class=\"edit btn\" data-id=\"{0}\" data-hash=\"{1}\" data-descripition=\"{2}\" data-source=\"{3}\" data-packageid=\"{4}\" data-packagetitle=\"{5}\">编辑<\/div>".Format(data.id, data.file.hash, data.description, data.source, data.package.id,data.package.title);
@@ -4749,7 +4812,7 @@ MPTemplate.Widget.ImageView = function (data, options)
     }
     strVar += "            <\/div>";
     strVar += "            <div class=\"image\">";
-    strVar += "                <img src=\"{0}\" alt=\"{1}\" />".Format(imageHost + "/" + data.file.hash + "_fw658", data.description.substring(0, 20).replace('"', ''));
+    strVar += "                <img src=\"{0}\" alt=\"{1}\" />".Format(MPObject.Image.fw658(data).url, data.description.substring(0, 20).replace('"', ''));
     strVar += "            <\/div>";
     if (data.host != "")
     {
@@ -4785,10 +4848,9 @@ MPTemplate.Widget.ImageView = function (data, options)
     }
     if (MPCheckLogin(false) == true)
     {
+        var User = MPObject.User;
         strVar += "                <div class=\"add-comment\">";
-        strVar += "                    <a class=\"avt\" href=\"{0}\">".Format(fuser.Home());
-        strVar += "                        <img src=\"{0}\" />".Format(fuser.Avt());
-        strVar += "                    <\/a>";
+        strVar += "                     <img class=\"avt\" src=\"{0}\" />".Format(User.Avt(MPData.user));
         strVar += "                    <div class=\"new-comment\">";
         strVar += "                        <textarea placeholder=\"请在这里输入评论内容\" ><\/textarea>";
         strVar += "                    <\/div>";
@@ -5571,7 +5633,8 @@ MPWidget.ImageView.New = function (imageDetail)
     {
         var strVar1 = "";
         strVar1 += "<a class=\"image\" href=\"{0}\" data-id=\"{1}\">".Format("/image/" + image.id, image.id);
-        strVar1 += "     <img src=\"{0}\" width=\"76\" height=\"{1}\"/>".Format(imageHost + "/" + image.file.hash + "_fw78", Math.ceil(76 * image.file.height / image.file.width));
+        var img = MPObject.Image.fw78(image);
+        strVar1 += "     <img src=\"{0}\" width=\"76\" height=\"{1}\"/>".Format(img.url,img.height);
         strVar1 += "     <div class=\"cover\"><\/div>";
         strVar1 += "<\/a>";
 
@@ -5627,8 +5690,9 @@ MPWidget.ImageView.Bind = function ()
         var t = $(this);
         var id = t.attr("data-id");
         var hash = t.attr("data-hash");
+        var description = t.attr("data-description");
         //待处理
-        MPObject.Image.Resave(id, hash);
+        MPObject.Image.Resave(id, hash,description);
     }
 
     function edit_click()

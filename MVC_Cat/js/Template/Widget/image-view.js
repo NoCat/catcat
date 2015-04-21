@@ -19,7 +19,7 @@ MPTemplate.Widget.ImageView = function (data, options)
     }
     strVar += "            <\/div>";
     strVar += "            <div class=\"image\">";
-    strVar += "                <img src=\"{0}\" alt=\"{1}\" />".Format(imageHost + "/" + data.file.hash + "_fw658", data.description.substring(0, 20).replace('"', ''));
+    strVar += "                <img src=\"{0}\" alt=\"{1}\" />".Format(MPObject.Image.fw658(data).url, data.description.substring(0, 20).replace('"', ''));
     strVar += "            <\/div>";
     if (data.host != "")
     {
@@ -55,10 +55,9 @@ MPTemplate.Widget.ImageView = function (data, options)
     }
     if (MPCheckLogin(false) == true)
     {
+        var User = MPObject.User;
         strVar += "                <div class=\"add-comment\">";
-        strVar += "                    <a class=\"avt\" href=\"{0}\">".Format(fuser.Home());
-        strVar += "                        <img src=\"{0}\" />".Format(fuser.Avt());
-        strVar += "                    <\/a>";
+        strVar += "                     <img class=\"avt\" src=\"{0}\" />".Format(User.Avt(MPData.user));
         strVar += "                    <div class=\"new-comment\">";
         strVar += "                        <textarea placeholder=\"请在这里输入评论内容\" ><\/textarea>";
         strVar += "                    <\/div>";

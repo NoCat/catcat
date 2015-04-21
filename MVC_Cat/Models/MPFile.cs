@@ -87,38 +87,38 @@ public class MPFile
                 }
                 else
                 {
-                    OssFile.Create(md5, bitmap.SaveAsJpeg());
+                    OssFile.Create(md5+".jpg", bitmap.SaveAsJpeg());
                 }
 
 
                 //上传236定宽
                 using (var t = bitmap.FixWidth(236))
                 {
-                    OssFile.Create(md5 + "_fw236", t.SaveAsJpeg());
+                    OssFile.Create(md5 + "_fw236.jpg", t.SaveAsJpeg());
                 }
 
                 //上传236方形
                 using (var t = bitmap.Square(236))
                 {
-                    OssFile.Create(md5 + "_sq236", t.SaveAsJpeg());
+                    OssFile.Create(md5 + "_sq236.jpg", t.SaveAsJpeg());
                 }
 
                 //上传75方形
                 using (var t = bitmap.Square(75))
                 {
-                    OssFile.Create(md5 + "_sq75", t.SaveAsJpeg());
+                    OssFile.Create(md5 + "_sq75.jpg", t.SaveAsJpeg());
                 }
 
                 //上传658定宽
                 using (var t = bitmap.FixWidth(658))
                 {
-                    OssFile.Create(md5 + "_fw658", t.SaveAsJpeg());
+                    OssFile.Create(md5 + "_fw658.jpg", t.SaveAsJpeg());
                 }
 
                 //上传78定宽
                 using (var t = bitmap.FixWidth(78))
                 {
-                    OssFile.Create(md5 + "_fw78", t.SaveAsJpeg());
+                    OssFile.Create(md5 + "_fw78.jpg", t.SaveAsJpeg());
                 }
                 return DB.SInsert("insert into file (width,height,md5) values (?,?,?)", width, height, md5);
             }

@@ -14,11 +14,11 @@ MPTemplate.Widget.Package = function (data, options)
         {
             if (i == 0)
             {
-                strVar += " <img class=\"cover\" src=\"{0}\" />".Format(imageHost + "/" + data.thumbs[0].file.hash + "_sq236");
+                strVar += " <img class=\"cover\" src=\"{0}\" />".Format(MPObject.Image.sq236(data.thumbs[i]).url);
             }
             else
             {
-                strVar += " <img class=\"thumb\" src=\"{0}\" />".Format(imageHost + "/" + data.thumbs[i].file.hash + "_sq75");
+                strVar += " <img class=\"thumb\" src=\"{0}\" />".Format(MPObject.Image.sq75(data.thumbs[i]).url);
             }
         }
         strVar += "        <\/div>";

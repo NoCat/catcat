@@ -49,8 +49,8 @@ $(function ()
 
     //注意下方,注释怎么都写在了程序末尾?!
     $(document).on("click", ".page-package .package-edit", edit_click)
-        .on("click", ".page-package .packge-follow", follow_click)
-    .on("click", ".page-package .packge-unfollow", unfollow_click);
+        .on("click", ".page-package .package-follow", follow_click)
+    .on("click", ".page-package .package-unfollow", unfollow_click);
 
     function edit_click()
     {
@@ -68,9 +68,10 @@ $(function ()
         var id = t.attr("data-id");
         MPObject.Package.Follow(id, function ()
         {
-            t.removeClass("follow");
-            t.addClass("unfollow");
-            MPMessageBox.New(MPMessageBox.Icons.OK, "关注成功!");
+            t.removeClass("package-follow");
+            t.addClass("package-unfollow");
+            ///这里以后考虑使用messageTip来代替
+            //MPMessageBox.New(MPMessageBox.Icons.OK, "关注成功!");
         })
     }
 
@@ -78,15 +79,15 @@ $(function ()
     function unfollow_click()
     {
         var t = $(this);
-        var box = MPMessageBox.New(MPMessageBox.Icons.Warn, "确认要取消关注?");
-        box.onOK = function myfunction()
+        //var box = MPMessageBox.New(MPMessageBox.Icons.Warn, "确认要取消关注?");
+        //box.onOK = function myfunction()
+        //{
+        var id = t.attr("data-id");
+        MPObject.Package.UnFollow(id, function ()
         {
-            var id = t.attr("data-id");
-            MPObject.Package.UnFollow(id, function ()
-            {
-                t.removeClass("unfollow");
-                t.addClass("follow");
-            })
-        }
+            t.removeClass("package-unfollow");
+            t.addClass("package-follow");
+        })
+        //}
     }
 })

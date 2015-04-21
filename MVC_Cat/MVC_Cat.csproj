@@ -231,7 +231,7 @@
     <Content Include="js\Object\user.js" />
     <Content Include="js\package.js" />
     <Content Include="js\Page\from_1504200.js" />
-    <Content Include="js\Page\package_1504200.js" />
+    <Content Include="js\Page\package_1504210.js" />
     <Content Include="js\Page\search_1504200.js" />
     <Content Include="js\Page\setting_1504200.js" />
     <Content Include="js\Page\user_1504200.js" />

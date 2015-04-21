@@ -35,7 +35,8 @@ MPTemplate.Widget.Image = function (data, options)
     }
     strVar += "    <\/div>";
     strVar += "    <a class=\"img\" href=\"{0}\">".Format("/image/" + data.id);
-    strVar += "        <img src=\"{0}\" width=\"236\" height=\"{1}\" />".Format(imageHost + "/" + data.file.hash + "_fw236", Math.ceil(236 * data.file.height / data.file.width));
+    var img = MPObject.Image.fw236(data);
+    strVar += "        <img src=\"{0}\" width=\"236\" height=\"{1}\" />".Format(img.url,img.height);
     strVar += "        <div class=\"cover\"><\/div>";
     strVar += "    <\/a>";
     strVar += "    <div class=\"description\">{0}<\/div>".FormatNoEncode(MPWidget.Image.Description(data.description));

@@ -50,7 +50,8 @@ MPWidget.ImageView.New = function (imageDetail)
     {
         var strVar1 = "";
         strVar1 += "<a class=\"image\" href=\"{0}\" data-id=\"{1}\">".Format("/image/" + image.id, image.id);
-        strVar1 += "     <img src=\"{0}\" width=\"76\" height=\"{1}\"/>".Format(imageHost + "/" + image.file.hash + "_fw78", Math.ceil(76 * image.file.height / image.file.width));
+        var img = MPObject.Image.fw78(image);
+        strVar1 += "     <img src=\"{0}\" width=\"76\" height=\"{1}\"/>".Format(img.url,img.height);
         strVar1 += "     <div class=\"cover\"><\/div>";
         strVar1 += "<\/a>";
 

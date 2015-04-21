@@ -10,7 +10,7 @@ MPObject.Image._info = function (image, width, shape) {
             {
                 res.url = imageHost + "/" + image.file.hash + "_fw" + width;
                 res.width = width;
-                res.height = Math.ceil(76 * image.file.height / image.file.width);
+                res.height = Math.ceil(width * image.file.height / image.file.width);
             }
             break;
         case "sq":
@@ -28,6 +28,7 @@ MPObject.Image._info = function (image, width, shape) {
             }
             break;
     }
+    res.url += ".jpg";
     return res;
 }
 
@@ -49,12 +50,12 @@ MPObject.Image.fw658 = function (image) {
 }
 
 
-MPObject.Image.fw75 = function (image) {
+MPObject.Image.sq75 = function (image) {
     return MPObject.Image._info(image, 75, "sq");
 }
 
 MPObject.Image.fw236 = function (image) {
-    return MPObject.Image._info(image, 236, "sq");
+    return MPObject.Image._info(image, 236, "fw");
 }
 
 MPObject.Image.Origin = function (image) {
