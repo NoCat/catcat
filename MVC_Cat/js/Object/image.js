@@ -113,18 +113,25 @@ MPObject.Image.Delete = function (imageID, callback) {
     if (!MPCheckLogin()) {
         return;
     }
-    //成功之后的处理考虑一下
-    $.post(host + "/ajax/delete-image", { id: imageID }, function (data) {
-        if (data.code == 0) {
-            if (callback) {
-                callback();
+    var box = MPMessageBox.New(MPMessageBox.Icons.Warn, "图片删除后无法恢复哦!")
+    box.onOK = function ()
+    {
+        $.post(host + "/ajax/delete-image", { id: imageID }, function (data)
+        {
+            if (data.code == 0)
+            {
+                if (callback)
+                {
+                    callback();
+                }
+                location.reload();
             }
-            location.reload();
-        }
-        else {
-            MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
-        }
-    }, "json")
+            else
+            {
+                MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
+            }
+        }, "json");
+    }
 }
 
 MPObject.Image.Praise = function (imageID, callback) {
