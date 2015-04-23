@@ -307,7 +307,19 @@ namespace MVC_Cat.Controllers
                             var source = Tools.GetStringFromRequest(Request.Form["source"]);
                             var from = Tools.GetStringFromRequest(Request.Form["from"]);
 
-                            DB.SExecuteNonQuery("insert into task_download(packageid,userid,source,`from`,description) values (?,?,?,?,?)", package.ID, user.ID, source, from, description);
+                            var res = DB.SExecuteScalar("select fileid from download where source=? and `from`=? and state=?", source, from, MPDownloadStates.Finished);
+                            if(res!=null)
+                            {
+                                int fileid = Convert.ToInt32(res);
+                                MPImage.Create(package.ID, fileid, user.ID, 0, from, description);
+                            }
+                            else
+                            {
+                                int downloadId =DB.SInsert("insert into download (source,`from`,state,fileid) values(?,?,?,0)", source, from, MPDownloadStates.Unstarting);
+                                DB.SExecuteNonQuery("insert into pick(downloadid,packageid,description) values(?,?,?)", downloadId, package.ID, description);
+                            }
+
+                            //DB.SExecuteNonQuery("insert into task_download(packageid,userid,source,`from`,description) values (?,?,?,?,?)", package.ID, user.ID, source, from, description);
                         }
                         break;
                     #endregion
@@ -651,6 +663,49 @@ namespace MVC_Cat.Controllers
 
                             okMsg.datas = list;
                             okMsg.data_max = res[res.Count - 1][0];
+                        }
+                        break;
+                    #endregion
+                    #region check 检查图片是否存在某个图包中
+                    case "check":
+                        {
+                            var user=CheckLogin();
+                            var fileid=0;
+                            var userid=user.ID;
+
+                            //转存的时候
+                            if(Request.Form["image_id"]!=null)
+                            {
+                                var imageId = Tools.GetInt32FromRequest(Request.Form["image_id"]);
+                                var image = new MPImage(imageId);
+                                fileid=image.FileID;
+                            }
+                            //从其他网站收集的时候
+                            else if(Request.Form["source"]!=null)
+                            {
+                                var source = Tools.GetStringFromRequest(Request.Form["source"]);
+                                var r = DB.SExecuteScalar("select fileid from download where source=? and state=?", source,MPDownloadStates.Finished);
+                                if(r!=null)
+                                {
+                                    fileid = Convert.ToInt32(r);
+                                }
+                            }
+                            //自己上传的时候
+                            else if (Request.Form["hash"] != null)
+                            {
+                                var hash = Tools.GetStringFromRequest(Request.Form["hash"]);
+                                var file = new MPFile(hash);
+                                fileid = file.ID;
+                            }
+
+                            var res = DB.SExecuteReader("select packageid from image where fileid=? and userid=?", fileid, userid);
+                            var packages = new List<object>();
+                            foreach (var item in res)
+                            {
+                                var package = new MPPackage(Convert.ToInt32(item[0]));
+                                packages.Add(new JSON.Package(package));
+                            }
+                            okMsg.packages = packages;
                         }
                         break;
                     #endregion

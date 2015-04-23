@@ -225,7 +225,6 @@
     <Content Include="js\jquery.Jcrop.js" />
     <Content Include="js\jquery.js" />
     <Content Include="js\main.js" />
-    <Content Include="js\miaopass.js" />
     <Content Include="js\Object\image.js" />
     <Content Include="js\Object\package.js" />
     <Content Include="js\Object\user.js" />

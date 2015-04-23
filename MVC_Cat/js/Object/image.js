@@ -2,10 +2,12 @@
 
 MPObject.Image = {};
 
-MPObject.Image._info = function (image, width, shape) {
+MPObject.Image._info = function (image, width, shape)
+{
     var res = {};
     shape = shape ? shape : "";
-    switch (shape) {
+    switch (shape)
+    {
         case "fw":
             {
                 res.url = imageHost + "/" + image.file.hash + "_fw" + width;
@@ -32,86 +34,122 @@ MPObject.Image._info = function (image, width, shape) {
     return res;
 }
 
-MPObject.Image.sq236=function(image)
+MPObject.Image.sq236 = function (image)
 {
     return MPObject.Image._info(image, 236, "sq");
 }
 
-MPObject.Image.fw78 = function (image) {
+MPObject.Image.fw78 = function (image)
+{
     return MPObject.Image._info(image, 78, "fw");
 }
 
-MPObject.Image.fw236 = function (image) {
+MPObject.Image.fw236 = function (image)
+{
     return MPObject.Image._info(image, 236, "fw");
 }
 
-MPObject.Image.fw658 = function (image) {
+MPObject.Image.fw658 = function (image)
+{
     return MPObject.Image._info(image, 658, "fw");
 }
 
 
-MPObject.Image.sq75 = function (image) {
+MPObject.Image.sq75 = function (image)
+{
     return MPObject.Image._info(image, 75, "sq");
 }
 
-MPObject.Image.fw236 = function (image) {
+MPObject.Image.fw236 = function (image)
+{
     return MPObject.Image._info(image, 236, "fw");
 }
 
-MPObject.Image.Origin = function (image) {
+MPObject.Image.Origin = function (image)
+{
     return MPObject.Image._info(image);
 }
 
-MPObject.Image.Resave = function (imageID, imageHash, description) {
-    if (!MPCheckLogin()) {
+MPObject.Image.Resave = function (imageID, imageHash, description)
+{
+    if (!MPCheckLogin())
+    {
         return;
     }
-    var url = imageHost + "/" + imageHash + "_fw236";
-    var dialog = MPCreateImageDialog.New(url, "转存", description, false, "");
-    dialog.onOK = function () {
-        $.post(host + "/ajax/resave", { image_id: imageID, package_id: dialog.packageId, description: dialog.description }, function (data) {
-            if (data.code == 0) {
+    var url = imageHost + "/" + imageHash + "_fw236.jpg";
+    //var dialog = MPCreateImageDialog.New(url, "转存", description, false, "");
+    var dialog = MPCreateImageDialog.New({
+        previewUrl: url,
+        title: "转存",
+        description: description,
+        check:{image_id:imageID}
+    });
+    dialog.onOK = function ()
+    {
+        $.post(host + "/ajax/resave", { image_id: imageID, package_id: dialog.packageId, description: dialog.description }, function (data)
+        {
+            if (data.code == 0)
+            {
                 var box = MPMessageBox.New(MPMessageBox.Icons.OK, "图片转存成功");
-                box.onOK = function () {
+                box.onOK = function ()
+                {
                     dialog.Close();
                     box.Close();
                 }
             }
-            else {
+            else
+            {
                 MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
             }
         }, "json");
     }
 }
 
-MPObject.Image.Edit = function (imageID, imageHash, description, source,packageID,packageTitle,callback) {
-    if (!MPCheckLogin()) {
+MPObject.Image.Edit = function (imageID, imageHash, description, source, packageID, packageTitle, callback)
+{
+    if (!MPCheckLogin())
+    {
         return;
     }
-    var url = imageHost + "/" + imageHash + "_fw236";
-    var dialog = MPCreateImageDialog.New(url, "编辑图片", description, true, source,packageID,packageTitle);
-    dialog.onOK = function () {
-        $.post(host + "/ajax/edit-image", { id: imageID, package_id: dialog.packageId, description: dialog.description, source: dialog.source }, function (data) {
-            if (data.code == 0) {
+    var url = imageHost + "/" + imageHash + "_fw236.jpg";
+    //var dialog = MPCreateImageDialog.New(url, "编辑图片", description, true, source,packageID,packageTitle);
+    var dialog = MPCreateImageDialog.New({
+        previewUrl: url,
+        title: "编辑图片",
+        canEdit: true,
+        source: source,
+        descripiton: description,
+        defaultPackageId: packageID
+    }); dialog.onOK = function ()
+    {
+        $.post(host + "/ajax/edit-image", { id: imageID, package_id: dialog.packageId, description: dialog.description, source: dialog.source }, function (data)
+        {
+            if (data.code == 0)
+            {
                 var box = MPMessageBox.New(MPMessageBox.Icons.OK, "图片编辑成功");
-                box.onOK = function () {
+                box.onOK = function ()
+                {
                     dialog.Close();
                     box.Close();
                 }
             }
-            else {
+            else
+            {
                 MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
             }
         }, "json");
     }
 
-    dialog.onDelete = function () {
-        MPObject.Image.Delete(imageID,callback);
+    dialog.onDelete = function ()
+    {
+        MPObject.Image.Delete(imageID, callback);
     }
 }
 
-MPObject.Image.Delete = function (imageID, callback) {
-    if (!MPCheckLogin()) {
+MPObject.Image.Delete = function (imageID, callback)
+{
+    if (!MPCheckLogin())
+    {
         return;
     }
     var box = MPMessageBox.New(MPMessageBox.Icons.Warn, "图片删除后无法恢复哦!")
@@ -135,23 +173,31 @@ MPObject.Image.Delete = function (imageID, callback) {
     }
 }
 
-MPObject.Image.Praise = function (imageID, callback) {
-    if (!MPCheckLogin()) {
+MPObject.Image.Praise = function (imageID, callback)
+{
+    if (!MPCheckLogin())
+    {
         return;
     }
-    $.post(host + "/ajax/praise-image", { image_id: imageID }, function (data) {
-        if (callback) {
+    $.post(host + "/ajax/praise-image", { image_id: imageID }, function (data)
+    {
+        if (callback)
+        {
             callback();
         }
     }, "json");
 }
 
-MPObject.Image.UnPraise = function (imageID, callback) {
-    if (!MPCheckLogin()) {
+MPObject.Image.UnPraise = function (imageID, callback)
+{
+    if (!MPCheckLogin())
+    {
         return;
     }
-    $.post(host + "/ajax/unpraise-image", { image_id: imageID }, function (data) {
-        if (callback) {
+    $.post(host + "/ajax/unpraise-image", { image_id: imageID }, function (data)
+    {
+        if (callback)
+        {
             callback();
         }
     }, "json");
@@ -162,7 +208,13 @@ MPObject.Image.CreateImage = function ()
     var dialog = MPUploadDialog.New("上传图片");
     dialog.onSuccess = function (file)
     {
-        var c = MPCreateImageDialog.New(imageHost + "/" + file.hash + "_fw236", "上传图片", dialog.filename);
+        //var c = MPCreateImageDialog.New(imageHost + "/" + file.hash + "_fw236", "上传图片", dialog.filename);
+        var c = MPCreateImageDialog.New({
+            previewUrl: imageHost + "/" + file.hash + "_fw236.jpg",
+            title: "上传图片",
+            description: dialog.filename,
+            check: {hash:file.hash}
+        });
         c.onOK = function ()
         {
             $.post(host + "/ajax/create-image", { package_id: c.packageId, file_hash: file.hash, description: MPHtmlEncode(c.description) }, function (msg)

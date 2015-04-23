@@ -208,7 +208,7 @@ table {
                         background-image: url(/img/comment_16_16.png);
 
                         em {
-                            display:none;
+                            display: none;
                             background-color: lighten(#cc3030,10%);
                             border-radius: 14px;
                             color: @baseWhite;
@@ -756,9 +756,9 @@ table {
             border-top: 1px solid darken(@baseWhite,8%);
 
             .avt {
-                float:left;
-                width:@avtSize;
-                height:@avtSize;
+                float: left;
+                width: @avtSize;
+                height: @avtSize;
             }
 
             .new-comment {
@@ -963,9 +963,9 @@ table {
             margin: 5px 0;
         }
 
-        .email{
+        .email {
             .mp_input.mp_input_text(240px,30px);
-            margin-bottom:15px;
+            margin-bottom: 15px;
         }
     }
 
@@ -1061,6 +1061,25 @@ table {
 
     .create-image-dialog {
         @previewSize: 180px;
+
+        .message {
+            display:none;
+            background-color: #ffffcc;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            margin: -20px -30px 10px;
+            padding: 8px 12px;
+
+            a {
+                font-weight: bold;
+                margin: 0 2px;
+                color: @baseBlue;
+
+                &:hover{
+                    text-decoration:underline;
+                }
+            }
+        }
 
         .preview {
             width: @previewSize;
@@ -2223,8 +2242,8 @@ table {
     overflow-y: scroll;
     width: 200px;
     position: absolute;
-    font-size:13px;
-    background-color:@baseWhite;
+    font-size: 13px;
+    background-color: @baseWhite;
 
     .mention-option {
         cursor: pointer;
@@ -2233,8 +2252,8 @@ table {
         text-overflow: ellipsis;
         white-space: nowrap;
 
-        &:hover{
-            background:darken(@baseWhite,6%);
+        &:hover {
+            background: darken(@baseWhite,6%);
         }
     }
 }

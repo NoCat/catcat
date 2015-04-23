@@ -80,3 +80,19 @@ public enum MPMessageTypes:byte
     /// </summary>
     Reply=3
 }
+
+public enum MPDownloadStates : byte
+{
+    /// <summary>
+    /// 未开始
+    /// </summary>
+    Unstarting=0,
+    /// <summary>
+    /// 已开始
+    /// </summary>
+    Starting=1,
+    /// <summary>
+    /// 已完成
+    /// </summary>
+    Finished=2
+}

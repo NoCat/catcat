@@ -8,7 +8,7 @@ namespace MVC_Cat.Controllers
 {
     public class PackageController : Controller
     {
-        public ActionResult Index(int id,string sub1)
+        public ActionResult Index(int id, string sub1)
         {
             MPPackage package = null;
             try
@@ -33,7 +33,11 @@ namespace MVC_Cat.Controllers
                         var res = DB.SExecuteReader("select userid from following where type=? and info=? and id<? order by id limit ?", MPFollowingTypes.Package, package.UserID, max, limit);
                         foreach (var item in res)
                         {
-                            list.Add(new JSON.UserDetail(new MPUser(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                            try
+                            {
+                                list.Add(new JSON.UserDetail(new MPUser(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                            }
+                            catch (MiaopassException) { }
                         }
                     }
                     break;
@@ -44,14 +48,22 @@ namespace MVC_Cat.Controllers
                         {
                             foreach (var item in res)
                             {
-                                list.Add(new JSON.Image(new MPImage(Convert.ToInt32(item[0]))));
+                                try
+                                {
+                                    list.Add(new JSON.Image(new MPImage(Convert.ToInt32(item[0]))));
+                                }
+                                catch (MiaopassException) { }
                             }
                         }
                         else
                         {
                             foreach (var item in res)
                             {
-                                list.Add(new JSON.ImageDetail(new MPImage(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                                try
+                                {
+                                    list.Add(new JSON.ImageDetail(new MPImage(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                                }
+                                catch (MiaopassException) { }
                             }
                         }
                     }
@@ -63,7 +75,7 @@ namespace MVC_Cat.Controllers
             {
                 return Content(Tools.JSONStringify(list));
             }
-            
+
             var packageDetail = new JSON.PackageDetail(package, Session["user"] as MPUser);
             string title = package.Title.Length > 20 ? package.Title.Substring(0, 20) + "..." : package.Title;
 
@@ -72,9 +84,9 @@ namespace MVC_Cat.Controllers
             ViewBag.Description = package.Description;
             ViewBag.MPData = new
             {
-                user=new JSON.User(Session["user"] as MPUser),
+                user = new JSON.User(Session["user"] as MPUser),
                 package = packageDetail,
-                sub1=sub1,
+                sub1 = sub1,
                 datas = list
             };
             return View();
