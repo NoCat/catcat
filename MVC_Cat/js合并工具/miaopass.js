@@ -3083,7 +3083,6 @@ var MPDialog = {
 MPTitleDialog = {
     New: function (content, titleText)
     {
-        titleText = titleText ? titleText : "";
         var dialog = MPDialog.New(content);
         var title = dialog.Content.find(".dialog-title .text");
         dialog.Title = function (t)
@@ -3097,7 +3096,6 @@ MPTitleDialog = {
                 title.text(t);
             }
         }
-        dialog.Title(titleText);
         return dialog;
     }
 }
@@ -3466,19 +3464,24 @@ MPCreatePackageDialog = {
 /// <reference path="Dialog.js" />
 MPCreateImageDialog =
     {
-        New: function (imageSrc,title, description,isEdit,source,packageID,packageTitle) {
+        //New: function (imageSrc, title, description, isEdit, source, packageID, packageTitle)
+        //{
+        New: function (options)
+        {
             var strVar = "";
             strVar += "<div class=\"dialog-mask\">";
             strVar += "    <div class=\"dialog-box\">";
             strVar += "        <div class=\"dialog-title\">";
-            strVar += "            <span class=\"text\">{1}<\/span>";
+            strVar += "            <span class=\"text\">{0}<\/span>".Format(options.title);
             strVar += "            <div class=\"dialog-close\">";
             strVar += "            <\/div>";
             strVar += "        <\/div>";
             strVar += "        <div class=\"dialog-content\">";
             strVar += "            <div class=\"create-image-dialog\">";
+            strVar += "                <div class=\"message\">";
+            strVar += "                </div>";
             strVar += "                <div class=\"preview\">";
-            strVar += "                    <img src=\"{0}\" width=\"180\">";
+            strVar += "                    <img src=\"{0}\" width=\"180\">".Format(options.previewUrl);
             strVar += "                <\/div>";
             strVar += "                <div class=\"right\">";
             strVar += "                    <h3>图包</h3>";
@@ -3500,22 +3503,22 @@ MPCreateImageDialog =
             strVar += "                     <div class=\"seperator\"></div>";
             strVar += "                     <h3 >描述</h3>";
             strVar += "                    <div class=\"description\">";
-            strVar += "                        <textarea>{2}<\/textarea>";
+            strVar += "                        <textarea>{0}<\/textarea>".Format(options.description);
             strVar += "                        <div class=\"tip\">";
             strVar += "                            给图片添加 #标签#，可以更好地整理图片哦~";
             strVar += "                        <\/div>";
             strVar += "                    <\/div>";
-            if (isEdit == true)
+            if (options.canEdit == true)
             {
                 strVar += "                     <div class=\"seperator\"></div>";
                 strVar += "                     <h3>来自</h3>";
-                strVar += "                     <input class=\"source\"  type=\"text\" value=\"{0}\">".Format(source);
+                strVar += "                     <input class=\"source\"  type=\"text\" value=\"{0}\">".Format(options.source);
             }
             strVar += "                <\/div>";
             strVar += "            <\/div>";
             strVar += "        <\/div>";
             strVar += "        <div class=\"dialog-btns\">";
-            if (isEdit == true)
+            if (options.canEdit == true)
             {
                 strVar += "            <div class=\"delete\">删除<\/div>";
             }
@@ -3525,10 +3528,7 @@ MPCreateImageDialog =
             strVar += "    <\/div>";
             strVar += "<\/div>";
 
-            title = title ? title : "";
-            description = description ? description : "";
-
-            var dialog = MPTitleDialog.New(strVar.Format(imageSrc, title, description));
+            var dialog = MPTitleDialog.New(strVar);
             var description = dialog.Content.find(".description textarea");//描述
             var bCurrent = dialog.Content.find(".package-list");//当前图标按钮
             var dropList = dialog.Content.find(".drop-list");//点击后弹出列表
@@ -3541,35 +3541,63 @@ MPCreateImageDialog =
             dialog.description = "";
             dialog.packageId = 0;
             dialog.source = "";
-            dialog.Title(title);
 
-            $.post(host + "/ajax/query-packages", {}, function (data) {
-                if (data.code == 0) {
+            //获取图包
+            $.post(host + "/ajax/query-packages", {}, function (data)
+            {
+                if (data.code == 0)
+                {
                     var packagelist = data.packages;
                     var length = packagelist.length;
-                    for (var i = 0; i < length; i++) {
+                    for (var i = 0; i < length; i++)
+                    {
                         var option = $("<div/>").addClass("package");
                         option.text(packagelist[i].title);
                         option.attr("data-package-id", packagelist[i].id);
                         select.append(option);
+
+                        //选中默认图包
+                        if(packagelist[i].id==options.defaultPackageId)
+                        {
+                                bCurrent.attr("data-package-id",packagelist[i].id);
+                                bCurrent.find(".name").text(packagelist[i].title);
+                        }
                     }
-                    if (isEdit==true)
-                    {
-                        bCurrent.attr("data-package-id", packageID);
-                        bCurrent.find(".name").text(packageTitle);
-                    }
-                    else if (packagelist.length != 0)
-                    {
-                        bCurrent.attr("data-package-id", packagelist[0].id);
-                        bCurrent.find(".name").text(packagelist[0].title);
-                    }
+                    //if (options.canEdit == true)
+                    //{
+                    //    bCurrent.attr("data-package-id", packageID);
+                    //    bCurrent.find(".name").text(packageTitle);
+                    //}
+                    //else if (packagelist.length != 0)
+                    //{
+                    //    bCurrent.attr("data-package-id", packagelist[0].id);
+                    //    bCurrent.find(".name").text(packagelist[0].title);
+                    //}
                 }
+            }, "json");
 
-            }, "json");//获取图包
+            //检查是否重复
+            if (options.check != null)
+            {
+                $.post(host + "/ajax/check", options.check, function (data)
+                {
+                    if(data.code==0 && data.packages.length!=0)
+                    {
+                        var str = "<span>图包</span>";
+                        for (var i = 0,n=data.packages.length; i < n; i++)
+                        {
+                            str += "<a href=\"{0}\">{1}</a>".Format(host+"/package/"+data.packages[i].id,data.packages[i].title);
+                        }
+                        str += "<span>里已经有这张图片了</span>";
+                        var message = dialog.Content.find(".message");
+                        message.html(str);
+                        message.show();
+                    }
+                }, "json");
+            }
 
-
-
-            var dropListHide = function () {
+            var dropListHide = function ()
+            {
                 filterate.hide();
                 select.show();
                 filterSearch.val("");
@@ -3577,7 +3605,8 @@ MPCreateImageDialog =
 
             MPPopUpMenu(bCurrent, dropList, dropListHide);
 
-            dropList.on("click", ".package", function (e) {
+            dropList.on("click", ".package", function (e)
+            {
                 var a = $(this);
                 bCurrent.attr("data-package-id", a.attr("data-package-id"));
                 bCurrent.find(".name").text(a.text());
@@ -3585,13 +3614,17 @@ MPCreateImageDialog =
                 e.stopPropagation();
             });
 
-            filterate.find(".create").click(function () {
+            filterate.find(".create").click(function ()
+            {
                 var a = $(this);
-                if (a.text == null) {
+                if (a.text == null)
+                {
                     return;
                 }
-                $.post(host + "/ajax/create-package", { title: MPHtmlEncode(filterSearch.val()) }, function (data) {
-                    if (data.code == 0) {
+                $.post(host + "/ajax/create-package", { title: MPHtmlEncode(filterSearch.val()) }, function (data)
+                {
+                    if (data.code == 0)
+                    {
                         bCurrent.attr("data-package-id", data.packageid);
                         bCurrent.find(".name").text(filterSearch.val());
 
@@ -3602,15 +3635,18 @@ MPCreateImageDialog =
                         dropListHide();
                         dropList.hide();
                     }
-                    else {
+                    else
+                    {
                         MPMessageBox.New("warn", data.msg);
                     }
                 }, "json");
             })
 
-            filterSearch.keyup(function () {
+            filterSearch.keyup(function ()
+            {
                 var val = $.trim(filterSearch.val());
-                if (val == "") {
+                if (val == "")
+                {
                     select.show();
                     filterate.hide();
                     return;
@@ -3622,47 +3658,59 @@ MPCreateImageDialog =
                 filterate.find(".package").remove();
                 //获取当前图包列表
                 var packageList = select.find(".package");
-                if (packageList.length == 0) {
+                if (packageList.length == 0)
+                {
                     filterate.find(".create").text("新建图包---" + val);
                 }
-                else {
-                    packageList.each(function () {
-                        if ($(this).text().indexOf(val) != -1) {
+                else
+                {
+                    packageList.each(function ()
+                    {
+                        if ($(this).text().indexOf(val) != -1)
+                        {
                             //找到了之后就复制一个放入候选列表
                             filterate.append($(this).clone());
                         }
-                        else {
+                        else
+                        {
                             filterate.find(".create").text("新建图包---" + val);
                         }
                     });
                 }
             });
 
-            dialog.ButtonOK.click(function () {
+            dialog.ButtonOK.click(function ()
+            {
                 dialog.description = description.val();
                 dialog.packageId = bCurrent.attr("data-package-id");
-                if (isEdit==true) {
+                if (options.canEdit == true)
+                {
                     dialog.source = source.val();
                 }
-                if (dialog.packageId == "" || dialog.packageId == undefined) {
+                if (dialog.packageId == "" || dialog.packageId == undefined)
+                {
                     MPMessageBox.New(MPMessageBox.Icons.Warn, "请选择一个图包,如果没有图包请新建一个图包!");
                     return;
                 }
-                if (dialog.onOK != null) {
+                if (dialog.onOK != null)
+                {
                     dialog.onOK();
                 }
-                else {
+                else
+                {
                     dialog.Close();
                 }
             })
 
-            dialog.Content.find(".cancel").click(function () {
+            dialog.Content.find(".cancel").click(function ()
+            {
                 dialog.Close();
             })//取消按钮
 
             dialog.Content.find(".delete").click(function ()
             {
-                if (dialog.onDelete!=null) {
+                if (dialog.onDelete != null)
+                {
                     dialog.onDelete();
                 }
                 //获取对话框的信息,包括图包id,描述,图片来源,这个功能可以写成一个函数
@@ -4004,10 +4052,12 @@ MPObject.User.Pages.PraisePackage = function (user)
 
 MPObject.Image = {};
 
-MPObject.Image._info = function (image, width, shape) {
+MPObject.Image._info = function (image, width, shape)
+{
     var res = {};
     shape = shape ? shape : "";
-    switch (shape) {
+    switch (shape)
+    {
         case "fw":
             {
                 res.url = imageHost + "/" + image.file.hash + "_fw" + width;
@@ -4034,86 +4084,122 @@ MPObject.Image._info = function (image, width, shape) {
     return res;
 }
 
-MPObject.Image.sq236=function(image)
+MPObject.Image.sq236 = function (image)
 {
     return MPObject.Image._info(image, 236, "sq");
 }
 
-MPObject.Image.fw78 = function (image) {
+MPObject.Image.fw78 = function (image)
+{
     return MPObject.Image._info(image, 78, "fw");
 }
 
-MPObject.Image.fw236 = function (image) {
+MPObject.Image.fw236 = function (image)
+{
     return MPObject.Image._info(image, 236, "fw");
 }
 
-MPObject.Image.fw658 = function (image) {
+MPObject.Image.fw658 = function (image)
+{
     return MPObject.Image._info(image, 658, "fw");
 }
 
 
-MPObject.Image.sq75 = function (image) {
+MPObject.Image.sq75 = function (image)
+{
     return MPObject.Image._info(image, 75, "sq");
 }
 
-MPObject.Image.fw236 = function (image) {
+MPObject.Image.fw236 = function (image)
+{
     return MPObject.Image._info(image, 236, "fw");
 }
 
-MPObject.Image.Origin = function (image) {
+MPObject.Image.Origin = function (image)
+{
     return MPObject.Image._info(image);
 }
 
-MPObject.Image.Resave = function (imageID, imageHash, description) {
-    if (!MPCheckLogin()) {
+MPObject.Image.Resave = function (imageID, imageHash, description)
+{
+    if (!MPCheckLogin())
+    {
         return;
     }
-    var url = imageHost + "/" + imageHash + "_fw236";
-    var dialog = MPCreateImageDialog.New(url, "转存", description, false, "");
-    dialog.onOK = function () {
-        $.post(host + "/ajax/resave", { image_id: imageID, package_id: dialog.packageId, description: dialog.description }, function (data) {
-            if (data.code == 0) {
+    var url = imageHost + "/" + imageHash + "_fw236.jpg";
+    //var dialog = MPCreateImageDialog.New(url, "转存", description, false, "");
+    var dialog = MPCreateImageDialog.New({
+        previewUrl: url,
+        title: "转存",
+        description: description,
+        check:{image_id:imageID}
+    });
+    dialog.onOK = function ()
+    {
+        $.post(host + "/ajax/resave", { image_id: imageID, package_id: dialog.packageId, description: dialog.description }, function (data)
+        {
+            if (data.code == 0)
+            {
                 var box = MPMessageBox.New(MPMessageBox.Icons.OK, "图片转存成功");
-                box.onOK = function () {
+                box.onOK = function ()
+                {
                     dialog.Close();
                     box.Close();
                 }
             }
-            else {
+            else
+            {
                 MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
             }
         }, "json");
     }
 }
 
-MPObject.Image.Edit = function (imageID, imageHash, description, source,packageID,packageTitle,callback) {
-    if (!MPCheckLogin()) {
+MPObject.Image.Edit = function (imageID, imageHash, description, source, packageID, packageTitle, callback)
+{
+    if (!MPCheckLogin())
+    {
         return;
     }
-    var url = imageHost + "/" + imageHash + "_fw236";
-    var dialog = MPCreateImageDialog.New(url, "编辑图片", description, true, source,packageID,packageTitle);
-    dialog.onOK = function () {
-        $.post(host + "/ajax/edit-image", { id: imageID, package_id: dialog.packageId, description: dialog.description, source: dialog.source }, function (data) {
-            if (data.code == 0) {
+    var url = imageHost + "/" + imageHash + "_fw236.jpg";
+    //var dialog = MPCreateImageDialog.New(url, "编辑图片", description, true, source,packageID,packageTitle);
+    var dialog = MPCreateImageDialog.New({
+        previewUrl: url,
+        title: "编辑图片",
+        canEdit: true,
+        source: source,
+        descripiton: description,
+        defaultPackageId: packageID
+    }); dialog.onOK = function ()
+    {
+        $.post(host + "/ajax/edit-image", { id: imageID, package_id: dialog.packageId, description: dialog.description, source: dialog.source }, function (data)
+        {
+            if (data.code == 0)
+            {
                 var box = MPMessageBox.New(MPMessageBox.Icons.OK, "图片编辑成功");
-                box.onOK = function () {
+                box.onOK = function ()
+                {
                     dialog.Close();
                     box.Close();
                 }
             }
-            else {
+            else
+            {
                 MPMessageBox.New(MPMessageBox.Icons.Error, data.msg);
             }
         }, "json");
     }
 
-    dialog.onDelete = function () {
-        MPObject.Image.Delete(imageID,callback);
+    dialog.onDelete = function ()
+    {
+        MPObject.Image.Delete(imageID, callback);
     }
 }
 
-MPObject.Image.Delete = function (imageID, callback) {
-    if (!MPCheckLogin()) {
+MPObject.Image.Delete = function (imageID, callback)
+{
+    if (!MPCheckLogin())
+    {
         return;
     }
     var box = MPMessageBox.New(MPMessageBox.Icons.Warn, "图片删除后无法恢复哦!")
@@ -4137,23 +4223,31 @@ MPObject.Image.Delete = function (imageID, callback) {
     }
 }
 
-MPObject.Image.Praise = function (imageID, callback) {
-    if (!MPCheckLogin()) {
+MPObject.Image.Praise = function (imageID, callback)
+{
+    if (!MPCheckLogin())
+    {
         return;
     }
-    $.post(host + "/ajax/praise-image", { image_id: imageID }, function (data) {
-        if (callback) {
+    $.post(host + "/ajax/praise-image", { image_id: imageID }, function (data)
+    {
+        if (callback)
+        {
             callback();
         }
     }, "json");
 }
 
-MPObject.Image.UnPraise = function (imageID, callback) {
-    if (!MPCheckLogin()) {
+MPObject.Image.UnPraise = function (imageID, callback)
+{
+    if (!MPCheckLogin())
+    {
         return;
     }
-    $.post(host + "/ajax/unpraise-image", { image_id: imageID }, function (data) {
-        if (callback) {
+    $.post(host + "/ajax/unpraise-image", { image_id: imageID }, function (data)
+    {
+        if (callback)
+        {
             callback();
         }
     }, "json");
@@ -4164,7 +4258,13 @@ MPObject.Image.CreateImage = function ()
     var dialog = MPUploadDialog.New("上传图片");
     dialog.onSuccess = function (file)
     {
-        var c = MPCreateImageDialog.New(imageHost + "/" + file.hash + "_fw236", "上传图片", dialog.filename);
+        //var c = MPCreateImageDialog.New(imageHost + "/" + file.hash + "_fw236", "上传图片", dialog.filename);
+        var c = MPCreateImageDialog.New({
+            previewUrl: imageHost + "/" + file.hash + "_fw236.jpg",
+            title: "上传图片",
+            description: dialog.filename,
+            check: {hash:file.hash}
+        });
         c.onOK = function ()
         {
             $.post(host + "/ajax/create-image", { package_id: c.packageId, file_hash: file.hash, description: MPHtmlEncode(c.description) }, function (msg)

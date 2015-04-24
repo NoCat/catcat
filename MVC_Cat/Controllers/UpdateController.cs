@@ -16,7 +16,7 @@ namespace MVC_Cat.Controllers
         {
             //var user = Session["user"] as MPUser;
             //if (user.Authority != UserAuthorities.Administrator)
-            return HttpNotFound();
+            //return HttpNotFound();
 
             //var res = DB.SExecuteReader("select md5 from file");
             //foreach (var item in res)
@@ -30,6 +30,7 @@ namespace MVC_Cat.Controllers
             //    OssFile.Move(md5 + "_sq75", md5 + "_sq75" + ".jpg");               
             //}
             //return Content("ok");
+            return View();
         }
 
     }

@@ -142,6 +142,7 @@
     <Compile Include="Models\MPPackage.cs" />
     <Compile Include="Models\MPUser.cs" />
     <Compile Include="Models\OssFile.cs" />
+    <Compile Include="Models\SpiderFilter.cs" />
     <Compile Include="Models\Tools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -270,13 +271,22 @@
     <Content Include="Views\Account\ResetPassword.aspx" />
     <Content Include="Views\Account\SignupEmail.aspx" />
     <Content Include="Views\All\Index.aspx" />
+    <Content Include="Views\All\index_spider.aspx" />
     <Content Include="Views\From\Index.aspx" />
     <Content Include="Views\Image\Index.aspx" />
+    <Content Include="Views\Image\Index_Spider.aspx" />
     <Content Include="Views\Package\Index.aspx" />
+    <Content Include="Views\Package\Index_Spider.aspx" />
+    <Content Include="Views\Shared\Comment.ascx" />
+    <Content Include="Views\Shared\Image.ascx" />
     <Content Include="Views\Pick\Index.aspx" />
     <Content Include="Views\Search\Index.aspx" />
     <Content Include="Views\Setting\Index.aspx" />
+    <Content Include="Views\Shared\Package.ascx" />
+    <Content Include="Views\Shared\User.ascx" />
+    <Content Include="Views\Update\Index.aspx" />
     <Content Include="Views\User\Index.aspx" />
+    <Content Include="Views\User\Index_Spider.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -302,6 +312,7 @@
     <Content Include="MP_Temp\placeholder" />
     <None Include="Properties\PublishProfiles\jpb.pubxml" />
     <Content Include="Views\Shared\mp.Master" />
+    <Content Include="Views\Shared\mp_spider.Master" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -223,7 +223,7 @@ MPCreateImageDialog =
             {
                 dialog.description = description.val();
                 dialog.packageId = bCurrent.attr("data-package-id");
-                if (isEdit == true)
+                if (options.canEdit == true)
                 {
                     dialog.source = source.val();
                 }

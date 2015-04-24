@@ -82,14 +82,26 @@ namespace MVC_Cat.Controllers
             ViewBag.Title = string.Format("{0}@{1}收集_喵帕斯", title, packageDetail.user.name);
             ViewBag.Keywords = package.Title;
             ViewBag.Description = package.Description;
-            ViewBag.MPData = new
+
+            bool isSpider = Convert.ToBoolean(RouteData.Values["isSpider"]);
+            if (isSpider)
             {
-                user = new JSON.User(Session["user"] as MPUser),
-                package = packageDetail,
-                sub1 = sub1,
-                datas = list
-            };
-            return View();
+                ViewBag.Package = packageDetail;
+                ViewBag.Sub1 = sub1;
+                ViewBag.Datas = list;
+                return View("index_spider");
+            }
+            else
+            {
+                ViewBag.MPData = new
+                {
+                    user = new JSON.User(Session["user"] as MPUser),
+                    package = packageDetail,
+                    sub1 = sub1,
+                    datas = list
+                };
+                return View();
+            }
         }
 
     }

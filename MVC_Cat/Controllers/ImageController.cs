@@ -8,14 +8,6 @@ namespace MVC_Cat.Controllers
 {
     public class ImageController : Controller
     {
-        bool IsSpider()
-        {
-            var agent = Request.UserAgent.ToLower();
-            if (agent.Contains("baiduspider") || agent.Contains("googlebot") || agent.Contains("360spider"))
-                return true;
-            return false;
-        }
-
         public ActionResult Index(int id)
         {
             MPImage image = null;
@@ -40,19 +32,23 @@ namespace MVC_Cat.Controllers
             ViewBag.Keywords = keywords;
             ViewBag.Description = image.Description;
 
-            if (IsSpider())
+            bool isSpider = Convert.ToBoolean(RouteData.Values["isSpider"]);
+            if (isSpider)
             {
-                ViewBag. PrevID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id<? limit 1", image.ID));
-                ViewBag. NextID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id>? limit 1", image.ID));
+                ViewBag.Image = imageDetail;
+                ViewBag.PrevID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id<? limit 1", image.ID));
+                ViewBag.NextID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id>? limit 1", image.ID));
+                return View("index_spider");
             }
-
-            ViewBag.MPData = new
+            else
             {
-                user=new JSON.User(Session["user"] as MPUser),
-                image=imageDetail
-            };
-
-            return View();
+                ViewBag.MPData = new
+                {
+                    user = new JSON.User(Session["user"] as MPUser),
+                    image = imageDetail
+                };
+                return View();
+            }
         }
 
     }

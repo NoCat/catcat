@@ -42,7 +42,11 @@ namespace MVC_Cat.Controllers
                         var res = DB.SExecuteReader("select id from image where userid=? and id<? order by id desc limit ?", pageUser.ID, max, limit);
                         foreach (var item in res)
                         {
-                            datas.Add(new JSON.ImageDetail(new MPImage(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                            try
+                            {
+                                datas.Add(new JSON.ImageDetail(new MPImage(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                            }
+                            catch (MiaopassException) { }
                         }
                         int n = res.Count;
                         if (n != 0)
@@ -56,7 +60,11 @@ namespace MVC_Cat.Controllers
                         var res = DB.SExecuteReader("select info,id from praise where userid=? and type=? and id<? order by id desc limit ?", pageUser.ID, MPPraiseTypes.Image, max, limit);
                         foreach (var item in res)
                         {
-                            datas.Add(new JSON.ImageDetail(new MPImage(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                            try
+                            {
+                                datas.Add(new JSON.ImageDetail(new MPImage(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                            }
+                            catch (MiaopassException) { }
                         }
                         int n = res.Count;
                         if (n != 0)
@@ -74,7 +82,11 @@ namespace MVC_Cat.Controllers
                                     var res = DB.SExecuteReader("select info,id from following where userid=? and type=? and id<? order by id desc limit ?", pageUser.ID, MPFollowingTypes.Package, max, limit);
                                     foreach (var item in res)
                                     {
-                                        datas.Add(new JSON.PackageDetail(new MPPackage(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                                        try
+                                        {
+                                            datas.Add(new JSON.PackageDetail(new MPPackage(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                                        }
+                                        catch (MiaopassException) { }
                                     }
                                     int n = res.Count;
                                     if (n != 0)
@@ -88,7 +100,11 @@ namespace MVC_Cat.Controllers
                                     var res = DB.SExecuteReader("select info,id from following where userid=? and type=? and id<? order by id desc limit ?", pageUser.ID, MPFollowingTypes.User, max, limit);
                                     foreach (var item in res)
                                     {
-                                        datas.Add(new JSON.UserDetail(new MPUser(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                                        try
+                                        {
+                                            datas.Add(new JSON.UserDetail(new MPUser(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                                        }
+                                        catch (MiaopassException) { }
                                     }
                                     int n = res.Count;
                                     if (n != 0)
@@ -105,7 +121,11 @@ namespace MVC_Cat.Controllers
                         var res = DB.SExecuteReader("select userid,id from following where info=? and type=? and id<? order by id desc limit ?", pageUser.ID, MPFollowingTypes.User, max, limit);
                         foreach (var item in res)
                         {
-                            datas.Add(new JSON.UserDetail(new MPUser(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                            try
+                            {
+                                datas.Add(new JSON.UserDetail(new MPUser(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                            }
+                            catch (MiaopassException) { }
                         }
                         int n = res.Count;
                         if (n != 0)
@@ -119,7 +139,11 @@ namespace MVC_Cat.Controllers
                         var res = DB.SExecuteReader("select id from package where userid=? and id<? order by id desc limit 10", pageUser.ID, max);
                         foreach (var item in res)
                         {
-                            datas.Add(new JSON.PackageDetail(new MPPackage(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                            try
+                            {
+                                datas.Add(new JSON.PackageDetail(new MPPackage(Convert.ToInt32(item[0])), Session["user"] as MPUser));
+                            }
+                            catch (MiaopassException) { }
                         }
                         int n = res.Count;
                         if (n != 0)
@@ -139,16 +163,29 @@ namespace MVC_Cat.Controllers
             ViewBag.Keywords = string.Format("{0}收集的图片,图包", pageUser.Name);
             ViewBag.Description = pageUser.Description;
 
-            ViewBag.MPData = new
+
+            bool isSpider = Convert.ToBoolean(RouteData.Values["isSpider"]);
+            if (isSpider)
             {
-                user = new JSON.User(Session["user"] as MPUser),
-                page_user = new JSON.UserDetail(pageUser, Session["user"] as MPUser),
-                sub1 = sub1,
-                sub2 = sub2,
-                datas = datas,
-                data_max=max
-            };
-            return View();
+                ViewBag.User = new JSON.UserDetail(pageUser, Session["user"] as MPUser);
+                ViewBag.Sub1 = sub1;
+                ViewBag.Sub2 = sub2;
+                ViewBag.Datas = datas;
+                return View("index_spider");
+            }
+            else
+            {
+                ViewBag.MPData = new
+                {
+                    user = new JSON.User(Session["user"] as MPUser),
+                    page_user = new JSON.UserDetail(pageUser, Session["user"] as MPUser),
+                    sub1 = sub1,
+                    sub2 = sub2,
+                    datas = datas,
+                    data_max = max
+                };
+                return View();
+            }
         }
 
     }

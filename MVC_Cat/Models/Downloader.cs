@@ -212,8 +212,8 @@ public static class Downloader
 
         //MPImage.Create(task.Package.ID, fileid, task.User.ID, 0, task.From, task.Description);
 
-        //File.Delete(filePath1);
-        //File.Delete(filePath2);
+        File.Delete(filePath1);
+        File.Delete(filePath2);
         //DB.SExecuteNonQuery("delete from task_download where id=?", task.ID);
         _downloadThreadCount--;
     }
