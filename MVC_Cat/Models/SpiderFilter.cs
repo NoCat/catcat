@@ -9,15 +9,15 @@ namespace MVC_Cat
     {
         public override void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)
         {
-            var http = filterContext.HttpContext;
-            var agent = http.Request.UserAgent.ToLower();
-            if (agent != null)
-            {
-                if (agent.Contains("baiduspider") /*|| agent.Contains("googlebot")*/ || agent.Contains("360spider"))
-                {
-                    filterContext.RouteData.Values.Add("isSpider", true);
-                }
-            }
+            //var http = filterContext.HttpContext;
+            //var agent = http.Request.UserAgent.ToLower();
+            //if (agent != null)
+            //{
+            //    if (/*agent.Contains("baiduspider") || agent.Contains("googlebot")|| agent.Contains("360spider")*/ )
+            //    {
+            //        filterContext.RouteData.Values.Add("isSpider", true);
+            //    }
+            //}
             base.OnActionExecuting(filterContext);
         }
     }

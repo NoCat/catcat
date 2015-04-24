@@ -58,7 +58,11 @@ public enum MPActivityTypes : byte
     /// <summary>
     /// 关注图包
     /// </summary>
-    FollowPackage=3
+    FollowPackage=3,
+    /// <summary>
+    /// 通过其他图包转存
+    /// </summary>
+    ResaveThrough=4
 }
 
 public enum MPMessageTypes:byte

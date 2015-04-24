@@ -28,19 +28,16 @@ MPTemplate.Widget.Notice.Activity = function (data, options)
         case "resave":
             {
                 var User = MPObject.User;
-                var Package = MPObject.Package;
                 var Image = MPObject.Image;
                 str += "<div class=\"widget-notice\">";
                 str += "    <a href=\"{0}\"><img class=\"avt\" src=\"{1}\"/></a>".Format(User.Pages.Home(data.user), User.Avt(data.user));
                 str += "    <div class=\"r\">";
                 str += "        <div class=\"line\">";
                 str += "            <a class=\"username\" href=\"{0}\">{1}</a>".Format(User.Pages.Home(data.user), User.Name(data.user));
-                str += "            <span>把你的图片</span>";
-                str += "            <a class=\"image-description\" href=\"{0}\">{1}</a>".Format(host + "/image/" + data.image.id, data.image.description);
+                str += "            <span>转存了你的</span>";
                 str += "        </div>";
                 str += "        <div class=\"line\">";
-                str += "            <span>转存到</span>";
-                str += "            <a class=\"package-title\" href=\"{0}\">{1}</a>".Format(host + "/package/" + data.package.id, data.package.title);
+                str += "            <a class=\"image-description\" href=\"{0}\">{1}</a>".Format(host + "/image/" + data.image.id, data.image.description);
                 str += "        </div>";
                 str += "    </div>";
                 str += "</div>";
@@ -78,6 +75,27 @@ MPTemplate.Widget.Notice.Activity = function (data, options)
                 str += "        </div>";
                 str += "        <div class=\"line\">";
                 str += "            <a class=\"package-title\" href=\"{0}\">{1}</a>".Format(host + "/package/" + data.package.id, data.package.title);
+                str += "        </div>";
+                str += "    </div>";
+                str += "</div>";
+            }
+            break;
+        case "resave_through":
+            {
+                var User = MPObject.User;
+                var Package = MPObject.Package;
+                var Image = MPObject.Image;
+                str += "<div class=\"widget-notice\">";
+                str += "    <a href=\"{0}\"><img class=\"avt\" src=\"{1}\"/></a>".Format(User.Pages.Home(data.user), User.Avt(data.user));
+                str += "    <div class=\"r\">";
+                str += "        <div class=\"line\">";
+                str += "            <a class=\"username\" href=\"{0}\">{1}</a>".Format(User.Pages.Home(data.user), User.Name(data.user));
+                str += "            <span>通过</span>";
+                str += "            <a class=\"package-title\" href=\"{0}\">{1}</a>".Format(host + "/package/" + data.package.id, data.package.title);
+                str += "            <span>转存了</span>";
+                str += "        </div>";
+                str += "        <div class=\"line\">";
+                str += "            <a class=\"image-description\" href=\"{0}\">{1}</a>".Format(host + "/image/" + data.image.id, data.image.description);
                 str += "        </div>";
                 str += "    </div>";
                 str += "</div>";

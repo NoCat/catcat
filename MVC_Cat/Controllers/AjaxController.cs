@@ -294,7 +294,23 @@ namespace MVC_Cat.Controllers
 
                             MPImage.Create(package.ID, image.FileID, user.ID, image.ID, image.Url, description);
 
-                            DB.SExecuteNonQuery("insert ignore into activity(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID, image.UserID, image.ID, package.ID, MPActivityTypes.Resave);
+                            //记录xxx转存了你的图片
+                            DB.SExecuteNonQuery("insert ignore into activity(sender,reciever,target,addition,type) values (?,?,?,0,?)", user.ID, image.UserID, image.ID, MPActivityTypes.Resave);
+
+                            //记录xxx通过xxx转存了你的图片
+                            var ti = image;
+                            while (ti.Via != 0)
+                            {
+                                try
+                                {
+                                    ti = new MPImage(ti.Via);
+                                    DB.SExecuteNonQuery("insert ignore into activity(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID, ti.UserID, ti.ID, image.PackageID, MPActivityTypes.ResaveThrough);
+                                }
+                                catch (MiaopassException)
+                                {
+                                    break;
+                                }
+                            }
                         }
                         break;
                     #endregion
@@ -595,7 +611,7 @@ namespace MVC_Cat.Controllers
                                         break;
                                     case MPActivityTypes.Resave:
                                         {
-                                            list.Add(new JSON.Notice.Activity.Resave(sender, target, addition));
+                                            list.Add(new JSON.Notice.Activity.Resave(sender, target));
                                         }
                                         break;
                                     case MPActivityTypes.FollowUser:
@@ -606,6 +622,11 @@ namespace MVC_Cat.Controllers
                                     case MPActivityTypes.FollowPackage:
                                         {
                                             list.Add(new JSON.Notice.Activity.FollowPackage(sender, target));
+                                        }
+                                        break;
+                                    case MPActivityTypes.ResaveThrough:
+                                        {
+                                            list.Add(new JSON.Notice.Activity.ResaveThrough(sender, target, addition));
                                         }
                                         break;
                                 }

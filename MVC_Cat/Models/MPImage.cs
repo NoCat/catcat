@@ -70,7 +70,7 @@ public class MPImage
             //更新package表中的封面数据
             db.ExecuteNonQuery("update package set coverid=0 where id=? and coverid=?", PackageID, ID);
             //更新image表中,转存过这张图的行数据更新\
-            db.ExecuteNonQuery("update image set via=0 where via=?",ID);
+            db.ExecuteNonQuery("update image set via=? where via=?",Via,ID);
             db.EndTransaction();
         }
         var res = DB.SExecuteScalar("select id from image where fileid=?", FileID);

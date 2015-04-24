@@ -51,7 +51,7 @@ MPWidget.ImageView.New = function (imageDetail)
         var strVar1 = "";
         strVar1 += "<a class=\"image\" href=\"{0}\" data-id=\"{1}\">".Format("/image/" + image.id, image.id);
         var img = MPObject.Image.fw78(image);
-        strVar1 += "     <img src=\"{0}\" width=\"76\" height=\"{1}\"/>".Format(img.url,img.height);
+        strVar1 += "     <img src=\"{0}\" width=\"76\" height=\"{1}\"/>".Format(img.url, img.height);
         strVar1 += "     <div class=\"cover\"><\/div>";
         strVar1 += "<\/a>";
 
@@ -78,8 +78,9 @@ MPWidget.ImageView.Bind = function ()
      //赞图片
     .on("click", ".image-view .image-praise", praise_click)
     //取消赞图片
-    .on("click", ".image-view .image-unpraise", unpraise_click);
-
+    .on("click", ".image-view .image-unpraise", unpraise_click)
+    //查看大图
+    .on("click", ".image-view .zoom", zoom_click);
     function praise_click()
     {
         var t = $(this);
@@ -109,7 +110,7 @@ MPWidget.ImageView.Bind = function ()
         var hash = t.attr("data-hash");
         var description = t.attr("data-description");
         //待处理
-        MPObject.Image.Resave(id, hash,description);
+        MPObject.Image.Resave(id, hash, description);
     }
 
     function edit_click()
@@ -204,5 +205,21 @@ MPWidget.ImageView.Bind = function ()
         var oText = $(".new-comment textarea").val();
         $(".new-comment textarea").val(oText + aText);
         $(".new-comment .mention-container").remove();
+    }
+
+    function zoom_click()
+    {
+        var e = $(this);
+        var url = e.attr("data-url");
+        var width = e.attr("data-width");
+        var height = e.attr("data-height");
+        var w = $(".widget-window");
+        w.css("overflow-y", "hiden");
+        var big = MPWidget.BigImage.New({ url: url, width: width, height: height });
+        big.onClose = function ()
+        {
+            w.css("overflow-y", "scroll");
+        };
+        big.Show();
     }
 }

@@ -32,23 +32,29 @@ namespace MVC_Cat.Controllers
             ViewBag.Keywords = keywords;
             ViewBag.Description = image.Description;
 
-            bool isSpider = Convert.ToBoolean(RouteData.Values["isSpider"]);
-            if (isSpider)
+            //bool isSpider = Convert.ToBoolean(RouteData.Values["isSpider"]);
+            //if (isSpider)
+            //{
+            //    ViewBag.Image = imageDetail;
+            //    ViewBag.PrevID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id<? limit 1", image.ID));
+            //    ViewBag.NextID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id>? limit 1", image.ID));
+            //    return View("index_spider");
+            //}
+            //else
+            //{
+            var agent = Request.UserAgent.ToLower();
+            if (agent.Contains("baiduspider") || agent.Contains("googlebot") || agent.Contains("360spider"))
             {
-                ViewBag.Image = imageDetail;
                 ViewBag.PrevID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id<? limit 1", image.ID));
                 ViewBag.NextID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id>? limit 1", image.ID));
-                return View("index_spider");
             }
-            else
+            ViewBag.MPData = new
             {
-                ViewBag.MPData = new
-                {
-                    user = new JSON.User(Session["user"] as MPUser),
-                    image = imageDetail
-                };
-                return View();
-            }
+                user = new JSON.User(Session["user"] as MPUser),
+                image = imageDetail
+            };
+            return View();
+            //}
         }
 
     }

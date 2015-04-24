@@ -201,10 +201,7 @@ namespace JSON
             description = image.Description;
             praised = false;
 
-            {
-                var res = DB.SExecuteReader("select count(*) from image where via=?", image.ID);
-                resave_count = Convert.ToInt32(res[0][0]);
-            }
+            resave_count = GetPraiseCount(image);
 
             {
                 var res = DB.SExecuteReader("select count(*) from praise where type=? and info=?", MPPraiseTypes.Image, image.ID);
@@ -229,6 +226,26 @@ namespace JSON
             }
             time = image.CreatedTime.ToString();
         }
-    }   
+
+        int GetPraiseCount(MPImage image)
+        {
+            var res = DB.SExecuteReader("select id from image where via=?", image.ID);
+            var count = res.Count;
+            if (count != 0)
+            {
+                foreach (var item in res)
+                {
+                    try
+                    {
+                        int id = Convert.ToInt32(item[0]);
+                        var img = new MPImage(id);
+                        count += GetPraiseCount(img);
+                    }
+                    catch (MiaopassException) { }
+                }
+            }
+            return count;
+        }
+    }
 }
 

@@ -34,14 +34,12 @@ namespace JSON
             public class Resave : Notice
             {
                 public JSON.Image image { get; set; }
-                public JSON.Package package { get; set; }
 
-                public Resave(int userId, int imageId, int packageId)
+                public Resave(int userId, int imageId)
                     : base(userId)
                 {
                     type = "resave";
                     image = new JSON.Image(new MPImage(imageId));
-                    package = new JSON.Package(new MPPackage(packageId));
                 }
             }
 
@@ -63,6 +61,18 @@ namespace JSON
                 {
                     type = "follow_package";
                     package = new JSON.Package(new MPPackage(packageId));
+                }
+            }
+
+            public class ResaveThrough:Notice
+            {
+                public JSON.Image image { get; set; }
+                public JSON.Package package { get; set; }
+                public ResaveThrough(int userId,int imageId,int packageId):base(userId)
+                {
+                    type="resave_through";
+                    image=new  JSON.Image(new MPImage(imageId));
+                    package=new JSON.Package(new MPPackage(packageId));
                 }
             }
         }
