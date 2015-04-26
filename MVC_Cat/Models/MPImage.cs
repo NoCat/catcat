@@ -71,10 +71,20 @@ public class MPImage
             db.ExecuteNonQuery("update package set coverid=0 where id=? and coverid=?", PackageID, ID);
             //更新image表中,转存过这张图的行数据更新\
             db.ExecuteNonQuery("update image set via=? where via=?",Via,ID);
+            //删除所有关于这张图片的评论
+            var res = DB.SExecuteReader("select id from comment where imageid=?", ID);
+            foreach (var item in res)
+            {
+                int id = Convert.ToInt32(item[0]);
+                var comment = new MPComment(id);
+                comment.Delelte();
+            }
+            //删除关于这张图片的动态
+            db.ExecuteNonQuery("delete from activity where target=? and (type=? or type=? or type=?)", ID, MPActivityTypes.Praise, MPActivityTypes.Resave, MPActivityTypes.ResaveThrough);
             db.EndTransaction();
         }
-        var res = DB.SExecuteScalar("select id from image where fileid=?", FileID);
-        if(res==null)
+        var r = DB.SExecuteScalar("select id from image where fileid=?", FileID);
+        if(r==null)
         {
             new MPFile(FileID).Delete();
         }

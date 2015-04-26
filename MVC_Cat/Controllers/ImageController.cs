@@ -32,30 +32,46 @@ namespace MVC_Cat.Controllers
             ViewBag.Keywords = keywords;
             ViewBag.Description = image.Description;
 
-            //bool isSpider = Convert.ToBoolean(RouteData.Values["isSpider"]);
-            //if (isSpider)
-            //{
-            //    ViewBag.Image = imageDetail;
-            //    ViewBag.PrevID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id<? limit 1", image.ID));
-            //    ViewBag.NextID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id>? limit 1", image.ID));
-            //    return View("index_spider");
-            //}
-            //else
-            //{
-            var agent = Request.UserAgent.ToLower();
-            if (agent.Contains("baiduspider") || agent.Contains("googlebot") || agent.Contains("360spider"))
+            bool isSpider = Convert.ToBoolean(RouteData.Values["isSpider"]);
+            if (isSpider)
             {
+                ViewBag.Image = imageDetail;
                 ViewBag.PrevID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id<? limit 1", image.ID));
                 ViewBag.NextID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id>? limit 1", image.ID));
+                return View("index_spider");
             }
-            ViewBag.MPData = new
+            else
             {
-                user = new JSON.User(Session["user"] as MPUser),
-                image = imageDetail
-            };
-            return View();
-            //}
+                //var agent = Request.UserAgent.ToLower();
+                //if (agent.Contains("baiduspider") || agent.Contains("googlebot") || agent.Contains("360spider"))
+                //{
+                //    ViewBag.PrevID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id<? limit 1", image.ID));
+                //    ViewBag.NextID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id>? limit 1", image.ID));
+                //}
+                ViewBag.MPData = new
+                {
+                    user = new JSON.User(Session["user"] as MPUser),
+                    image = imageDetail
+                };
+                return View();
+            }
         }
 
+        public ActionResult Zoom(int id)
+        {
+            MPImage img = null;
+            try
+            {
+                img = new MPImage(id);
+            }
+            catch
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Hash = new MPFile(img.FileID).MD5;
+
+            return View();
+        }
     }
 }

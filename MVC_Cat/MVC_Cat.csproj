@@ -29,6 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -203,6 +204,7 @@
     <Content Include="img\triangle_right_down_4_4.png" />
     <Content Include="img\up_32_32.png" />
     <Content Include="img\warn_24_24.png" />
+    <Content Include="img\zoom_in_16_16.png" />
     <Content Include="js\Page\all_1504200.js" />
     <Content Include="js\Dialog\AvtCutDialog.js" />
     <Content Include="js\Dialog\CreateImageDialog.js" />
@@ -275,6 +277,7 @@
     <Content Include="Views\From\Index.aspx" />
     <Content Include="Views\Image\Index.aspx" />
     <Content Include="Views\Image\Index_Spider.aspx" />
+    <Content Include="Views\Image\Zoom.aspx" />
     <Content Include="Views\Package\Index.aspx" />
     <Content Include="Views\Package\Index_Spider.aspx" />
     <Content Include="Views\Shared\Comment.ascx" />

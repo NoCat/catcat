@@ -597,39 +597,43 @@ namespace MVC_Cat.Controllers
                             var list = new List<object>();
                             foreach (var item in res)
                             {
-                                MPActivityTypes type = (MPActivityTypes)Convert.ToByte(item[4]);
-                                var sender = Convert.ToInt32(item[1]);
-                                var target = Convert.ToInt32(item[2]);
-                                var addition = Convert.ToInt32(item[3]);
-
-                                switch (type)
+                                try
                                 {
-                                    case MPActivityTypes.Praise:
-                                        {
-                                            list.Add(new JSON.Notice.Activity.Praise(sender, target));
-                                        }
-                                        break;
-                                    case MPActivityTypes.Resave:
-                                        {
-                                            list.Add(new JSON.Notice.Activity.Resave(sender, target));
-                                        }
-                                        break;
-                                    case MPActivityTypes.FollowUser:
-                                        {
-                                            list.Add(new JSON.Notice.Activity.FollowUser(sender));
-                                        }
-                                        break;
-                                    case MPActivityTypes.FollowPackage:
-                                        {
-                                            list.Add(new JSON.Notice.Activity.FollowPackage(sender, target));
-                                        }
-                                        break;
-                                    case MPActivityTypes.ResaveThrough:
-                                        {
-                                            list.Add(new JSON.Notice.Activity.ResaveThrough(sender, target, addition));
-                                        }
-                                        break;
+                                    MPActivityTypes type = (MPActivityTypes)Convert.ToByte(item[4]);
+                                    var sender = Convert.ToInt32(item[1]);
+                                    var target = Convert.ToInt32(item[2]);
+                                    var addition = Convert.ToInt32(item[3]);
+
+                                    switch (type)
+                                    {
+                                        case MPActivityTypes.Praise:
+                                            {
+                                                list.Add(new JSON.Notice.Activity.Praise(sender, target));
+                                            }
+                                            break;
+                                        case MPActivityTypes.Resave:
+                                            {
+                                                list.Add(new JSON.Notice.Activity.Resave(sender, target));
+                                            }
+                                            break;
+                                        case MPActivityTypes.FollowUser:
+                                            {
+                                                list.Add(new JSON.Notice.Activity.FollowUser(sender));
+                                            }
+                                            break;
+                                        case MPActivityTypes.FollowPackage:
+                                            {
+                                                list.Add(new JSON.Notice.Activity.FollowPackage(sender, target));
+                                            }
+                                            break;
+                                        case MPActivityTypes.ResaveThrough:
+                                            {
+                                                list.Add(new JSON.Notice.Activity.ResaveThrough(sender, target, addition));
+                                            }
+                                            break;
+                                    }
                                 }
+                                catch (MiaopassException) { }
                             }
                             user.LastGetActivityTime = DateTime.Now;
                             okMsg.datas = list;

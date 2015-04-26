@@ -80,7 +80,7 @@ MPWidget.ImageView.Bind = function ()
     //取消赞图片
     .on("click", ".image-view .image-unpraise", unpraise_click)
     //查看大图
-    .on("click", ".image-view .zoom", zoom_click);
+    .on("click", ".image-view .big", big_click);
     function praise_click()
     {
         var t = $(this);
@@ -207,19 +207,24 @@ MPWidget.ImageView.Bind = function ()
         $(".new-comment .mention-container").remove();
     }
 
-    function zoom_click()
+    function big_click()
     {
         var e = $(this);
-        var url = e.attr("data-url");
-        var width = e.attr("data-width");
-        var height = e.attr("data-height");
-        var w = $(".widget-window");
-        w.css("overflow-y", "hiden");
-        var big = MPWidget.BigImage.New({ url: url, width: width, height: height });
-        big.onClose = function ()
-        {
-            w.css("overflow-y", "scroll");
-        };
-        big.Show();
+        var id = e.attr("data-id");
+        //var url = e.attr("data-url");
+        //var width = e.attr("data-width");
+        //var height = e.attr("data-height");
+        open(host+"/image/"+id+"/big")
+        //var w = open("", "_blank");
+        //var strVar = "";
+        //strVar += "<html>";
+        //strVar += "<head>";
+        //strVar += "    <title>查看大图<\/title>";
+        //strVar += "<\/head>";
+        //strVar += "<body>";
+        //strVar += "    <img  src=\"{0}\" />".Format(url);
+        //strVar += "<\/body>";
+        //strVar += "<\/html>";
+        //w.document.write(strVar);
     }
 }

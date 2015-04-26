@@ -4910,6 +4910,7 @@ MPTemplate.Widget.ImageView = function (data, options)
     {
         strVar += "<div class=\"{0} btn\" data-id=\"{1}\"><em></em></div>".Format(data.praised == true ? "image-unpraise" : "image-praise",data.id);
     }
+    strVar += "         <div class=\"big btn\" title=\"查看大图\" data-id=\"{0}\"><em></em></div>".Format(data.id);
     strVar += "            <\/div>";
     strVar += "            <div class=\"image\">";
     strVar += "                <img src=\"{0}\" alt=\"{1}\" />".Format(MPObject.Image.fw658(data).url, data.description.substring(0, 20).replace('"', ''));
@@ -4917,7 +4918,7 @@ MPTemplate.Widget.ImageView = function (data, options)
     if (data.host != "")
     {
         strVar += "            <div class=\"bar-bottom\">";
-        strVar += "                <div class=\"source\"><span>来自</span><a href=\"{0}\">{1}</a></div>".Format(data.source, data.host);
+        strVar += "                <div class=\"source\"><span>来自</span><a href=\"{0}\" target=\"_blank\">{1}</a></div>".Format(data.source, data.host);
         strVar += "                <div class=\"clear\"><\/div>";
         strVar += "            <\/div>";
     }
@@ -5092,19 +5093,16 @@ MPTemplate.Widget.Notice.Activity = function (data, options)
         case "resave":
             {
                 var User = MPObject.User;
-                var Package = MPObject.Package;
                 var Image = MPObject.Image;
                 str += "<div class=\"widget-notice\">";
                 str += "    <a href=\"{0}\"><img class=\"avt\" src=\"{1}\"/></a>".Format(User.Pages.Home(data.user), User.Avt(data.user));
                 str += "    <div class=\"r\">";
                 str += "        <div class=\"line\">";
                 str += "            <a class=\"username\" href=\"{0}\">{1}</a>".Format(User.Pages.Home(data.user), User.Name(data.user));
-                str += "            <span>把你的图片</span>";
-                str += "            <a class=\"image-description\" href=\"{0}\">{1}</a>".Format(host + "/image/" + data.image.id, data.image.description);
+                str += "            <span>转存了你的</span>";
                 str += "        </div>";
                 str += "        <div class=\"line\">";
-                str += "            <span>转存到</span>";
-                str += "            <a class=\"package-title\" href=\"{0}\">{1}</a>".Format(host + "/package/" + data.package.id, data.package.title);
+                str += "            <a class=\"image-description\" href=\"{0}\">{1}</a>".Format(host + "/image/" + data.image.id, data.image.description);
                 str += "        </div>";
                 str += "    </div>";
                 str += "</div>";
@@ -5142,6 +5140,27 @@ MPTemplate.Widget.Notice.Activity = function (data, options)
                 str += "        </div>";
                 str += "        <div class=\"line\">";
                 str += "            <a class=\"package-title\" href=\"{0}\">{1}</a>".Format(host + "/package/" + data.package.id, data.package.title);
+                str += "        </div>";
+                str += "    </div>";
+                str += "</div>";
+            }
+            break;
+        case "resave_through":
+            {
+                var User = MPObject.User;
+                var Package = MPObject.Package;
+                var Image = MPObject.Image;
+                str += "<div class=\"widget-notice\">";
+                str += "    <a href=\"{0}\"><img class=\"avt\" src=\"{1}\"/></a>".Format(User.Pages.Home(data.user), User.Avt(data.user));
+                str += "    <div class=\"r\">";
+                str += "        <div class=\"line\">";
+                str += "            <a class=\"username\" href=\"{0}\">{1}</a>".Format(User.Pages.Home(data.user), User.Name(data.user));
+                str += "            <span>通过</span>";
+                str += "            <a class=\"package-title\" href=\"{0}\">{1}</a>".Format(host + "/package/" + data.package.id, data.package.title);
+                str += "            <span>转存了</span>";
+                str += "        </div>";
+                str += "        <div class=\"line\">";
+                str += "            <a class=\"image-description\" href=\"{0}\">{1}</a>".Format(host + "/image/" + data.image.id, data.image.description);
                 str += "        </div>";
                 str += "    </div>";
                 str += "</div>";
@@ -5734,7 +5753,7 @@ MPWidget.ImageView.New = function (imageDetail)
         var strVar1 = "";
         strVar1 += "<a class=\"image\" href=\"{0}\" data-id=\"{1}\">".Format("/image/" + image.id, image.id);
         var img = MPObject.Image.fw78(image);
-        strVar1 += "     <img src=\"{0}\" width=\"76\" height=\"{1}\"/>".Format(img.url,img.height);
+        strVar1 += "     <img src=\"{0}\" width=\"76\" height=\"{1}\"/>".Format(img.url, img.height);
         strVar1 += "     <div class=\"cover\"><\/div>";
         strVar1 += "<\/a>";
 
@@ -5761,8 +5780,9 @@ MPWidget.ImageView.Bind = function ()
      //赞图片
     .on("click", ".image-view .image-praise", praise_click)
     //取消赞图片
-    .on("click", ".image-view .image-unpraise", unpraise_click);
-
+    .on("click", ".image-view .image-unpraise", unpraise_click)
+    //查看大图
+    .on("click", ".image-view .big", big_click);
     function praise_click()
     {
         var t = $(this);
@@ -5792,7 +5812,7 @@ MPWidget.ImageView.Bind = function ()
         var hash = t.attr("data-hash");
         var description = t.attr("data-description");
         //待处理
-        MPObject.Image.Resave(id, hash,description);
+        MPObject.Image.Resave(id, hash, description);
     }
 
     function edit_click()
@@ -5887,6 +5907,27 @@ MPWidget.ImageView.Bind = function ()
         var oText = $(".new-comment textarea").val();
         $(".new-comment textarea").val(oText + aText);
         $(".new-comment .mention-container").remove();
+    }
+
+    function big_click()
+    {
+        var e = $(this);
+        var id = e.attr("data-id");
+        //var url = e.attr("data-url");
+        //var width = e.attr("data-width");
+        //var height = e.attr("data-height");
+        open(host+"/image/"+id+"/big")
+        //var w = open("", "_blank");
+        //var strVar = "";
+        //strVar += "<html>";
+        //strVar += "<head>";
+        //strVar += "    <title>查看大图<\/title>";
+        //strVar += "<\/head>";
+        //strVar += "<body>";
+        //strVar += "    <img  src=\"{0}\" />".Format(url);
+        //strVar += "<\/body>";
+        //strVar += "<\/html>";
+        //w.document.write(strVar);
     }
 }
 /// <reference path="../include.js" />

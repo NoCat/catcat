@@ -17,8 +17,7 @@ MPTemplate.Widget.ImageView = function (data, options)
     {
         strVar += "<div class=\"{0} btn\" data-id=\"{1}\"><em></em></div>".Format(data.praised == true ? "image-unpraise" : "image-praise",data.id);
     }
-    var img = MPObject.Image.Origin(data);
-    strVar += "         <div class=\"zoom btn\" title=\"查看大图\" data-url=\"{0}\" data-width=\"{1}\" data-height=\"{2}\"> 查看大图</div>".Format(img.url,img.width,img.height);
+    strVar += "         <div class=\"big btn\" title=\"查看大图\" data-id=\"{0}\"><em></em></div>".Format(data.id);
     strVar += "            <\/div>";
     strVar += "            <div class=\"image\">";
     strVar += "                <img src=\"{0}\" alt=\"{1}\" />".Format(MPObject.Image.fw658(data).url, data.description.substring(0, 20).replace('"', ''));
