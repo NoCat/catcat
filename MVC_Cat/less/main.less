@@ -528,13 +528,13 @@ table {
                 .btnwhite(@btnHeight);
             }
 
-            .big{
-                em{
+            .big {
+                em {
                     background: center center no-repeat url( /img/zoom_in_16_16.png);
                 }
             }
 
-            .image-praise, .image-unpraise,.big {
+            .image-praise, .image-unpraise, .big {
                 position: relative;
                 width: 0;
                 .btnwhite(@btnHeight);
@@ -580,6 +580,7 @@ table {
 
             img {
                 margin: 0 auto;
+                box-shadow:1px 1px 3px 0 darken(@baseWhite,15%);
             }
         }
 
@@ -1069,7 +1070,7 @@ table {
         @previewSize: 180px;
 
         .message {
-            display:none;
+            display: none;
             background-color: #ffffcc;
             border-bottom: 1px solid #ddd;
             font-size: 14px;
@@ -1081,8 +1082,8 @@ table {
                 margin: 0 2px;
                 color: @baseBlue;
 
-                &:hover{
-                    text-decoration:underline;
+                &:hover {
+                    text-decoration: underline;
                 }
             }
         }
@@ -1458,25 +1459,28 @@ table {
             top: 0;
             right: 0;
             bottom: 0;
-            background-image: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0));
+            background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.05),rgba(0,0,0,0));
 
             &:hover {
-                background-image: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.05));
+                background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.1),rgba(0,0,0,0.1));
             }
         }
 
         h3, h4 {
             font-weight: normal;
-            margin: 8px 0 0 8px;
+            margin: 3px 0 0 5px;
             color: @baseWhite;
+            text-shadow:0 3px 3px rgba(0,0,0,0.5);
+            .mp_textNoWrap;
         }
 
         h3 {
-            font-size: 17px;
+            font-size: 14px;
+            font-weight:bold;
         }
 
         h4 {
-            font-size: 15px;
+            font-size: 12px;
         }
 
         .empty-package {
@@ -2261,5 +2265,37 @@ table {
         &:hover {
             background: darken(@baseWhite,6%);
         }
+    }
+}
+
+.page-account {
+    @formWidth: 300px;
+    font-size: 14px;
+    border: 1px solid darken(@baseWhite,20%);
+    width: @formWidth;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: @baseWhite;
+    margin: 30px auto 0 auto;
+
+    .title {
+        font-size: 16px;
+        border-bottom: 1px solid darken(@baseWhite,10%);
+        padding-bottom: 6px;
+        margin-bottom: 10px;
+    }
+
+    .i {
+        margin-top: 10px;
+    }
+
+    input {
+        .mp_input.mp_input_text(@formWidth+(-10px),30px);
+    }
+
+    #submit {
+        .btnblue(35px);
+        width: 100px;
+        margin: 15px auto 0;
     }
 }

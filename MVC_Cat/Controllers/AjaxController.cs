@@ -245,7 +245,7 @@ namespace MVC_Cat.Controllers
                             }
 
                             string token = "";
-                            var res = DB.SExecuteScalar("select token from reset_password where email=?", email);
+                            var res = DB.SExecuteScalar("select token from reset_password where email=? and expire>now()", email);
                             if (res != null)
                             {
                                 token = (string)res;
@@ -524,7 +524,7 @@ namespace MVC_Cat.Controllers
                                 var size = Tools.GetInt32FromRequest(form["avt_size"]);
 
                                 var file = new MPFile(hash);
-                                using (var s = OssFile.Open(file.MD5))
+                                using (var s = OssFile.Open(file.MD5+".jpg"))
                                 {
                                     using (var bmp = Image.FromStream(s))
                                     {

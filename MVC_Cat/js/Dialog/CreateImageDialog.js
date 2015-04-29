@@ -221,16 +221,19 @@ MPCreateImageDialog =
 
             dialog.ButtonOK.click(function ()
             {
-                dialog.description = description.val();
-                dialog.packageId = bCurrent.attr("data-package-id");
-                if (options.canEdit == true)
-                {
-                    dialog.source = source.val();
-                }
-                if (dialog.packageId == "" || dialog.packageId == undefined)
+                var packageid=bCurrent.attr("data-package-id");   
+                if (packageid == "" || packageid == undefined)
                 {
                     MPMessageBox.New(MPMessageBox.Icons.Warn, "请选择一个图包,如果没有图包请新建一个图包!");
                     return;
+                }
+                dialog.description = description.val();
+                dialog.packageId = packageid;
+                localStorage["default-package-id"] = packageid;
+
+                if (options.canEdit == true)
+                {
+                    dialog.source = source.val();
                 }
                 if (dialog.onOK != null)
                 {

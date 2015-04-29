@@ -6,7 +6,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><%=ViewBag.Title==null?"喵帕斯":ViewBag.Title %></title>
-    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="shortcut icon" href="<%=ResolveUrl("~/favicon.ico") %>" />
     <meta name="keywords" content="<%=ViewBag.Keywords==null?"动漫 acg 图片 图包": ViewBag.Keywords%>" />
     <meta name="description" content="<%=ViewBag.Description==null?"专注于动漫图片的收集和分享": ViewBag.Description%>" />
     <link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/css/main.css") %>" />

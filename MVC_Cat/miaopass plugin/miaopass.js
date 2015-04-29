@@ -1,7 +1,7 @@
 ﻿//在这里开始写就可以了,chrome插件其实也就是一个js程序
 
 //服务器地址
-var host = "http://localhost:4644/";
+var host = "http://www.miaopass.net/";
 //准备收集的图片的url
 var source = "";
 //当前页面的url

@@ -78,11 +78,13 @@ MPObject.Image.Resave = function (imageID, imageHash, description)
     }
     var url = imageHost + "/" + imageHash + "_fw236.jpg";
     //var dialog = MPCreateImageDialog.New(url, "转存", description, false, "");
+    var defaultPackageId = localStorage["default-package-id"];
     var dialog = MPCreateImageDialog.New({
         previewUrl: url,
         title: "转存",
         description: description,
-        check:{image_id:imageID}
+        check: { image_id: imageID },
+        defaultPackageId:defaultPackageId
     });
     dialog.onOK = function ()
     {

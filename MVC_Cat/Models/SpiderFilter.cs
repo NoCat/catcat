@@ -10,10 +10,20 @@ namespace MVC_Cat
         public override void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)
         {
             var http = filterContext.HttpContext;
-            var agent = http.Request.UserAgent.ToLower();
+            var agent = http.Request.UserAgent;
+            if (agent == null)
+                agent = "";
+            else
+                agent = agent.ToLower();
+
             if (agent != null)
             {
-                if (agent.Contains("baiduspider") || agent.Contains("googlebot")|| agent.Contains("360spider") )
+                if (
+                    agent.Contains("baiduspider")           //百度
+                    // || agent.Contains("googlebot")       //谷歌
+                    || agent.Contains("360spider")            //360
+                    || agent.Contains("bingbot")               //必应
+                    )           
                 {
                     filterContext.RouteData.Values.Add("isSpider", true);
                 }

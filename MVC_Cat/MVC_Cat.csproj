@@ -238,9 +238,9 @@
     <Content Include="js\Page\setting_1504200.js" />
     <Content Include="js\Page\user_1504200.js" />
     <Content Include="js\pick.js" />
-    <Content Include="js\reset-password.js" />
+    <Content Include="js\Page\reset-password.js" />
     <Content Include="js\search.js" />
-    <Content Include="js\signup-email.js" />
+    <Content Include="js\Page\signup-email.js" />
     <Content Include="js\Template\Dialog\avt-cut-dialog.js" />
     <Content Include="js\Template\Page\from.js" />
     <Content Include="js\Template\Page\package.js" />
