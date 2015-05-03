@@ -33,6 +33,8 @@
 
     <script src="<%=ResolveClientUrl("~/js/Format/User.js") %>"></script>
 
+    <script src="<%=ResolveClientUrl("~/js/Page/reset-password.js") %>"></script>
+
     <script src="<%=ResolveClientUrl("~/js/Object/user.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/Object/image.js") %>"></script>
     <script src="<%=ResolveClientUrl("~/js/Object/package.js") %>"></script>
