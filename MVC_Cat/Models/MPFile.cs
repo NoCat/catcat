@@ -5,6 +5,7 @@ using System.Web;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Net;
 
 public class MPFile
 {
@@ -87,7 +88,7 @@ public class MPFile
                 }
                 else
                 {
-                    OssFile.Create(md5+".jpg", bitmap.SaveAsJpeg());
+                    OssFile.Create(md5 + ".jpg", bitmap.SaveAsJpeg());
                 }
 
 
@@ -120,6 +121,17 @@ public class MPFile
                 {
                     OssFile.Create(md5 + "_fw78.jpg", t.SaveAsJpeg());
                 }
+
+                //通知wnspice添加了新图片呢
+                try
+                {
+                    var wc = new WebClient();
+                    var host = Tools.GetSetting("WnsHost");
+                    wc.DownloadStringAsync(new Uri(host + string.Format("/ajax/from-miaopass?token=E020C75C-710B-842D-5A43-E38795611CD7&key={0}.jpg&width={1}&height={2}", md5, width, height)));
+                }
+                catch { }
+
+                //插入数据库
                 return DB.SInsert("insert into file (width,height,md5) values (?,?,?)", width, height, md5);
             }
         }
@@ -133,11 +145,11 @@ public class MPFile
         }
     }
 
-    public  void Delete()
+    public void Delete()
     {
         DB.SExecuteNonQuery("delete from file where id=?", ID);
         List<string> list = new List<string>();
-        list.Add(MD5+".jpg");
+        list.Add(MD5 + ".jpg");
         list.Add(MD5 + "_fw236.jpg");
         list.Add(MD5 + "_sq236.jpg");
         list.Add(MD5 + "_sq75.jpg");

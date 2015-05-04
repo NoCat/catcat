@@ -687,7 +687,10 @@ namespace MVC_Cat.Controllers
                             user.LastGetMessageTime = DateTime.Now;
 
                             okMsg.datas = list;
-                            okMsg.data_max = res[res.Count - 1][0];
+                            if (res.Count != 0)
+                            {
+                                okMsg.data_max = res[res.Count - 1][0];
+                            }
                         }
                         break;
                     #endregion

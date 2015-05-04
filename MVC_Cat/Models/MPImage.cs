@@ -83,11 +83,6 @@ public class MPImage
             db.ExecuteNonQuery("delete from activity where target=? and (type=? or type=? or type=?)", ID, MPActivityTypes.Praise, MPActivityTypes.Resave, MPActivityTypes.ResaveThrough);
             db.EndTransaction();
         }
-        var r = DB.SExecuteScalar("select id from image where fileid=?", FileID);
-        if(r==null)
-        {
-            new MPFile(FileID).Delete();
-        }
     }
 
     static string GetHost(string url)
