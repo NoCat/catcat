@@ -13,6 +13,7 @@ public static class Tools
     public static string ImageServerHost = ConfigurationManager.AppSettings["BaseUrl"];
     public static string Host = ConfigurationManager.AppSettings["Host"];
     public static string MiaopassString = " - 喵帕斯~(*´▽｀)ノ";
+    public static string WnsAccessToken = GetSetting("WnsAccessToken");
 
     public static string GetSetting(string keyName)
     {

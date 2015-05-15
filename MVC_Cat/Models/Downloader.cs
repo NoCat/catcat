@@ -179,43 +179,47 @@ public static class Downloader
         //    return;
         //}
 
-        if (hash1 == "" || hash2 == "")
-            return;
-
-        int fileid = 0;
-        using (var filestream = File.OpenRead(filePath1))
+        try
         {
-            fileid = MPFile.Create(filestream);
-        }
+            if (hash1 == "" || hash2 == "")
+                throw new MiaopassException("文件下载失败");
 
-        DB.SExecuteNonQuery("update download set state=?,fileid=? where id=?", MPDownloadStates.Finished,fileid, id);
-
-        var res = DB.SExecuteReader("select id,packageid,description from pick where downloadid=?", id);
-        foreach (var item in res)
-        {
-            var pickId = Convert.ToInt32(item[0]);
-            var packageId = Convert.ToInt32(item[1]);
-            var description = (string)item[2];
-            MPPackage package = null;
-            try
+            int fileid = 0;
+            using (var filestream = File.OpenRead(filePath1))
             {
-                package = new MPPackage(packageId);
-            }
-            catch 
-            {
-                continue;
+                fileid = MPFile.Create(filestream);
             }
 
-            MPImage.Create(packageId, fileid, package.UserID, 0, from, description);
-            DB.SExecuteNonQuery("delete from pick where id=?", pickId);
+            DB.SExecuteNonQuery("update download set state=?,fileid=? where id=?", MPDownloadStates.Finished, fileid, id);
+
+            var res = DB.SExecuteReader("select id,packageid,description from pick where downloadid=?", id);
+            foreach (var item in res)
+            {
+                var pickId = Convert.ToInt32(item[0]);
+                var packageId = Convert.ToInt32(item[1]);
+                var description = (string)item[2];
+                MPPackage package = null;
+                try
+                {
+                    package = new MPPackage(packageId);
+                }
+                catch
+                {
+                    continue;
+                }
+
+                MPImage.Create(packageId, fileid, package.UserID, 0, from, description);
+                DB.SExecuteNonQuery("delete from pick where id=?", pickId);
+            }
         }
-
-        //MPImage.Create(task.Package.ID, fileid, task.User.ID, 0, task.From, task.Description);
-
-        File.Delete(filePath1);
-        File.Delete(filePath2);
-        //DB.SExecuteNonQuery("delete from task_download where id=?", task.ID);
-        _downloadThreadCount--;
+        catch { }        //MPImage.Create(task.Package.ID, fileid, task.User.ID, 0, task.From, task.Description);
+        finally
+        {
+            File.Delete(filePath1);
+            File.Delete(filePath2);
+            //DB.SExecuteNonQuery("delete from task_download where id=?", task.ID);
+            _downloadThreadCount--;
+        }
     }
 }
 

@@ -280,6 +280,7 @@
     <Content Include="Views\Image\Zoom.aspx" />
     <Content Include="Views\Package\Index.aspx" />
     <Content Include="Views\Package\Index_Spider.aspx" />
+    <Content Include="Views\Search\Index_spider.aspx" />
     <Content Include="Views\Shared\Comment.ascx" />
     <Content Include="Views\Shared\Image.ascx" />
     <Content Include="Views\Pick\Index.aspx" />

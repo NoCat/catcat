@@ -319,6 +319,10 @@ namespace MVC_Cat.Controllers
                         {
                             var user = CheckLogin();
                             var package = new MPPackage(Tools.GetInt32FromRequest(Request.Form["package_id"]));
+
+                            if (package.UserID != user.ID)
+                                throw new MiaopassException("无操作权限");
+
                             var description = Tools.GetStringFromRequest(Request.Form["description"]);
                             var source = Tools.GetStringFromRequest(Request.Form["source"]);
                             var from = Tools.GetStringFromRequest(Request.Form["from"]);

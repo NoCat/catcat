@@ -580,7 +580,7 @@ table {
 
             img {
                 margin: 0 auto;
-                box-shadow:1px 1px 3px 0 darken(@baseWhite,15%);
+                box-shadow: 1px 1px 3px 0 darken(@baseWhite,15%);
             }
         }
 
@@ -1470,13 +1470,13 @@ table {
             font-weight: normal;
             margin: 3px 0 0 5px;
             color: @baseWhite;
-            text-shadow:0 3px 3px rgba(0,0,0,0.5);
+            text-shadow: 0 3px 3px rgba(0,0,0,0.5);
             .mp_textNoWrap;
         }
 
         h3 {
             font-size: 14px;
-            font-weight:bold;
+            font-weight: bold;
         }
 
         h4 {
@@ -1836,6 +1836,16 @@ table {
     .description {
         padding: 2px 10px;
         word-wrap: break-word;
+
+        a {
+            margin: 0 2px;
+            text-decoration: underline;
+            color:#555;
+
+            &:hover {
+                color: @baseBlue;
+            }
+        }
     }
 
     .info {

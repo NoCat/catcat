@@ -5334,89 +5334,54 @@ MPWidget.Frame.New = function ()
     {
         var user_nav = content.find(".user-nav");
         var user_nav_menu = user_nav.find(".hide-menu");
-        var l = content.find("#logout");//登出
+        //登出
+        var l = content.find("#logout");
         MPMenu(user_nav, user_nav_menu);
 
         var notice_nav = content.find(".notice-nav");
         var notice_nav_menu = notice_nav.find(".hide-menu");
+        //点击消息之后的处理响应
         MPPopUpMenu(notice_nav, notice_nav_menu, function ()
         {
             MPMenu(user_nav, user_nav_menu);
             $(".widget-notice").remove();
             $("#activity").removeClass("on");
             $("#message").removeClass("on");
-        },//callback
-        function ()
+        },
+        function ()//callback
         {
             user_nav.unbind();
             if (!($("#activity").hasClass("on") || $("#message").hasClass("on")))
             {
                 $("#message").addClass("on");
-                GetMessage(0);
-                IsBottom("#message");
+                var notice_o = notice.New("message");
+                notice_o.GetNotice();
             }
 
             $("#activity").click(function (e)
             {
                 e.stopPropagation();
-                $("notice-nav .content").unbind();
                 if ($(this).hasClass("on"))
                     return;
                 $("#message").removeClass("on");
                 $(this).addClass("on");
                 $(".widget-notice").remove();
-                GetActivity(0);
-                IsBottom("#activity");
+                var notice_o = notice.New("activity");
+                notice_o.GetNotice();
             });
 
             $("#message").click(function (e)
             {
                 e.stopPropagation();
-                $("notice-nav .content").unbind();//用于消去上一个滚动绑定事件
                 if ($(this).hasClass("on"))
                     return;
                 $("#activity").removeClass("on");
                 $(this).addClass("on");
                 $(".widget-notice").remove();
-                GetMessage(0);
-                IsBottom("#message");
+                var notice_o = notice.New("message");
+                notice_o.GetNotice();
             })
         });
-
-        function update(target)
-        {
-            $("notice-nav .content").unbind();
-            if (target == "#message")
-            {
-                GetMessage($(target).attr("data-max"));
-                //alert($(".widget-notice").length);
-            }
-            else
-            {
-                GetActivity($(target).attr("data-max"));
-                //alert($(".widget-notice").length);
-            }
-            IsBottom(target);
-        }
-
-        function IsBottom(target)
-        {
-            var b = $(target);
-            var a= $(target).attr("data-max");
-            if ($(target).attr("data-max")==1)
-            {
-                $("notice-nav .content").unbind();
-                return;
-            }
-            $(".notice-nav .content").scroll(function ()
-            {
-                var scrollMax = $(this)[0].scrollHeight;
-                var scrollTop = $(this)[0].scrollTop;　 //滚动到的当前位置
-                var divHight = $(this).height();
-                if (divHight + scrollTop >= scrollMax)
-                    update(target);
-            })
-        }
 
         l.click(function ()
         {
@@ -5474,63 +5439,95 @@ MPWidget.Frame.New = function ()
             }
         }
     }, "json");
-
-    function GetMessage(max)
-    {
-        if (max==1)
-        {
-            return;
-        }
-        $.post(host + "/ajax/get-message", { max: max }, function (data)
-        {
-            if (data.code == 0)
-            {
-                var container = content.find(".notice-nav .content ");
-                for (var n = data.datas.length, i = 0; i < n; i++)
-                {
-                    container.append(MPTemplate.Widget.Notice.Message(data.datas[i]));
-                    $("#message").attr("data-max", data.data_max);
-                }
-            }
-        }, "json");
-    }
-
-    function GetActivity(max)
-    {
-        if (max==1)
-        {
-            return;
-        }
-        $.post(host + "/ajax/get-activity", { max: max }, function (data)
-        {
-            if (data.code == 0)
-            {
-                var container = content.find(".notice-nav .content ");
-                for (var n = data.datas.length, i = 0; i < n; i++)
-                {
-                    container.append(MPTemplate.Widget.Notice.Activity(data.datas[i]));
-                    $("#activity").attr("data-max", data.data_max);
-                }
-            }
-        }, "json");
-    }
-
-
-
-    /////
-    ////这里的是测试代码,实际使用时去掉
-    //$.post("/ajax/get-activity", { max: 0 }, function (data)
-    //{
-    //    var container = content.find(".notice-nav .content");
-    //    for(var n=data.datas.length,i=0;i<n;i++)
-    //    {
-    //        container.append(MPTemplate.Widget.Notice.Activity(data.datas[i]));
-    //    }
-    //},"json");
-    /////
-
     return content;
 };
+
+notice = {
+    New: function (type)
+    {
+        //获取最大的ID量
+        notice.Max = 0;
+        //标记是否在更新
+        var _isUpdating = false;
+        //标记是否已经更新完毕
+        var _isComplete = false;
+
+        notice.BeginUpdata = function ()
+        {
+            _isUpdating = true;
+        }
+
+        notice.EndUpdata = function ()
+        {
+            _isUpdating = false;
+        }
+
+        notice.Complete = function ()
+        {
+            _isComplete = true;
+        }
+
+        var container = $(".notice-nav .content ");//容器
+
+        notice.GetNotice = function (callback)//type为类型 只能是message或者activity
+        {
+            $.post(host + "/ajax/get-" + type, { max: notice.Max }, function (data)
+            {
+                if (data.code == 0)
+                {
+                    if (type == "activity")
+                    {
+                        for (var n = data.datas.length, i = 0; i < n; i++)
+                        {
+                            container.append(MPTemplate.Widget.Notice.Activity(data.datas[i]));
+                            notice.Max = data.data_max;
+                        }
+                        if (data.data_max == 1)
+                            _isComplete = true;
+                        if (callback)
+                            callback();
+                    }
+                    else
+                    {
+                        for (var n = data.datas.length, i = 0; i < n; i++)
+                        {
+                            container.append(MPTemplate.Widget.Notice.Message(data.datas[i]));
+                            notice.Max = data.data_max;
+                        }
+                        if (data.data_max == 1)
+                            _isComplete = true;
+                        if (callback)
+                            callback();
+                    }
+                }
+            }, "json");
+        }
+        container.scroll(function ()
+        {
+            if (_isComplete)
+                return;
+            if (_isUpdating)
+                return;
+            var scrollMax = $(this)[0].scrollHeight;
+            var scrollTop = $(this)[0].scrollTop;　 //滚动到的当前位置
+            var divHight = $(this).height();
+            if (divHight + scrollTop >= scrollMax)
+                notice.Update();
+        })
+
+        notice.Update = function ()
+        {
+            notice.BeginUpdata();
+            notice.GetNotice(notice.EndUpdata());
+        }
+
+        notice.Destroy = function ()
+        {
+            delete notice;
+        }
+        return notice;
+    }
+}
 /// <reference path="../main.js" />
 /// <reference path="../jquery.js" />
 MPWidget.Search = {};
@@ -5561,13 +5558,13 @@ MPWidget.Search.New = function ()
 MPWidget.Image.Description = function (description)
 {
     description = MPHtmlEncode(description);
-    return description.replace(/(#.*#)/g, function (word)
+    return description.replace(/(#.*?#)/g, function (word)
     {
         var w = $.trim(word.substring(1, word.length - 1));
         if (w == "")
             return word;
 
-        return "<a href=\"/search/{0}\">{1}</a>".FormatNoEncode(encodeURIComponent(w), word);
+        return "<a href=\"{0}/search/{1}\">{2}</a>".FormatNoEncode(host, encodeURIComponent(w), word);
     });
 };
 MPWidget.Image.New = function (image,options)

@@ -127,7 +127,7 @@ public class MPFile
                 {
                     var wc = new WebClient();
                     var host = Tools.GetSetting("WnsHost");
-                    wc.DownloadStringAsync(new Uri(host + string.Format("/ajax/from-miaopass?token=E020C75C-710B-842D-5A43-E38795611CD7&key={0}.jpg&width={1}&height={2}", md5, width, height)));
+                    wc.DownloadStringAsync(new Uri(host + string.Format("/ajax/from-miaopass?token={3}&md5={0}&width={1}&height={2}", md5, width, height,Tools.WnsAccessToken)));
                 }
                 catch { }
 

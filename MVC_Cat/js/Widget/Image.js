@@ -3,13 +3,13 @@
 MPWidget.Image.Description = function (description)
 {
     description = MPHtmlEncode(description);
-    return description.replace(/(#.*#)/g, function (word)
+    return description.replace(/(#.*?#)/g, function (word)
     {
         var w = $.trim(word.substring(1, word.length - 1));
         if (w == "")
             return word;
 
-        return "<a href=\"/search/{0}\">{1}</a>".FormatNoEncode(encodeURIComponent(w), word);
+        return "<a href=\"{0}/search/{1}\">{2}</a>".FormatNoEncode(host, encodeURIComponent(w), word);
     });
 };
 MPWidget.Image.New = function (image,options)
