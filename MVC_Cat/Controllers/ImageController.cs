@@ -8,6 +8,12 @@ namespace MVC_Cat.Controllers
 {
     public class ImageController : Controller
     {
+        string MakeTitle(string imageDescription, string packageTitle, string username)
+        {
+            var description = imageDescription.Length > 20 ? imageDescription.Substring(0, 20) + "..." : imageDescription;
+            return description + "@" + username + "收集到" + packageTitle + "_喵帕斯";
+        }
+
         public ActionResult Index(int id)
         {
             MPImage image = null;
@@ -27,27 +33,38 @@ namespace MVC_Cat.Controllers
                 return Content(Tools.JSONStringify(imageDetail), "application/json");
             }
 
-            string keywords = image.Description.Length > 20 ? image.Description.Substring(0, 20) + "..." : image.Description;
-            ViewBag.Title = keywords + "@" + imageDetail.user.name + "收集到" + imageDetail.package.title + "_喵帕斯";
-            ViewBag.Keywords = keywords;
+            ViewBag.Title = MakeTitle(imageDetail.description, imageDetail.package.title, imageDetail.user.name);
+            ViewBag.Keywords = imageDetail.description;
             ViewBag.Description = image.Description;
 
             bool isSpider = Convert.ToBoolean(RouteData.Values["isSpider"]);
             if (isSpider)
             {
                 ViewBag.Image = imageDetail;
-                ViewBag.PrevID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id<? limit 1", image.ID));
-                ViewBag.NextID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id>? limit 1", image.ID));
+                var prevId = Convert.ToInt32(DB.SExecuteScalar("select id from image where id<? limit 1", image.ID));
+                if (prevId != 0)
+                {
+                    var image1 = new MPImage(prevId);
+                    var package1 = new MPPackage(image1.PackageID);
+                    var user1 = new MPUser(image1.UserID);
+                    ViewBag.PrevID = prevId;
+                    ViewBag.PrevText = MakeTitle(image1.Description, package1.Title, user1.Name);
+                }
+
+                var nextId = Convert.ToInt32(DB.SExecuteScalar("select id from image where id>? limit 1", image.ID));
+                if (nextId != 0)
+                {
+                    var image1 = new MPImage(nextId);
+                    var package1 = new MPPackage(image1.PackageID);
+                    var user1 = new MPUser(image1.UserID);
+                    ViewBag.NextID = nextId;
+                    ViewBag.NextText = MakeTitle(image1.Description, package1.Title, user1.Name);
+                }
+
                 return View("index_spider");
             }
             else
             {
-                //var agent = Request.UserAgent.ToLower();
-                //if (agent.Contains("baiduspider") || agent.Contains("googlebot") || agent.Contains("360spider"))
-                //{
-                //    ViewBag.PrevID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id<? limit 1", image.ID));
-                //    ViewBag.NextID = Convert.ToInt32(DB.SExecuteScalar("select id from image where id>? limit 1", image.ID));
-                //}
                 ViewBag.MPData = new
                 {
                     user = new JSON.User(Session["user"] as MPUser),

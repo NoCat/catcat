@@ -6,7 +6,7 @@
     %>
     <a href="<%=ResolveUrl("~/user/"+image.user.id) %>"><%=image.user.name %></a>
     <a href="<%=ResolveUrl("~/package/"+image.package.id) %>"><%=image.package.title %></a>
-    <img src="<%=Tools.ImageServerHost+"/"+image.file.hash+"_fw658.jpg" %>" alt="<%=image.description %>" />
+    <img src="<%=Tools.ImageServerHost+"/"+image.file.hash+"_fw658.jpg" %>" alt="<%=Server.HtmlEncode(image.description) %>" />
     <div><%=image.description %></div>
     <%
         foreach (JSON.Comment item in image.comments)
@@ -17,16 +17,16 @@
         }
     %>
     <%
-        if (ViewBag.PrevID != 0)
+        if (ViewBag.PrevID != null)
         { 
     %>
-    <a href="/image/<%=ViewBag.PrevID %>">上一张</a>
+    <a href="<%=ResolveUrl("~/image/"+ViewBag.PrevID) %>"><%=Server.HtmlEncode(ViewBag.PrevText) %></a>
     <%
         }
-        if (ViewBag.NextID != 0)
+        if (ViewBag.NextID != null)
         {
     %>
-    <a href="/image/<%=ViewBag. NextID %>">下一张</a>
+    <a href="<%=ResolveUrl("~/image/"+ViewBag.NextID ) %>"><%=Server.HtmlEncode(ViewBag.NextText ) %></a>
     <%
         }
     %>

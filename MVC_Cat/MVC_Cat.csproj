@@ -116,6 +116,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\Cleaner.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AjaxController.cs" />
     <Compile Include="Controllers\AllController.cs" />
@@ -307,13 +308,13 @@
     <Folder Include="App_Data\" />
     <Folder Include="extension\chrome\" />
     <Folder Include="miaopass 说明文档\" />
+    <Folder Include="MP_Done\" />
+    <Folder Include="MP_Temp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MP_Done\placeholder" />
-    <Content Include="MP_Temp\placeholder" />
     <None Include="Properties\PublishProfiles\jpb.pubxml" />
     <Content Include="Views\Shared\mp.Master" />
     <Content Include="Views\Shared\mp_spider.Master" />
