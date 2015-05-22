@@ -712,12 +712,22 @@ namespace MVC_Cat.Controllers
                                 var image = new MPImage(imageId);
                                 fileid=image.FileID;
                             }
-                            //从其他网站收集的时候
+                            //从其他网站收集的时候,使用source
                             else if(Request.Form["source"]!=null)
                             {
                                 var source = Tools.GetStringFromRequest(Request.Form["source"]);
                                 var r = DB.SExecuteScalar("select fileid from download where source=? and state=?", source,MPDownloadStates.Finished);
                                 if(r!=null)
+                                {
+                                    fileid = Convert.ToInt32(r);
+                                }
+                            }
+                            //从其他网站收集的时候,使用from(picker采集的时候专用)
+                            else if(Request.Form["from"]!=null)
+                            {
+                                var from = Tools.GetStringFromRequest(Request.Form["from"]);
+                                var r = DB.SExecuteScalar("select fileid from download where `from`=? and state=?", from, MPDownloadStates.Finished);
+                                if (r != null)
                                 {
                                     fileid = Convert.ToInt32(r);
                                 }

@@ -131,6 +131,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BaiduUrlPusher.cs" />
     <Compile Include="Models\DB.cs" />
     <Compile Include="Models\Downloader.cs" />
     <Compile Include="Models\Exceptions.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Models\MPFile.cs" />
     <Compile Include="Models\MPImage.cs" />
     <Compile Include="Models\MPPackage.cs" />
+    <Compile Include="Models\MPTag.cs" />
     <Compile Include="Models\MPUser.cs" />
     <Compile Include="Models\OssFile.cs" />
     <Compile Include="Models\SpiderFilter.cs" />

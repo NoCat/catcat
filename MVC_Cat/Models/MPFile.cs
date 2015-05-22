@@ -122,17 +122,12 @@ public class MPFile
                     OssFile.Create(md5 + "_fw78.jpg", t.SaveAsJpeg());
                 }
 
-                //通知wnspice添加了新图片呢
-                try
-                {
-                    var wc = new WebClient();
-                    var host = Tools.GetSetting("WnsHost");
-                    wc.DownloadStringAsync(new Uri(host + string.Format("/ajax/from-miaopass?token={3}&md5={0}&width={1}&height={2}", md5, width, height,Tools.WnsAccessToken)));
-                }
-                catch { }
-
                 //插入数据库
-                return DB.SInsert("insert into file (width,height,md5) values (?,?,?)", width, height, md5);
+                var fileId= DB.SInsert("insert into file (width,height,md5) values (?,?,?)", width, height, md5);
+
+
+
+                return fileId;
             }
         }
         catch (BadImageFormatException)
