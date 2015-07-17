@@ -14,14 +14,13 @@ String.prototype.Format = function (arg1, arg2)
     {
         var index = parseInt(word.substring(1, word.length - 1));
         var obj = "";
-        if (args[index] != undefined || args[index]!=null)
+        if (args[index] != undefined || args[index] != null)
             obj = args[index];
         return MPHtmlEncode(obj.toString());
     });
 }
 String.prototype.FormatNoEncode = function (arg1, arg2)
 {
-
     var args;
     if (arguments[0] instanceof Array)
         args = arguments[0];
@@ -42,7 +41,8 @@ MPTemplate = {};
 MPWidget = {};
 MPFormat = {};
 MPObject = {};
-
+host = "";
+imageHost = "";
 
 var MPWaterFall = {
     Item: {
@@ -254,6 +254,13 @@ var MPWaterFall = {
             return dataList[n - 1][returnField];
         }
 
+        waterFall.PushElement = function (element)
+        {
+            var item = Add(element);
+            Arrange(item);
+            _list.push(item);
+        }
+
         waterFall.Insert = function (startIndex, newItems)
         {
             var list = [];
@@ -356,13 +363,23 @@ var MPWaterFall = {
 }
 
 //检查登录
-function MPCheckLogin() {
+function MPCheckLogin(showDialog)
+{
+    showDialog = (showDialog == null ? true : showDialog);
     if (MPData.user.id == 0)
     {
-        MPLoginDialog.New();
+        if (showDialog === true)
+        {
+            var dialog = MPLoginDialog.New();
+            dialog.onSuccess = function ()
+            {
+                location.reload();
+            }
+        }
         return false;
     }
-    else {
+    else
+    {
         return true;
     }
 }
@@ -424,19 +441,20 @@ function MPLogOut()
 
 function MPMenu(parent, menu, staytime, delaytime)//parent为点击目标 menu自行定义 staytime为鼠标离开menu后滞留时间 delaytime为点击后延时处理时间
 {
-    var _stayTime = staytime ? staytime : 1000;
+    var _stayTime = staytime ? staytime : 500;
     var _delayTime = delaytime ? delaytime : 0;
     var _timerIdDisplay;
     var _timerIdHide;
     var _parent = $(parent);
     var _menu = $(menu);
-    _parent.mouseenter(function ()
+    _parent.mouseenter(function (e)
     {
         clearTimeout(_timerIdHide);
         _timerIdDisplay = setTimeout(function ()
         {
             _menu.show();
         }, _delayTime);
+
     })
     _parent.mouseleave(function ()
     {
@@ -452,16 +470,46 @@ function MPMenu(parent, menu, staytime, delaytime)//parent为点击目标 menu�
         clearTimeout(_timerIdHide);
     })
 
-    _menu.mouseleave(function ()
+    if (!CheckChild(_menu, _parent))
     {
-        _timerIdHide = setTimeout(function ()
+        _menu.mouseleave(function ()
+        {
+            _timerIdHide = setTimeout(function ()
+            {
+                _menu.hide();
+            }, _stayTime);
+        })
+    }
+
+    $(window).click(function (e)
+    {
+        var point = {};
+        point.X = e.clientX;
+        point.Y = e.clientY;
+        if (!MPCheckInEle(_menu,point))
         {
             _menu.hide();
-        }, _stayTime);
+        }
     })
+    //检查菜单是否为点击目标的子元素
+    function CheckChild(obj, parentObj)
+    {
+        obj = obj.get(0);
+        parentObj = parentObj.get(0);
+        while (obj != undefined && obj != null && obj.tagName.toUpperCase() != "BODY")
+        {
+            if (obj == parentObj)
+            {
+                return true;
+            }
+            obj = obj.parentNode;
+        }
+        return false;
+    }
+
 }
 
-function MPPopUpMenu(parent, menu, callback)//parent为点击目标 menu为弹出窗口 callback为menu关闭后响应的事件
+function MPPopUpMenu(parent, menu, onMenuClose, callback)//parent为点击目标 menu为弹出窗口 onMenuClose为menu关闭后响应的事件,callback回调
 {
     var _parent = $(parent);
     var _menu = $(menu);
@@ -469,6 +517,8 @@ function MPPopUpMenu(parent, menu, callback)//parent为点击目标 menu为弹�
     {
         e.stopPropagation();
         _menu.show();
+        if (callback)
+            callback();
         var clickfn;
         $(window).on("click", clickfn = function (event)
         {
@@ -477,16 +527,16 @@ function MPPopUpMenu(parent, menu, callback)//parent为点击目标 menu为弹�
             point.Y = event.clientY;
             if (MPCheckInEle(_menu, point))
             {
-                _menu.show();
+                _menu.show();                
             }
             else
             {
                 _menu.hide();
                 $(window).off("click", clickfn);
             }
-            if (callback != undefined || callback != null)
+            if (onMenuClose)
             {
-                callback();
+                onMenuClose();
             }
         })
     })
@@ -513,7 +563,8 @@ function MPCheckInEle(node, point)
 }
 
 //获取地址栏的某个参数内容
-function MPGetQueryString(name) {
+function MPGetQueryString(name)
+{
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]); return null;

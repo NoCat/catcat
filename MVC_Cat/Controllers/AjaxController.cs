@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -109,7 +110,7 @@ namespace MVC_Cat.Controllers
                         {
                             string packageTitle = Tools.GetStringFromRequest(Request.Form["title"]);
                             packageTitle = packageTitle.Trim();
-                            if(packageTitle=="")
+                            if (packageTitle == "")
                             {
                                 throw new MiaopassException("图包标题不能为空");
                             }
@@ -148,10 +149,10 @@ namespace MVC_Cat.Controllers
 
                             //try
                             //{
-                                using (FileStream fs = System.IO.File.Create(Server.MapPath("~/MP_Temp/" + tempFileName + "_" + chunk)))
-                                {
-                                    fs.Write(Request.InputStream);
-                                }
+                            using (FileStream fs = System.IO.File.Create(Server.MapPath("~/MP_Temp/" + tempFileName + "_" + chunk)))
+                            {
+                                fs.Write(Request.InputStream);
+                            }
                             //}
                             //catch
                             //{
@@ -162,22 +163,22 @@ namespace MVC_Cat.Controllers
                             {
                                 //try
                                 //{
-                                    string mergerName = Server.MapPath("~/MP_Done/" + tempFileName);
-                                    using (var merger = System.IO.File.Create(mergerName))
+                                string mergerName = Server.MapPath("~/MP_Done/" + tempFileName);
+                                using (var merger = System.IO.File.Create(mergerName))
+                                {
+                                    for (int i = 0; i < chunks; i++)
                                     {
-                                        for (int i = 0; i < chunks; i++)
+                                        string fragmentName = Server.MapPath("~/MP_Temp/" + tempFileName + "_" + i);
+                                        using (var fragment = System.IO.File.OpenRead(fragmentName))
                                         {
-                                            string fragmentName = Server.MapPath("~/MP_Temp/" + tempFileName + "_" + i);
-                                            using (var fragment = System.IO.File.OpenRead(fragmentName))
-                                            {
-                                                merger.Write(fragment);
-                                            }
-                                            System.IO.File.Delete(fragmentName);
+                                            merger.Write(fragment);
                                         }
-                                        MPFile.Create(merger);
-                                        okMsg.hash = Tools.FileMd5(merger);
+                                        System.IO.File.Delete(fragmentName);
                                     }
-                                    System.IO.File.Delete(mergerName);
+                                    int fileid = MPFile.Create(merger);
+                                    okMsg.file = new JSON.File(new MPFile(fileid));
+                                }
+                                System.IO.File.Delete(mergerName);
                                 //}
                                 //catch
                                 //{
@@ -244,7 +245,7 @@ namespace MVC_Cat.Controllers
                             }
 
                             string token = "";
-                            var res = DB.SExecuteScalar("select token from reset_password where email=?", email);
+                            var res = DB.SExecuteScalar("select token from reset_password where email=? and expire>now()", email);
                             if (res != null)
                             {
                                 token = (string)res;
@@ -254,6 +255,8 @@ namespace MVC_Cat.Controllers
                                 token = Tools.BytesToString(Guid.NewGuid().ToByteArray());
                                 DB.SExecuteNonQuery("insert into reset_password (email,expire,token) values (?,?,?)", email, DateTime.Now.AddDays(1), token);
                             }
+
+                            Mail.SendResetPasswordEmail(email, token);
                         }
                         break;
                     #endregion
@@ -264,6 +267,8 @@ namespace MVC_Cat.Controllers
                             var image = new MPImage(Convert.ToInt32(Tools.GetInt32FromRequest(Request.Form["image_id"])));
 
                             DB.SExecuteNonQuery("insert ignore into praise (userid,type,info) values (?,?,?)", user.ID, MPPraiseTypes.Image, image.ID);
+
+                            DB.SExecuteNonQuery("insert ignore into activity(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID, image.UserID, image.ID, 0, MPActivityTypes.Praise);
                         }
                         break;
                     #endregion
@@ -274,6 +279,8 @@ namespace MVC_Cat.Controllers
                             var image = new MPImage(Convert.ToInt32(Tools.GetInt32FromRequest(Request.Form["image_id"])));
 
                             DB.SExecuteNonQuery("delete from praise where userid=? and type=? and info=?", user.ID, MPPraiseTypes.Image, image.ID);
+
+                            DB.SExecuteNonQuery("delete from activity where sender=? and reciever=? and target=?  and type=?", user.ID, image.UserID, image.ID, MPActivityTypes.Praise);
                         }
                         break;
                     #endregion
@@ -285,7 +292,25 @@ namespace MVC_Cat.Controllers
                             var package = new MPPackage(Tools.GetInt32FromRequest(Request.Form["package_id"]));
                             var description = Tools.GetStringFromRequest(Request.Form["description"]);
 
-                            MPImage.Create(package.ID, image.FileID, user.ID, image.ID,image.Url, description);
+                            MPImage.Create(package.ID, image.FileID, user.ID, image.ID, image.Url, description);
+
+                            //记录xxx转存了你的图片
+                            DB.SExecuteNonQuery("insert ignore into activity(sender,reciever,target,addition,type) values (?,?,?,0,?)", user.ID, image.UserID, image.ID, MPActivityTypes.Resave);
+
+                            //记录xxx通过xxx转存了你的图片
+                            var ti = image;
+                            while (ti.Via != 0)
+                            {
+                                try
+                                {
+                                    ti = new MPImage(ti.Via);
+                                    DB.SExecuteNonQuery("insert ignore into activity(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID, ti.UserID, ti.ID, image.PackageID, MPActivityTypes.ResaveThrough);
+                                }
+                                catch (MiaopassException)
+                                {
+                                    break;
+                                }
+                            }
                         }
                         break;
                     #endregion
@@ -294,11 +319,27 @@ namespace MVC_Cat.Controllers
                         {
                             var user = CheckLogin();
                             var package = new MPPackage(Tools.GetInt32FromRequest(Request.Form["package_id"]));
+
+                            if (package.UserID != user.ID)
+                                throw new MiaopassException("无操作权限");
+
                             var description = Tools.GetStringFromRequest(Request.Form["description"]);
                             var source = Tools.GetStringFromRequest(Request.Form["source"]);
                             var from = Tools.GetStringFromRequest(Request.Form["from"]);
 
-                            DB.SExecuteNonQuery("insert into task_download(packageid,userid,source,`from`,description) values (?,?,?,?,?)", package.ID, user.ID, source, from, description);
+                            var res = DB.SExecuteScalar("select fileid from download where source=? and `from`=? and state=?", source, from, MPDownloadStates.Finished);
+                            if(res!=null)
+                            {
+                                int fileid = Convert.ToInt32(res);
+                                MPImage.Create(package.ID, fileid, user.ID, 0, from, description);
+                            }
+                            else
+                            {
+                                int downloadId =DB.SInsert("insert into download (source,`from`,state,fileid) values(?,?,?,0)", source, from, MPDownloadStates.Unstarting);
+                                DB.SExecuteNonQuery("insert into pick(downloadid,packageid,description) values(?,?,?)", downloadId, package.ID, description);
+                            }
+
+                            //DB.SExecuteNonQuery("insert into task_download(packageid,userid,source,`from`,description) values (?,?,?,?,?)", package.ID, user.ID, source, from, description);
                         }
                         break;
                     #endregion
@@ -318,6 +359,21 @@ namespace MVC_Cat.Controllers
                             var image = new MPImage(imageId);
 
                             int commentId = MPComment.Create(image.ID, user.ID, text);
+                            
+                            //添加xxx评论了你的xxx消息
+                            if (user.ID != image.UserID)
+                            {
+                                DB.SExecuteNonQuery("insert ignore into message(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID, image.UserID, commentId, 0, MPMessageTypes.Comment);
+                            }
+
+                            //添加xxx在评论xxx是提到了你消息
+                            var res = DB.SExecuteReader("select id from comment_mention where commentid=?", commentId);
+                            foreach (var item in res)
+                            {
+                                var mention = new MPCommentMention(Convert.ToInt32( item[0]));
+                                DB.SExecuteNonQuery("insert ignore into message(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID, mention.UserID, commentId, 0, MPMessageTypes.Mention);
+                            }
+
                             okMsg.comment = new JSON.Comment(new MPComment(commentId));
                         }
                         break;
@@ -377,8 +433,321 @@ namespace MVC_Cat.Controllers
                                 throw new MiaopassException("无权限操作");
 
                             var package = new MPPackage(packageId);
+                            if (package.UserID != user.ID)
+                                throw new MiaopassException("无权限操作");
 
                             image.Edit(packageId, description, source);
+                        }
+                        break;
+                    #endregion
+                    #region edit-package 编辑图包
+                    case "edit-package":
+                        {
+                            var user = CheckLogin();
+                            var id = Tools.GetInt32FromRequest(Request.Form["id"]);
+                            var title = Tools.GetStringFromRequest(Request.Form["title"]);
+                            var description = Tools.GetStringFromRequest(Request.Form["description"]);
+
+                            var package = new MPPackage(id);
+                            package.Title = title;
+                            package.Description = description;
+                        }
+                        break;
+                    #endregion
+                    #region follow-package 关注图包
+                    case "follow-package":
+                        {
+                            int packageId = Tools.GetInt32FromRequest(Request.Form["package_id"]);
+                            var user = CheckLogin();
+                            var package = new MPPackage(packageId);
+                            DB.SExecuteNonQuery("insert ignore into following (userid,type,info) values (?,?,?)", user.ID, MPFollowingTypes.Package, packageId);
+
+                            DB.SExecuteNonQuery("insert ignore into activity(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID, package.UserID, package.ID, 0, MPActivityTypes.FollowPackage);
+                        }
+                        break;
+                    #endregion
+                    #region unfollow-package 取消关注图包
+                    case "unfollow-package":
+                        {
+                            int packageId = Tools.GetInt32FromRequest(Request.Form["package_id"]);
+                            var user = CheckLogin();
+                            var package = new MPPackage(packageId);
+                            DB.SExecuteNonQuery("delete from following where userid=? and type=? and info=?", user.ID, MPFollowingTypes.Package, packageId);
+
+                            DB.SExecuteNonQuery("delete from activity where sender=? and reciever=?  and target=? and type=?", user.ID, package.UserID,package.ID,MPActivityTypes.FollowPackage);
+                        }
+                        break;
+                    #endregion
+                    #region follow-user 关注用户
+                    case "follow-user":
+                        {
+                            int userId = Tools.GetInt32FromRequest(Request.Form["user_id"]);
+                            var user = CheckLogin();
+                            var followUser = new MPUser(userId);
+                            DB.SExecuteNonQuery("insert ignore into following (userid,type,info) values (?,?,?)", user.ID, MPFollowingTypes.User, userId);
+
+                            DB.SExecuteNonQuery("insert ignore into activity(sender,reciever,target,addition,type) values (?,?,?,?,?)", user.ID, followUser.ID, 0, 0, MPActivityTypes.FollowUser);
+                        }
+                        break;
+                    #endregion
+                    #region unfollow-user 取消关注用户
+                    case "unfollow-user":
+                        {
+                            int userId = Tools.GetInt32FromRequest(Request.Form["user_id"]);
+                            var user = CheckLogin();
+                            var followUser = new MPUser(userId);
+                            DB.SExecuteNonQuery("delete from following where userid=? and type=? and info=?", user.ID, MPFollowingTypes.User, userId);
+
+                            DB.SExecuteNonQuery("delete from activity where sender=? and reciever=?  and type=?", user.ID, followUser.ID,  MPActivityTypes.FollowUser);
+                        }
+                        break;
+                    #endregion
+                    #region setting-basic 设置基本信息
+                    case "setting-basic":
+                        {
+                            var user = CheckLogin();
+                            var form = Request.Form;
+
+                            if (form["name"] != null)
+                            {
+                                var name = Tools.GetStringFromRequest(form["name"]);
+                                user.Name = name;
+                            }
+
+                            if (form["description"] != null)
+                            {
+                                var description = Tools.GetStringFromRequest(form["description"]);
+                                user.Description = description;
+                            }
+
+                            if (form["avt_hash"] != null)
+                            {
+                                var hash = Tools.GetStringFromRequest(form["avt_hash"]);
+                                var offsetX = Tools.GetInt32FromRequest(form["avt_offset_x"]);
+                                var offsetY = Tools.GetInt32FromRequest(form["avt_offset_y"]);
+                                var size = Tools.GetInt32FromRequest(form["avt_size"]);
+
+                                var file = new MPFile(hash);
+                                using (var s = OssFile.Open(file.MD5+".jpg"))
+                                {
+                                    using (var bmp = Image.FromStream(s))
+                                    {
+                                        using (var avt = bmp.Crop(offsetX, offsetY, size, size, 150, 150))
+                                        {
+                                            OssFile.Create(string.Format("avt/{0}_big", user.ID), avt.SaveAsJpeg());
+                                        }
+                                        using (var avt = bmp.Crop(offsetX, offsetY, size, size, 75, 75))
+                                        {
+                                            OssFile.Create(string.Format("avt/{0}", user.ID), avt.SaveAsJpeg());
+                                        }
+                                    }
+                                }
+                                user.DefaultHead = false;
+                            }
+                        }
+                        break;
+                    #endregion
+                    #region setting-password 设置密码
+                    case "setting-password":
+                        {
+                            var user = CheckLogin();
+                            var oldPassword = Tools.GetStringFromRequest(Request.Form["old_password"]);
+                            var newPassword = Tools.GetStringFromRequest(Request.Form["new_password"]);
+
+                            if (user.Password != Tools.SHA256Hash(oldPassword))
+                            {
+                                throw new MiaopassException("原密码错误");
+                            }
+
+                            user.Password = Tools.SHA256Hash(newPassword);
+                        }
+                        break;
+                    #endregion
+                    #region get-following-user 获取关注的用户列表
+                    case "get-following-user":
+                        {
+                            var user = CheckLogin();
+                            var res = DB.SExecuteReader("select info from following where userid=? and type=? order by id desc", user.ID, MPFollowingTypes.User);
+                            var list = new List<object>();
+                            foreach (var item in res)
+                            {
+                                var u = new MPUser(Convert.ToInt32(item[0]));
+                                list.Add(new JSON.User(u));
+                            }
+                            okMsg.users = list;
+                        }
+                        break;
+                    #endregion
+                    #region get-notice-count 获取通知数量
+                    case "get-notice-count":
+                        {
+                            var user = CheckLogin();
+                            var activityCount = Convert.ToInt32(DB.SExecuteScalar("select count(*) from activity where reciever=? and time>?", user.ID, user.LastGetActivityTime));
+                            var messageCount = Convert.ToInt32(DB.SExecuteScalar("select count(*) from message where reciever=? and time>?", user.ID, user.LastGetMessageTime));
+                            okMsg.activity_count = activityCount;
+                            okMsg.message_count = messageCount;
+                        }
+                        break;
+                    #endregion
+                    #region get-activity 获取动态
+                    case "get-activity":
+                        {
+                            var user = CheckLogin();
+                            var max = Tools.GetInt32FromRequest(Request.Form["max"]);
+                            if (max == 0)
+                                max = Int32.MaxValue;
+
+                            var res = DB.SExecuteReader("select id,sender,target,addition,type from activity where id<? and reciever=? order by id desc limit 15", max,user.ID);
+                            var list = new List<object>();
+                            foreach (var item in res)
+                            {
+                                try
+                                {
+                                    MPActivityTypes type = (MPActivityTypes)Convert.ToByte(item[4]);
+                                    var sender = Convert.ToInt32(item[1]);
+                                    var target = Convert.ToInt32(item[2]);
+                                    var addition = Convert.ToInt32(item[3]);
+
+                                    switch (type)
+                                    {
+                                        case MPActivityTypes.Praise:
+                                            {
+                                                list.Add(new JSON.Notice.Activity.Praise(sender, target));
+                                            }
+                                            break;
+                                        case MPActivityTypes.Resave:
+                                            {
+                                                list.Add(new JSON.Notice.Activity.Resave(sender, target));
+                                            }
+                                            break;
+                                        case MPActivityTypes.FollowUser:
+                                            {
+                                                list.Add(new JSON.Notice.Activity.FollowUser(sender));
+                                            }
+                                            break;
+                                        case MPActivityTypes.FollowPackage:
+                                            {
+                                                list.Add(new JSON.Notice.Activity.FollowPackage(sender, target));
+                                            }
+                                            break;
+                                        case MPActivityTypes.ResaveThrough:
+                                            {
+                                                list.Add(new JSON.Notice.Activity.ResaveThrough(sender, target, addition));
+                                            }
+                                            break;
+                                    }
+                                }
+                                catch (MiaopassException) { }
+                            }
+                            user.LastGetActivityTime = DateTime.Now;
+                            okMsg.datas = list;
+                            if (res.Count != 0)
+                            {
+                                okMsg.data_max = res[res.Count - 1][0];
+                            }
+                        }
+                        break;
+                    #endregion
+                    #region get-message 获取消息
+                    case "get-message":
+                        {
+                            var user = CheckLogin();
+                            var max = Tools.GetInt32FromRequest(Request.Form["max"]);
+                            if (max == 0)
+                                max = Int32.MaxValue;
+
+                            var res = DB.SExecuteReader("select id,sender,target,addition,type from message where id<? and reciever=? order by id desc limit 15", max,user.ID);
+                            var list = new List<object>();
+                            foreach (var item in res)
+                            {
+                                MPMessageTypes type = (MPMessageTypes)Convert.ToByte(item[4]);
+                                var sender = Convert.ToInt32(item[1]);
+                                var target = Convert.ToInt32(item[2]);
+                                var addition = Convert.ToInt32(item[3]);
+
+                                switch (type)
+                                {
+                                    case MPMessageTypes.PrivateMail:
+                                        break;
+                                    case MPMessageTypes.Comment:
+                                        {
+                                            list.Add(new JSON.Notice.Message.Comment(sender, target));
+                                        }
+                                        break;
+                                    case MPMessageTypes.Mention:
+                                        {
+                                            list.Add(new JSON.Notice.Message.Mention(sender, target));
+                                        }
+                                        break;
+                                    case MPMessageTypes.Reply:
+                                        {
+                                            list.Add(new JSON.Notice.Message.Reply(sender, target));
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            user.LastGetMessageTime = DateTime.Now;
+
+                            okMsg.datas = list;
+                            if (res.Count != 0)
+                            {
+                                okMsg.data_max = res[res.Count - 1][0];
+                            }
+                        }
+                        break;
+                    #endregion
+                    #region check 检查图片是否存在某个图包中
+                    case "check":
+                        {
+                            var user=CheckLogin();
+                            var fileid=0;
+                            var userid=user.ID;
+
+                            //转存的时候
+                            if(Request.Form["image_id"]!=null)
+                            {
+                                var imageId = Tools.GetInt32FromRequest(Request.Form["image_id"]);
+                                var image = new MPImage(imageId);
+                                fileid=image.FileID;
+                            }
+                            //从其他网站收集的时候,使用source
+                            else if(Request.Form["source"]!=null)
+                            {
+                                var source = Tools.GetStringFromRequest(Request.Form["source"]);
+                                var r = DB.SExecuteScalar("select fileid from download where source=? and state=?", source,MPDownloadStates.Finished);
+                                if(r!=null)
+                                {
+                                    fileid = Convert.ToInt32(r);
+                                }
+                            }
+                            //从其他网站收集的时候,使用from(picker采集的时候专用)
+                            else if(Request.Form["from"]!=null)
+                            {
+                                var from = Tools.GetStringFromRequest(Request.Form["from"]);
+                                var r = DB.SExecuteScalar("select fileid from download where `from`=? and state=?", from, MPDownloadStates.Finished);
+                                if (r != null)
+                                {
+                                    fileid = Convert.ToInt32(r);
+                                }
+                            }
+                            //自己上传的时候
+                            else if (Request.Form["hash"] != null)
+                            {
+                                var hash = Tools.GetStringFromRequest(Request.Form["hash"]);
+                                var file = new MPFile(hash);
+                                fileid = file.ID;
+                            }
+
+                            var res = DB.SExecuteReader("select packageid from image where fileid=? and userid=?", fileid, userid);
+                            var packages = new List<object>();
+                            foreach (var item in res)
+                            {
+                                var package = new MPPackage(Convert.ToInt32(item[0]));
+                                packages.Add(new JSON.Package(package));
+                            }
+                            okMsg.packages = packages;
                         }
                         break;
                     #endregion
@@ -388,7 +757,7 @@ namespace MVC_Cat.Controllers
             {
                 return Content(Tools.JSONStringify(new { code = exception.Code, msg = exception.Message }));
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 return Content(Tools.JSONStringify(new { code = 500, msg = exception.Message }));
             }
